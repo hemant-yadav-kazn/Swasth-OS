@@ -42,13 +42,13 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .hero-sub{font-size:.75rem;letter-spacing:6px;text-transform:uppercase;color:var(--muted);margin-top:16px;}
 
 /* NAV */
-.tab-nav{display:flex;justify-content:center;gap:6px;padding:13px 20px;position:sticky;top:0;background:rgba(6,6,6,.93);backdrop-filter:blur(20px) saturate(180%);z-index:100;border-bottom:1px solid var(--gb);flex-wrap:wrap;}
+.tab-nav{display:flex;justify-content:center;gap:6px;padding:13px 20px;position:sticky;top:0;background:rgba(8,8,8,.97);z-index:100;border-bottom:1px solid var(--gb);flex-wrap:wrap;}
 .tbtn{background:transparent;color:var(--muted);border:1px solid transparent;padding:9px 18px;font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:500;text-transform:uppercase;letter-spacing:2px;border-radius:30px;cursor:pointer;transition:all .35s;white-space:nowrap;}
 .tbtn:hover{color:var(--soft);}
 .tbtn.active{color:var(--gold);border-color:var(--gold-b);background:var(--gold-dim);}
 
 /* LAYOUT */
-.wrap{max-width:900px;margin:44px auto;padding:0 22px;position:relative;z-index:1;}
+.wrap{max-width:900px;margin:44px auto;padding:0 22px;position:relative;}
 .tab{display:none;animation:fu .5s cubic-bezier(.4,0,.2,1);}
 .tab.on{display:block;}
 @keyframes fu{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
@@ -99,9 +99,9 @@ input[type=checkbox]:checked::after{transform:translateX(22px);background:var(--
 .div{height:1px;background:linear-gradient(90deg,transparent,var(--gb),transparent);margin:28px 0;}
 
 /* MODAL */
-.moverlay{position:fixed;inset:0;background:rgba(0,0,0,.86);backdrop-filter:blur(14px);display:none;justify-content:center;align-items:center;z-index:2000;}
-.moverlay.on{display:flex;}
-.mbox{background:#0c0c0c;border:1px solid var(--gold-b);border-radius:18px;padding:40px;max-width:560px;width:92%;position:relative;box-shadow:0 30px 80px rgba(0,0,0,.9);max-height:88vh;overflow-y:auto;}
+.moverlay{position:fixed;inset:0;background:rgba(0,0,0,.88);backdrop-filter:blur(16px);display:none;justify-content:center;align-items:center;z-index:9999;}
+.moverlay.on{display:flex;z-index:9999;}
+.mbox{background:#0c0c0c;border:1px solid var(--gold-b);border-radius:18px;padding:40px;max-width:560px;width:92%;position:relative;box-shadow:0 30px 80px rgba(0,0,0,.9);max-height:88vh;overflow-y:auto;isolation:isolate;}
 .mclose{position:absolute;top:16px;right:20px;font-size:1.5rem;color:var(--muted);cursor:pointer;background:none;border:none;line-height:1;}
 .mclose:hover{color:var(--text);}
 .mtitle{font-family:'Cormorant Garamond',serif;font-size:2.2rem;color:var(--gold-lt);margin-bottom:18px;}
@@ -509,9 +509,12 @@ input[type=checkbox]:checked::after{transform:translateX(22px);background:var(--
 </div>
 
 
+</main>
+
 <!-- PROFILE MODAL -->
-<div class="moverlay" id="profile-modal" onclick="">
+<div class="moverlay" id="profile-modal" onclick="if(event.target===this)document.getElementById('profile-modal').classList.remove('on')">
   <div class="mbox" style="max-width:480px">
+    <button class="mclose" onclick="document.getElementById('profile-modal').classList.remove('on')">&#215;</button>
     <h3 class="mtitle" style="font-size:1.8rem">Your Profile</h3>
     <p class="cbody" style="margin-bottom:20px;font-size:.85rem">Set up once. Your data will be tracked individually so progress is always yours.</p>
     <div class="g2c" style="margin-bottom:16px">
@@ -542,8 +545,6 @@ input[type=checkbox]:checked::after{transform:translateX(22px);background:var(--
     <p id="profile-saved-msg" style="color:var(--ok);font-size:.82rem;margin-top:10px;text-align:center;display:none">Profile saved. Welcome aboard.</p>
   </div>
 </div>
-
-</main>
 
 <!-- MODAL -->
 <div class="moverlay" id="modal" onclick="if(event.target===this)closeModal()">
