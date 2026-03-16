@@ -100,6 +100,7 @@
     <nav class="tab-nav">
         <button class="tab-btn active t-tab1" onclick="openTab(event, 'Arc')">The Daily Arc</button>
         <button class="tab-btn t-tab2" onclick="openTab(event, 'Alchemy')">Kitchen Swaps</button>
+        <button class="tab-btn t-tab3" onclick="openTab(event, 'Metrics')">Vital Metrics</button> 
     </nav>
 
     <main class="container">
@@ -200,6 +201,68 @@
             <div class="card-body" id="modal-body" style="font-size: 1.05rem; color: var(--text-light);">Loading...</div>
         </div>
     </div>
+    
+    <div id="Metrics" class="tab-content">
+            <h2 class="section-title t-metrics-title">Vital Metrics</h2>
+            
+            <div class="glass-card">
+                <div class="card-header">
+                    <h3 class="card-title t-progress">Family Dashboard</h3>
+                </div>
+                <div class="card-body t-progress-desc" style="margin-bottom: 15px;">
+                    Watch the daily vitality score grow over time.
+                </div>
+                <div class="iframe-container" style="border-radius: 12px; overflow: hidden; border: 1px solid var(--glass-border); background: #ffffff;">
+                    <iframe width="100%" height="371" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQazMbHk6mOc7HenNIMUmqgDq9WDInlAJsc7-ephCmDWUPct7bfJ5SHf0u12i2U3lfFAp0n4YCGPQPT/pubchart?oid=1231937022&amp;format=interactive" style="display: block;"></iframe>
+                </div>
+            </div>
+
+            <div class="glass-card">
+                <div class="card-header">
+                    <h3 class="card-title t-log">Manual Health Log</h3>
+                </div>
+                <div class="card-body">
+                    <p class="t-log-desc" style="margin-bottom: 20px;">Log clinical numbers. Target Fasting Sugar: &lt;100 mg/dL. Target BP: &lt;130/80 mmHg.</p>
+                    
+                    <div style="display: flex; gap: 15px; margin-bottom: 15px;">
+                        <input type="number" id="bp-sys" placeholder="BP (Top)" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); color: #fff; border-radius: 8px; font-family: 'Montserrat';">
+                        <input type="number" id="bp-dia" placeholder="BP (Bottom)" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); color: #fff; border-radius: 8px; font-family: 'Montserrat';">
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <input type="number" id="sugar-level" placeholder="Fasting Sugar (mg/dL)" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); color: #fff; border-radius: 8px; font-family: 'Montserrat';">
+                    </div>
+                    
+                    <button class="action-btn" onclick="submitVitals()" style="width: 100%; justify-content: center;">
+                        <span class="t-submit-btn">Save Health Data</span>
+                    </button>
+                    <p id="save-msg" style="color: var(--success); font-size: 0.85rem; margin-top: 10px; text-align: center; display: none;">Data securely saved to tracker!</p>
+                </div>
+            </div>
+        </div>
+            </div>
+
+            <div class="glass-card">
+                <div class="card-header">
+                    <h3 class="card-title t-log">Manual Health Log</h3>
+                </div>
+                <div class="card-body">
+                    <p class="t-log-desc" style="margin-bottom: 20px;">Log clinical numbers. Target Fasting Sugar: &lt;100 mg/dL. Target BP: &lt;130/80 mmHg.</p>
+                    
+                    <div style="display: flex; gap: 15px; margin-bottom: 15px;">
+                        <input type="number" id="bp-sys" placeholder="BP (Top)" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); color: #fff; border-radius: 8px; font-family: 'Montserrat';">
+                        <input type="number" id="bp-dia" placeholder="BP (Bottom)" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); color: #fff; border-radius: 8px; font-family: 'Montserrat';">
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <input type="number" id="sugar-level" placeholder="Fasting Sugar (mg/dL)" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); color: #fff; border-radius: 8px; font-family: 'Montserrat';">
+                    </div>
+                    
+                    <button class="action-btn" onclick="submitVitals()" style="width: 100%; justify-content: center;">
+                        <span class="t-submit-btn">Save Health Data</span>
+                    </button>
+                    <p id="save-msg" style="color: var(--success); font-size: 0.85rem; margin-top: 10px; text-align: center; display: none;">Data securely saved to tracker!</p>
+                </div>
+            </div>
+        </div>
 
     <script>
         // 1. Tab Navigation
@@ -383,7 +446,39 @@
         document.querySelectorAll('.protocol-check').forEach(box => {
             box.addEventListener('change', syncToDatabase);
         });
-        
+
+        function submitVitals() {
+            const bpSys = document.getElementById('bp-sys').value;
+            const bpDia = document.getElementById('bp-dia').value;
+            const sugar = document.getElementById('sugar-level').value;
+            
+            // Prevent accidental empty submissions
+            if(!bpSys && !sugar) return; 
+
+            const today = new Date().toLocaleDateString('en-IN', { weekday: 'short', month: 'short', day: 'numeric' });
+            
+            const payload = {
+                date: today,
+                user: "Family",
+                type: "Vitals",
+                bp: bpSys ? `${bpSys}/${bpDia}` : "",
+                sugar: sugar || ""
+            };
+
+            fetch(WEB_APP_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify(payload)
+            }).then(() => {
+                // Show success message and clear the form
+                document.getElementById('save-msg').style.display = 'block';
+                setTimeout(() => document.getElementById('save-msg').style.display = 'none', 3000);
+                document.getElementById('bp-sys').value = '';
+                document.getElementById('bp-dia').value = '';
+                document.getElementById('sugar-level').value = '';
+            });
+        }
     </script>
 </body>
 </html>
