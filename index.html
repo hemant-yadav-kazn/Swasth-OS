@@ -138,6 +138,52 @@ input[type=checkbox]:checked::after{transform:translateX(22px);background:var(--
 .pdet{font-size:.82rem;color:var(--soft);}
 .pdet strong{color:var(--gold-lt);}
 
+
+/* HABIT CARDS */
+.habit-list { display:flex; flex-direction:column; gap:8px; }
+.habit-card {
+    display:flex; align-items:center; gap:14px;
+    padding:14px 16px; border-radius:12px;
+    border:1px solid var(--gb);
+    background:rgba(0,0,0,.2);
+    cursor:pointer;
+    transition:all .25s ease;
+    user-select:none;
+}
+.habit-card:hover { border-color:var(--gold-b); background:rgba(201,168,76,.04); }
+.habit-card.done { border-color:var(--gold-b); background:var(--gold-dim); }
+.habit-check {
+    width:28px; height:28px; border-radius:8px;
+    border:1.5px solid var(--gb);
+    background:rgba(255,255,255,.04);
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; color:transparent;
+    transition:all .25s ease;
+}
+.habit-card.done .habit-check {
+    background:var(--gold); border-color:var(--gold);
+    color:#060606;
+}
+.habit-body { flex:1; }
+.habit-body strong { color:var(--text); font-size:.92rem; font-weight:500; display:block; margin-bottom:2px; }
+.habit-body p { font-size:.78rem; color:var(--muted); line-height:1.45; margin:0; }
+
+/* CHEER POPUP */
+.cheer-popup {
+    position:fixed; left:50%; transform:translateX(-50%);
+    bottom:80px; z-index:99999;
+    background:#1a1a1a; border:1px solid var(--gold-b);
+    border-radius:30px; padding:10px 22px;
+    font-size:.88rem; font-weight:500; color:var(--gold-lt);
+    box-shadow:0 8px 32px rgba(0,0,0,.6);
+    pointer-events:none;
+    animation: cheer-in .35s cubic-bezier(.34,1.56,.64,1) forwards,
+               cheer-out .3s ease .0s forwards;
+    white-space:nowrap;
+}
+@keyframes cheer-in  { from{opacity:0;transform:translateX(-50%) translateY(20px)} to{opacity:1;transform:translateX(-50%) translateY(0)} }
+@keyframes cheer-out { 0%{opacity:1} 70%{opacity:1} 100%{opacity:0} }
+
 /* BREATHING */
 .b-outer{width:220px;height:220px;border-radius:50%;border:1px solid var(--gold-b);display:flex;align-items:center;justify-content:center;margin:10px auto 30px;position:relative;}
 .b-ring{width:200px;height:200px;border-radius:50%;border:2px solid transparent;border-top-color:var(--gold);position:absolute;}
@@ -197,6 +243,11 @@ input[type=checkbox]:checked::after{transform:translateX(22px);background:var(--
   .wgrid{gap:4px;}
   .wsummary{flex-wrap:wrap;}
 }
+
+.bmi-formula-box{background:var(--gold-dim);border:1px solid var(--gold-b);border-radius:12px;padding:14px 18px;margin-bottom:4px;}
+.bmi-formula-title{font-size:.7rem;text-transform:uppercase;letter-spacing:2px;color:var(--gold);margin-bottom:6px;}
+.bmi-formula-eq{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--gold-lt);margin-bottom:4px;}
+.bmi-formula-example{font-size:.82rem;color:var(--soft);}
 </style>
 </head>
 <body>
@@ -247,21 +298,73 @@ input[type=checkbox]:checked::after{transform:translateX(22px);background:var(--
 
   <div class="card">
     <div class="ch"><h3 class="ctitle">Dawn: Awakening</h3><span class="tag" id="sunrise-tag">&#127749; Sunrise…</span></div>
-    <div class="trow"><div class="tlabel"><strong>Surya Darshan</strong><p>5–10 mins of natural morning sunlight.</p></div><input type="checkbox" class="pchk" id="c1"></div>
-    <div class="trow"><div class="tlabel"><strong>Hydration</strong><p>2 glasses of warm water before tea or chai.</p></div><input type="checkbox" class="pchk" id="c2"></div>
+    <div class="habit-list"><div class="habit-card" id="hcard-c1" onclick="toggleHabit('c1')">
+        <div class="habit-check" id="hchk-c1">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><polyline points="2,7 6,11 12,3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="habit-body">
+            <strong>Surya Darshan</strong>
+            <p>5–10 mins of natural morning sunlight.</p>
+        </div>
+    </div><div class="habit-card" id="hcard-c2" onclick="toggleHabit('c2')">
+        <div class="habit-check" id="hchk-c2">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><polyline points="2,7 6,11 12,3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="habit-body">
+            <strong>Hydration</strong>
+            <p>2 glasses of warm water before tea or chai.</p>
+        </div>
+    </div></div>
   </div>
 
   <div class="card">
     <div class="ch"><h3 class="ctitle">Noon: Sustenance</h3><span class="tag">12:00 – 14:00</span></div>
-    <div class="trow"><div class="tlabel"><strong>Fibre First</strong><p>Eat a raw salad before the main lunch meal.</p></div><input type="checkbox" class="pchk" id="c3"></div>
-    <div class="trow"><div class="tlabel"><strong>Vajrasana Rest</strong><p>Sit in Vajrasana for 10 mins post-lunch to aid digestion.</p></div><input type="checkbox" class="pchk" id="c4"></div>
+    <div class="habit-list"><div class="habit-card" id="hcard-c3" onclick="toggleHabit('c3')">
+        <div class="habit-check" id="hchk-c3">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><polyline points="2,7 6,11 12,3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="habit-body">
+            <strong>Fibre First</strong>
+            <p>Eat a raw salad before the main lunch meal.</p>
+        </div>
+    </div><div class="habit-card" id="hcard-c4" onclick="toggleHabit('c4')">
+        <div class="habit-check" id="hchk-c4">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><polyline points="2,7 6,11 12,3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="habit-body">
+            <strong>Vajrasana Rest</strong>
+            <p>Sit in Vajrasana for 10 mins post-lunch to aid digestion.</p>
+        </div>
+    </div></div>
   </div>
 
   <div class="card">
     <div class="ch"><h3 class="ctitle">Dusk: Restoration</h3><span class="tag">19:00 – 22:00</span></div>
-    <div class="trow"><div class="tlabel"><strong>Ghar Ki Sair</strong><p>15-minute walk after dinner.</p></div><input type="checkbox" class="pchk" id="c5"></div>
-    <div class="trow"><div class="tlabel"><strong>Evening Pranayama</strong><p>10 mins of Anulom Vilom before sleep.</p></div><input type="checkbox" class="pchk" id="c6"></div>
-    <div class="trow"><div class="tlabel"><strong>Digital Sunset</strong><p>All screens off 1 hour before sleep.</p></div><input type="checkbox" class="pchk" id="c7"></div>
+    <div class="habit-list"><div class="habit-card" id="hcard-c5" onclick="toggleHabit('c5')">
+        <div class="habit-check" id="hchk-c5">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><polyline points="2,7 6,11 12,3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="habit-body">
+            <strong>Ghar Ki Sair</strong>
+            <p>15-minute walk after dinner.</p>
+        </div>
+    </div><div class="habit-card" id="hcard-c6" onclick="toggleHabit('c6')">
+        <div class="habit-check" id="hchk-c6">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><polyline points="2,7 6,11 12,3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="habit-body">
+            <strong>Evening Pranayama</strong>
+            <p>10 mins of Anulom Vilom before sleep.</p>
+        </div>
+    </div><div class="habit-card" id="hcard-c7" onclick="toggleHabit('c7')">
+        <div class="habit-check" id="hchk-c7">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><polyline points="2,7 6,11 12,3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="habit-body">
+            <strong>Digital Sunset</strong>
+            <p>All screens off 1 hour before sleep.</p>
+        </div>
+    </div></div>
   </div>
 
   <div class="card" style="border-color:var(--gold-b);margin-top:36px;">
@@ -327,12 +430,31 @@ input[type=checkbox]:checked::after{transform:translateX(22px);background:var(--
     <button class="abtn" onclick="saveProfile()" style="margin-bottom:26px">Save Profile</button>
 
     <div class="div" style="margin:0 0 24px"></div>
+
     <span class="sec-label">Log Today's Reading</span>
-    <div class="g2c">
-      <div class="lwrap"><label class="llabel">Weight</label><input type="number" id="iw" class="linput" placeholder="72"><span class="lunit">kg</span></div>
-      <div class="lwrap"><label class="llabel">Blood Pressure</label><input type="text" id="ibp" class="linput" placeholder="120/80"><span class="lunit">mmHg</span></div>
+    <p class="cbody" style="font-size:.8rem;margin-bottom:16px;color:var(--muted)">
+      BMI is calculated from your <strong style="color:var(--soft)">weight below</strong> + the <strong style="color:var(--soft)">height in your profile above</strong>. You do not need to enter height here — it is already saved.
+    </p>
+
+    <div class="bmi-formula-box" id="bmi-formula-preview">
+      <div class="bmi-formula-title">How BMI is calculated</div>
+      <div class="bmi-formula-eq">BMI = Weight (kg) &#247; Height (m)<sup>2</sup></div>
+      <div class="bmi-formula-example" id="bmi-formula-example">Enter your weight below to see your BMI</div>
     </div>
-    <button class="abtn" onclick="logHealth()" style="margin-bottom:8px">+ Log Reading</button>
+
+    <div class="g2c" style="margin-top:16px">
+      <div class="lwrap">
+        <label class="llabel">Weight</label>
+        <input type="number" id="iw" class="linput" placeholder="72" oninput="previewBMI(this.value)">
+        <span class="lunit">kg</span>
+      </div>
+      <div class="lwrap">
+        <label class="llabel">Blood Pressure <span style="font-size:.65rem;color:var(--muted)">(optional)</span></label>
+        <input type="text" id="ibp" class="linput" placeholder="120/80">
+        <span class="lunit">mmHg</span>
+      </div>
+    </div>
+    <button class="abtn" onclick="logHealth()" style="margin-bottom:8px">+ Save Reading</button>
     <p id="logsaved" style="color:var(--ok);font-size:.82rem;margin:6px 0 0;display:none">&#10003; Reading saved</p>
 
     <!-- BMI DASHBOARD -->
@@ -562,7 +684,7 @@ function openTab(e, id) {
   document.querySelectorAll('.tbtn').forEach(b=>b.classList.remove('active'));
   document.getElementById(id).classList.add('on');
   e.currentTarget.classList.add('active');
-  if (id==='Progress') { renderChart(); renderBMI(); }
+  if (id==='Progress') { renderChart(); prefillHealthFields(); renderBMI(); }
   if (id==='Recipes')  renderRecipes('all');
   if (id==='Breathe')  buildDots();
 }
@@ -588,20 +710,7 @@ async function fetchSunrise() {
 const MAX_H = 7;
 let weekData = JSON.parse(localStorage.getItem('sw-week') || 'null') || Array(7).fill(0);
 
-function updateG() {
-  const checks = document.querySelectorAll('.pchk');
-  const done = document.querySelectorAll('.pchk:checked').length;
-  const p = done / checks.length;
-  const t = document.getElementById('tulsi');
-  t.style.transform = `scale(${.78 + p*.44})`;
-  t.style.opacity = .25 + p*.75;
-  t.style.filter = `drop-shadow(0 0 ${12+p*28}px rgba(46,125,50,${.2+p*.7}))`;
-  const hints = ['Complete habits to nourish the Tulsi','Good start - keep going!','Halfway there - you\'re thriving!','Almost complete - incredible!','✨ Full protocol complete today!'];
-  document.getElementById('phint').innerText = hints[Math.min(Math.floor(p*4.5),4)];
-  weekData[new Date().getDay()] = done;
-  localStorage.setItem('sw-week', JSON.stringify(weekData));
-  syncDB();
-}
+
 document.querySelectorAll('.pchk').forEach(c => c.addEventListener('change', updateG));
 
 // -- WEEK CHART ------------------------------------------
@@ -982,24 +1091,10 @@ function sendWA() {
 // -- REFLECTION ---------------------------------------------
 const SHEETS = "https://script.google.com/macros/s/AKfycbzz8_pDWM9nTxg3p628czw8vEIkS063bwpAtwwIvWu6UlC5N9XrY0w3vBAmlb4kaYA/exec";
 
-function submitReflection() {
-  const txt = document.getElementById('reflecta').value.trim();
-  if (!txt) return;
-  const d = new Date().toLocaleDateString('en-IN',{weekday:'short',month:'short',day:'numeric'});
-  fetch(SHEETS,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({date:d,user:'Family',type:'Reflection',note:txt})}).then(()=>{
-    document.getElementById('rmsg').style.display='block';
-    setTimeout(()=>document.getElementById('rmsg').style.display='none',3000);
-    document.getElementById('reflecta').value='';
-  });
-}
+
 
 // -- SHEETS SYNC --------------------------------------------
-function syncDB() {
-  const ids = ['c1','c2','c3','c4','c5','c6','c7'];
-  const d = new Date().toLocaleDateString('en-IN',{weekday:'short',month:'short',day:'numeric'});
-  const p = {date:d,user:'Family',c1:+document.getElementById('c1').checked,c2:+document.getElementById('c2').checked,c3:+document.getElementById('c3').checked,c4:+document.getElementById('c4').checked,c5:+document.getElementById('c5').checked,c6:+document.getElementById('c6').checked,c7:+document.getElementById('c7').checked,total:ids.filter(id=>document.getElementById(id).checked).length};
-  fetch(SHEETS,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(p)}).catch(()=>{});
-}
+
 function syncHealthDB(e) {
   fetch(SHEETS,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({...e,user:'Family',type:'HealthLog'})}).catch(()=>{});
 }
@@ -1010,6 +1105,180 @@ function setLang(lang) {
   document.getElementById('btn-'+lang).classList.add('active');
   const T = { en:{'t-sub':'The Longevity Protocol'}, hi:{'t-sub':'Parivaar Ki Sehat'} };
   for (let k in T[lang]) document.querySelectorAll('.'+k).forEach(el=>el.innerText=T[lang][k]);
+}
+
+
+// ── HABIT CARDS + CHEER ────────────────────────────────────
+const HABIT_STATE = {};
+const CHEERS = [
+    'Waah! Ek aur step aage! ✨',
+    'Shabash! Keep it up! 🌟',
+    'Brilliant! Your body thanks you 💪',
+    'Yes! The Tulsi is smiling 🌿',
+    'Excellent! Protocol is working 🏆',
+    'Wah wah! One more habit done! 🎉',
+    'That is the spirit! 🔥',
+    'Ek kadam aur longevity ki taraf 🚀',
+    'Super! Consistency is the key 💎',
+    'Zaroor! Your ancestors are proud 🙏',
+    'Lovely! Small habits, big results ⭐',
+    'Bahut accha! This is discipline 🌸',
+    'Outstanding! The streak continues 💯',
+    'Arey wah! You are doing amazing 🌈',
+    'That tick = closer to your best self 🎯'
+];
+let cheerTimeout = null;
+
+function toggleHabit(id) {
+    const card   = document.getElementById('hcard-' + id);
+    const isDone = card.classList.toggle('done');
+    HABIT_STATE[id] = isDone ? 1 : 0;
+    if (isDone) showCheer();
+    updateG();
+}
+
+function showCheer() {
+    const old = document.getElementById('cheer-el');
+    if (old) old.remove();
+    if (cheerTimeout) clearTimeout(cheerTimeout);
+    const msg = CHEERS[Math.floor(Math.random() * CHEERS.length)];
+    const el  = document.createElement('div');
+    el.id        = 'cheer-el';
+    el.className = 'cheer-popup';
+    el.innerText = msg;
+    document.body.appendChild(el);
+    cheerTimeout = setTimeout(() => { if (el.parentNode) el.remove(); }, 3200);
+}
+
+function updateG() {
+    const done  = Object.values(HABIT_STATE).filter(v => v === 1).length;
+    const p     = done / 7;
+    const t     = document.getElementById('tulsi');
+    t.style.transform = 'scale(' + (.78 + p*.44) + ')';
+    t.style.opacity   = .25 + p*.75;
+    t.style.filter    = 'drop-shadow(0 0 ' + (12+p*28) + 'px rgba(46,125,50,' + (.2+p*.7) + '))';
+    const hints = [
+        'Complete habits to nourish the Tulsi',
+        'Good start — keep going!',
+        'Halfway there — you are thriving!',
+        'Almost complete — incredible!',
+        'Full protocol complete today!'
+    ];
+    document.getElementById('phint').innerText = hints[Math.min(Math.floor(p*4.5), 4)];
+    weekData[new Date().getDay()] = done;
+    localStorage.setItem('sw-week', JSON.stringify(weekData));
+    syncDB();
+}
+
+
+// ── USER PROFILE ───────────────────────────────────────────
+let currentUser = JSON.parse(localStorage.getItem('sw-user') || 'null');
+
+function initUser() {
+    if (!currentUser) {
+        setTimeout(() => document.getElementById('profile-modal').classList.add('on'), 900);
+    } else {
+        document.getElementById('user-badge-name').innerText = currentUser.name || 'Profile';
+        prefillHealthFields();
+    }
+}
+
+function prefillHealthFields() {
+    if (!currentUser) return;
+    if (currentUser.height)   document.getElementById('ih').value  = currentUser.height;
+    if (currentUser.age)      document.getElementById('ia').value  = currentUser.age;
+    if (currentUser.gender)   document.getElementById('ig').value  = currentUser.gender;
+    if (currentUser.activity) document.getElementById('iac').value = currentUser.activity;
+    if (!profile && currentUser.height) {
+        profile = { h: parseFloat(currentUser.height), a: parseInt(currentUser.age), g: currentUser.gender, ac: currentUser.activity };
+        localStorage.setItem('sw-profile', JSON.stringify(profile));
+    }
+}
+
+function saveUserProfile() {
+    const name     = document.getElementById('p-name').value.trim();
+    const phone    = document.getElementById('p-phone').value.trim();
+    const height   = document.getElementById('p-height').value.trim();
+    const age      = document.getElementById('p-age').value.trim();
+    const gender   = document.getElementById('p-gender').value;
+    const activity = document.getElementById('p-activity').value;
+    if (!name)           { alert('Please enter your name.'); return; }
+    if (!height || !age) { alert('Please enter height and age for BMI tracking.'); return; }
+    const base   = name.toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'').substring(0,10);
+    const userId = (currentUser && currentUser.userId) ? currentUser.userId : base + '_' + Math.random().toString(36).substring(2,6);
+    currentUser  = { userId, name, phone, height, age, gender, activity };
+    localStorage.setItem('sw-user', JSON.stringify(currentUser));
+    profile = { h: parseFloat(height), a: parseInt(age), g: gender, ac: activity };
+    localStorage.setItem('sw-profile', JSON.stringify(profile));
+    document.getElementById('user-badge-name').innerText = name;
+    fetch(SHEETS, {
+        method:'POST', mode:'no-cors',
+        headers:{'Content-Type':'text/plain;charset=utf-8'},
+        body: JSON.stringify({ type:'Profile', userId, name, phone, height, age, gender, activity,
+            startDate: new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'2-digit',year:'numeric'}) })
+    }).catch(()=>{});
+    const msg = document.getElementById('profile-saved-msg');
+    msg.style.display = 'block';
+    setTimeout(() => {
+        msg.style.display = 'none';
+        document.getElementById('profile-modal').classList.remove('on');
+        if (document.getElementById('Progress').classList.contains('on')) {
+            prefillHealthFields(); renderBMI();
+        }
+    }, 1200);
+}
+
+function syncDB() {
+    const d   = new Date().toLocaleDateString('en-IN',{weekday:'short',month:'short',day:'numeric'});
+    const uid = currentUser ? currentUser.userId : 'guest';
+    const nm  = currentUser ? currentUser.name   : 'Guest';
+    const p   = {
+        date:d, userId:uid, user:nm, type:'HabitLog',
+        c1:HABIT_STATE['c1']||0, c2:HABIT_STATE['c2']||0,
+        c3:HABIT_STATE['c3']||0, c4:HABIT_STATE['c4']||0,
+        c5:HABIT_STATE['c5']||0, c6:HABIT_STATE['c6']||0,
+        c7:HABIT_STATE['c7']||0,
+        total:Object.values(HABIT_STATE).filter(v=>v===1).length
+    };
+    fetch(SHEETS,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(p)}).catch(()=>{});
+}
+
+function syncHealthToDatabase(data) {
+    const uid = currentUser ? currentUser.userId : 'guest';
+    const nm  = currentUser ? currentUser.name   : 'Guest';
+    fetch(SHEETS,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},
+        body:JSON.stringify({...data,userId:uid,user:nm,type:'HealthLog'})
+    }).catch(()=>{});
+}
+
+function submitReflection() {
+    const txt = document.getElementById('reflecta').value.trim();
+    if (!txt) return;
+    const d   = new Date().toLocaleDateString('en-IN',{weekday:'short',month:'short',day:'numeric'});
+    const uid = currentUser ? currentUser.userId : 'guest';
+    const nm  = currentUser ? currentUser.name   : 'Guest';
+    fetch(SHEETS,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},
+        body:JSON.stringify({date:d,userId:uid,user:nm,type:'Reflection',note:txt})
+    }).catch(()=>{});
+    document.getElementById('rmsg').style.display='block';
+    setTimeout(()=>document.getElementById('rmsg').style.display='none',3000);
+    document.getElementById('reflecta').value='';
+}
+
+
+function previewBMI(weightVal) {
+    const el = document.getElementById('bmi-formula-example');
+    if (!el) return;
+    const w = parseFloat(weightVal);
+    if (!w || !profile || !profile.h) {
+        el.innerText = 'Enter your weight below to see your BMI';
+        el.style.color = 'var(--soft)';
+        return;
+    }
+    const hm  = profile.h / 100;
+    const bmi = (w / (hm * hm)).toFixed(1);
+    const cat = bmiCat(parseFloat(bmi));
+    el.innerHTML = 'At ' + w + ' kg with height ' + profile.h + ' cm &rarr; BMI = <strong style="color:' + cat.color + '">' + bmi + '</strong> (' + cat.label + ')';
 }
 
 // -- INIT ---------------------------------------------------
