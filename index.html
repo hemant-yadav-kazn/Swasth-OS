@@ -21,12 +21,10 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Montserrat', sans-serif; background-color: var(--bg-deep); color: var(--text-light); background-image: radial-gradient(circle at 50% 0%, #1a1a1a 0%, #050505 70%); background-attachment: fixed; min-height: 100vh; overflow-x: hidden; }
 
-        /* Top Bar with Language Toggle */
         .top-bar { position: absolute; top: 20px; right: 20px; z-index: 1000; display: flex; gap: 10px; }
         .lang-btn { background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--text-muted); padding: 5px 12px; border-radius: 20px; cursor: pointer; font-size: 0.8rem; backdrop-filter: blur(5px); transition: all 0.3s;}
         .lang-btn.active { color: var(--gold-primary); border-color: var(--gold-primary); }
 
-        /* Cinematic Hero */
         .hero { height: 50vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: linear-gradient(to bottom, rgba(5,5,5,0.3), var(--bg-deep)), url('images/parents-hero-image.jpg') center/cover; border-bottom: 1px solid var(--glass-border); }
         .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: 4.5rem; font-weight: 600; color: var(--gold-primary); margin-bottom: 10px; text-shadow: 0 10px 30px rgba(0,0,0,0.8); }
         .hero p { font-size: 1.1rem; letter-spacing: 5px; text-transform: uppercase; color: var(--text-muted); }
@@ -42,7 +40,6 @@
 
         .section-title { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; margin-bottom: 30px; border-bottom: 1px solid var(--glass-border); padding-bottom: 15px; text-align: center; }
 
-        /* Audio Player & WhatsApp Button */
         .audio-player { display: flex; align-items: center; gap: 15px; background: rgba(0,0,0,0.5); padding: 15px 20px; border-radius: 12px; border: 1px solid var(--glass-border); margin-bottom: 30px; }
         .play-btn { background: var(--gold-primary); color: #000; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.2s;}
         .play-btn:hover { transform: scale(1.05); }
@@ -53,28 +50,25 @@
         .action-btn { background: transparent; color: var(--gold-primary); border: 1px solid var(--gold-primary); padding: 12px 24px; border-radius: 30px; font-family: 'Montserrat', sans-serif; font-size: 0.9rem; cursor: pointer; transition: all 0.3s; display: inline-flex; align-items: center; gap: 10px; margin-top: 15px; }
         .action-btn:hover { background: var(--gold-primary); color: var(--bg-deep); }
 
-        /* Digital Tulsi Gamification */
         .tulsi-container { text-align: center; font-size: 4rem; margin-bottom: 20px; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s; opacity: 0.3; transform: scale(0.8); text-shadow: 0 0 20px rgba(46, 125, 50, 0.5); cursor: default; }
 
-        .suno-btn { background: transparent; color: var(--gold-primary); border: 1px solid var(--gold-primary); padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; margin-bottom: 10px; transition: all 0.3s; font-family: 'Montserrat', sans-serif;}
-        .suno-btn:hover { background: var(--gold-dim); }
-
         .glass-card { background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); border-radius: 16px; padding: 30px; margin-bottom: 25px; transition: transform 0.4s ease; cursor: pointer; }
-        .glass-card:hover { transform: translateY(-5px); border-color: var(--gold-dim); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
+        .glass-card.interactive:hover { transform: translateY(-5px); border-color: var(--gold-dim); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
         .card-title { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; color: var(--gold-primary); }
         .tag { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; padding: 4px 12px; border-radius: 20px; background: var(--gold-dim); color: var(--gold-primary); }
         .card-body { font-size: 0.95rem; color: var(--text-muted); line-height: 1.8; }
         
-        .toggle-wrapper { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--glass-border); margin-top: 20px; padding-top: 20px; cursor: default;}
-        input[type="checkbox"] { appearance: none; width: 50px; height: 26px; background: #222; border-radius: 30px; position: relative; cursor: pointer; outline: none; border: 1px solid var(--glass-border); transition: background 0.4s; }
+        .toggle-wrapper { display: flex; align-items: center; justify-content: space-between; padding-bottom: 15px; margin-bottom: 15px; border-bottom: 1px solid var(--glass-border); cursor: default;}
+        .toggle-wrapper:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        
+        input[type="checkbox"] { appearance: none; width: 50px; height: 26px; background: #222; border-radius: 30px; position: relative; cursor: pointer; outline: none; border: 1px solid var(--glass-border); transition: background 0.4s; flex-shrink: 0;}
         input[type="checkbox"]::after { content: ''; position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; background: var(--text-muted); border-radius: 50%; transition: transform 0.4s, background 0.4s; }
         input[type="checkbox"]:checked { background: var(--gold-dim); border-color: var(--gold-primary); }
         input[type="checkbox"]:checked::after { transform: translateX(24px); background: var(--gold-primary); }
 
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         
-        /* Modal Styles */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 2000; opacity: 0; transition: opacity 0.3s; }
         .modal-overlay.active { display: flex; opacity: 1; }
         .modal-content { background: var(--bg-deep); border: 1px solid var(--gold-primary); border-radius: 16px; padding: 40px; max-width: 500px; width: 90%; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.8); }
@@ -116,7 +110,6 @@
             </div>
 
             <h2 class="section-title t-arc-title">The Daily Arc</h2>
-            
             <div class="tulsi-container" id="tulsi-plant" title="Complete tasks to water the Tulsi!">🌿</div>
 
             <div class="glass-card">
@@ -124,14 +117,33 @@
                     <h3 class="card-title t-dawn">Dawn: Awakening</h3>
                     <span class="tag" id="sunrise-time">Fetching Sunrise...</span>
                 </div>
-                <button class="suno-btn" onclick="speakText('dawn-desc')">🔊 Suno</button>
-                <div class="card-body t-dawn-desc" id="dawn-desc">
-                    <strong>Surya Darshan:</strong> View natural sunlight outside for 5-10 minutes to clear brain fog and set your sleep timer.<br><br>
-                    <strong>Hydration Sequence:</strong> Drink 2 glasses of warm water before tea. Replenishing fluids lost overnight is critical for metabolism.
+                <div class="toggle-wrapper">
+                    <div style="padding-right: 15px;">
+                        <strong class="t-habit-sun" style="color: var(--text-light); font-size: 1.1rem;">Surya Darshan</strong>
+                        <p class="t-habit-sun-desc" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">5-10 mins of natural morning sunlight.</p>
+                    </div>
+                    <input type="checkbox" class="protocol-check" id="chk-sunlight">
                 </div>
                 <div class="toggle-wrapper">
-                    <span class="t-dawn-check" style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">Dawn Sequence Complete</span>
-                    <input type="checkbox" class="protocol-check">
+                    <div style="padding-right: 15px;">
+                        <strong class="t-habit-water" style="color: var(--text-light); font-size: 1.1rem;">Hydration</strong>
+                        <p class="t-habit-water-desc" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">Drink 2 glasses of warm water before tea.</p>
+                    </div>
+                    <input type="checkbox" class="protocol-check" id="chk-water">
+                </div>
+            </div>
+
+            <div class="glass-card">
+                <div class="card-header">
+                    <h3 class="card-title t-noon">Noon: Sustenance</h3>
+                    <span class="tag">12:00 - 14:00</span>
+                </div>
+                <div class="toggle-wrapper">
+                    <div style="padding-right: 15px;">
+                        <strong class="t-habit-salad" style="color: var(--text-light); font-size: 1.1rem;">Fibre First</strong>
+                        <p class="t-habit-salad-desc" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">Eat a raw salad before the main lunch.</p>
+                    </div>
+                    <input type="checkbox" class="protocol-check" id="chk-salad">
                 </div>
             </div>
 
@@ -140,14 +152,19 @@
                     <h3 class="card-title t-dusk">Dusk: Restoration</h3>
                     <span class="tag">19:00 - 22:00</span>
                 </div>
-                <button class="suno-btn" onclick="speakText('dusk-desc')">🔊 Suno</button>
-                <div class="card-body t-dusk-desc" id="dusk-desc">
-                    <strong>Ghar Ki Sair:</strong> A 15-minute gentle walk post-dinner to clear blood glucose and aid digestion.<br><br>
-                    <strong>Digital Sunset:</strong> Turn off screens 60 minutes before sleep to allow your brain to synthesize melatonin.
+                <div class="toggle-wrapper">
+                    <div style="padding-right: 15px;">
+                        <strong class="t-habit-walk" style="color: var(--text-light); font-size: 1.1rem;">Ghar Ki Sair</strong>
+                        <p class="t-habit-walk-desc" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">15-minute walk after dinner.</p>
+                    </div>
+                    <input type="checkbox" class="protocol-check" id="chk-walk">
                 </div>
                 <div class="toggle-wrapper">
-                    <span class="t-dusk-check" style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">Dusk Sequence Complete</span>
-                    <input type="checkbox" class="protocol-check">
+                    <div style="padding-right: 15px;">
+                        <strong class="t-habit-screen" style="color: var(--text-light); font-size: 1.1rem;">Digital Sunset</strong>
+                        <p class="t-habit-screen-desc" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">Turn off all screens 1 hour before sleep.</p>
+                    </div>
+                    <input type="checkbox" class="protocol-check" id="chk-screens">
                 </div>
             </div>
 
@@ -181,33 +198,24 @@
             </div>
 
             <div class="grid-2">
-                <div class="glass-card" onclick="openModal('lipid')">
+                <div class="glass-card interactive" onclick="openModal('lipid')">
                     <h3 class="card-title t-oil">Lipid Optimization</h3>
-                    <div class="card-body t-oil-desc">Swap saturated fats for olive, peanut, or mustard oil. Strictly eliminate Vanaspati (Trans Fats).</div>
+                    <div class="card-body t-oil-desc">Swap saturated fats for olive, peanut, or mustard oil. Strictly eliminate Vanaspati.</div>
                 </div>
-                <div class="glass-card" onclick="openModal('grain')">
+                <div class="glass-card interactive" onclick="openModal('grain')">
                     <h3 class="card-title t-grain">Grain Transition</h3>
-                    <div class="card-body t-grain-desc">Transition to brown rice, millets, and buckwheat. Phase out refined biscuits and white bread.</div>
+                    <div class="card-body t-grain-desc">Transition to brown rice, millets, and buckwheat. Phase out refined biscuits.</div>
                 </div>
-                <div class="glass-card" onclick="openModal('beverage')">
+                <div class="glass-card interactive" onclick="openModal('beverage')">
                     <h3 class="card-title t-bev">Beverage Audit</h3>
-                    <div class="card-body t-bev-desc">Replace fruit juices and sweet lassi with whole fruits, infused water, or unsweetened tea.</div>
+                    <div class="card-body t-bev-desc">Replace fruit juices and sweet lassi with whole fruits or unsweetened tea.</div>
                 </div>
-                <div class="glass-card" onclick="openModal('snack')">
+                <div class="glass-card interactive" onclick="openModal('snack')">
                     <h3 class="card-title t-snack">The Snack Swap</h3>
-                    <div class="card-body t-snack-desc">Trade high-fat processed snacks like Bhujia or chips for roasted chana, almonds, or fresh papaya.</div>
-                </div>
-                <div class="glass-card" onclick="openModal('sauce')">
-                    <h3 class="card-title t-sauce">Hidden Sugars</h3>
-                    <div class="card-body t-sauce-desc">Eliminate store-bought ketchup and sweetened curries. Rely on traditional fresh herbs and spices.</div>
-                </div>
-                <div class="glass-card" onclick="openModal('omega')">
-                    <h3 class="card-title t-omega">Omega Fortification</h3>
-                    <div class="card-body t-omega-desc">Integrate ground flaxseed into daily chapati dough for cardiovascular health.</div>
+                    <div class="card-body t-snack-desc">Trade high-fat snacks for roasted chana, almonds, or fresh papaya.</div>
                 </div>
             </div>
         </div>
-
     </main>
 
     <div class="modal-overlay" id="recipe-modal" onclick="if(event.target === this) closeModal()">
@@ -219,7 +227,6 @@
     </div>
 
     <script>
-        // 1. Tab Navigation
         function openTab(evt, tabName) {
             document.querySelectorAll(".tab-content").forEach(tab => tab.classList.remove("active"));
             document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
@@ -227,33 +234,23 @@
             evt.currentTarget.classList.add("active");
         }
 
-        // 2. WhatsApp Grocery List Export
         function sendWhatsAppList() {
-            const message = `*Swasth OS - Weekly Pantry Matrix* 🛒\n\n✅ Heart-Healthy Oils (Olive/Mustard)\n✅ Ancient Grains (Brown Rice, Millets, Buckwheat)\n✅ Ground Flaxseeds (Mix in Roti Atta)\n✅ Rolled Oats (for Upma)\n✅ Fresh Non-Starchy Veggies (Greens, Eggplants, Tomatoes)\n✅ Pulses/Lentils (High fibre protein)\n✅ Roasted Chana & Almonds (Snack Swaps)\n✅ Whole Fruits (Papaya, Oranges)\n\n_Let's stick to the protocol this week!_ 💪`;
-            const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
-            window.open(whatsappUrl, '_blank');
+            const message = `*Swasth OS - Weekly Pantry Matrix* 🛒\n\n✅ Heart-Healthy Oils (Olive/Mustard)\n✅ Ancient Grains (Brown Rice, Millets)\n✅ Ground Flaxseeds\n✅ Rolled Oats\n✅ Fresh Veggies for Salad\n✅ Pulses/Lentils\n✅ Roasted Chana & Almonds\n✅ Whole Fruits (Papaya, Oranges)\n\n_Let's stick to the protocol this week!_ 💪`;
+            window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
         }
 
-        // 3. Audio Player Logic
         const audio = document.getElementById('weekly-voice');
         const playBtn = document.querySelector('.play-btn');
         function toggleAudio() {
-            if (audio.paused) {
-                audio.play();
-                playBtn.innerHTML = '⏸';
-            } else {
-                audio.pause();
-                playBtn.innerHTML = '▶';
-            }
+            if (audio.paused) { audio.play(); playBtn.innerHTML = '⏸'; } 
+            else { audio.pause(); playBtn.innerHTML = '▶'; }
         }
 
-        // 4. Live Sunrise Engine
         async function fetchSunrise() {
             try {
                 const response = await fetch('https://api.sunrise-sunset.org/json?lat=28.6139&lng=77.2090&formatted=0');
                 const data = await response.json();
-                const sunriseDate = new Date(data.results.sunrise);
-                const timeString = sunriseDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                const timeString = new Date(data.results.sunrise).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
                 document.getElementById('sunrise-time').innerText = `🌅 Sunrise: ${timeString}`;
             } catch (e) {
                 document.getElementById('sunrise-time').innerText = `🌅 Sunrise: 6:15 AM`;
@@ -261,95 +258,72 @@
         }
         window.onload = fetchSunrise;
 
-        // 5. Digital Tulsi Gamification
         function updateGamification() {
             const checkboxes = document.querySelectorAll('.protocol-check');
             const checked = document.querySelectorAll('.protocol-check:checked').length;
             const percentage = checked / checkboxes.length;
             const tulsi = document.getElementById('tulsi-plant');
             
-            const scale = 0.8 + (percentage * 0.4);
-            const opacity = 0.3 + (percentage * 0.7);
-            
-            tulsi.style.transform = `scale(${scale})`;
-            tulsi.style.opacity = opacity;
-            
-            if (percentage === 1) {
-                tulsi.style.textShadow = "0 0 40px rgba(46, 125, 50, 0.9)";
-            } else {
-                tulsi.style.textShadow = "0 0 20px rgba(46, 125, 50, 0.5)";
-            }
+            tulsi.style.transform = `scale(${0.8 + (percentage * 0.4)})`;
+            tulsi.style.opacity = 0.3 + (percentage * 0.7);
+            tulsi.style.textShadow = percentage === 1 ? "0 0 40px rgba(46, 125, 50, 0.9)" : "0 0 20px rgba(46, 125, 50, 0.5)";
         }
         document.querySelectorAll('.protocol-check').forEach(box => box.addEventListener('change', updateGamification));
 
-        // 6. Glassmorphic Modal Engine
         function openModal(type) {
-            const modal = document.getElementById('recipe-modal');
             const title = document.getElementById('modal-title');
             const body = document.getElementById('modal-body');
             
             if (type === 'grain') {
                 title.innerText = '🌾 Grain Transition';
-                body.innerHTML = '<strong style="color:var(--gold-primary);">The Science:</strong> Refined grains like white bread, pasta, and conventional biscuits are stripped of their natural fibre, causing rapid blood sugar spikes.<br><br><strong style="color:var(--gold-primary);">Action:</strong> Transition to ancient Indian whole grains like millet, buckwheat, and brown rice. These complex carbohydrates stabilize insulin and provide sustained energy.';
+                body.innerHTML = '<strong style="color:var(--gold-primary);">The Science:</strong> Refined grains are stripped of fibre, causing sugar spikes.<br><br><strong style="color:var(--gold-primary);">Action:</strong> Transition to ancient whole grains like millet and brown rice.';
             } else if (type === 'lipid') {
                 title.innerText = '🥑 Lipid Optimization';
-                body.innerHTML = '<strong style="color:var(--gold-primary);">The Science:</strong> Trans fats (like Vanaspati and margarine) severely disrupt metabolic health and raise cardiovascular risk. Saturated fats should be limited.<br><br><strong style="color:var(--gold-primary);">Action:</strong> Swap heavy saturated fats and trans fats for heart-protective monounsaturated oils—like olive, canola, peanut, or traditional mustard oil—for your daily tadka.';
-            } else if (type === 'omega') {
-                title.innerText = '🌰 Omega Fortification';
-                body.innerHTML = '<strong style="color:var(--gold-primary);">The Science:</strong> Ground flaxseeds provide vital omega-3 fatty acids and boost your daily fibre intake.<br><br><strong style="color:var(--gold-primary);">Action:</strong> Knead 1 tablespoon of ground flaxseeds directly into your daily roti dough. Remember to grind them, as whole seeds pass through undigested!';
+                body.innerHTML = '<strong style="color:var(--gold-primary);">The Science:</strong> Trans fats disrupt metabolic health.<br><br><strong style="color:var(--gold-primary);">Action:</strong> Swap saturated fats for heart-protective oils like olive or mustard oil for tadka.';
             } else if (type === 'beverage') {
                 title.innerText = '💧 Beverage Audit';
-                body.innerHTML = '<strong style="color:var(--gold-primary);">The Science:</strong> Liquid calories from sweetened teas, lassis, and fruit juices bypass the brain\'s fullness sensors and lack the essential fibre of whole foods.<br><br><strong style="color:var(--gold-primary);">Action:</strong> Hydrate exclusively with water, seltzer, or unsweetened tea between meals. Choose the whole orange over the glass of juice to retain the pectin and fibre.';
+                body.innerHTML = '<strong style="color:var(--gold-primary);">The Science:</strong> Liquid calories bypass fullness sensors and lack fibre.<br><br><strong style="color:var(--gold-primary);">Action:</strong> Hydrate with water or unsweetened tea. Choose the whole orange over the juice.';
             } else if (type === 'snack') {
                 title.innerText = '🥜 The Snack Swap';
-                body.innerHTML = '<strong style="color:var(--gold-primary);">The Science:</strong> Highly processed, deep-fried snacks (like bhujia, conventional namkeen, and chips) are calorically dense and packed with inflammatory oils.<br><br><strong style="color:var(--gold-primary);">Action:</strong> Pre-portion roasted chana, unsalted almonds, or fresh sliced papaya for afternoon cravings to ensure protein and fibre intake without the fat trap.';
-            } else if (type === 'sauce') {
-                title.innerText = '🍅 Hidden Sugar Trap';
-                body.innerHTML = '<strong style="color:var(--gold-primary);">The Science:</strong> Many store-bought condiments, ketchups, and sweetened curry bases contain hidden sugars that quietly sabotage weight loss efforts.<br><br><strong style="color:var(--gold-primary);">Action:</strong> Eliminate processed sauces. Rely entirely on traditional, fresh Indian spices—garlic, ginger, cardamom, cumin, and turmeric—which naturally boost metabolism.';
+                body.innerHTML = '<strong style="color:var(--gold-primary);">The Science:</strong> Deep-fried snacks are calorically dense and inflammatory.<br><br><strong style="color:var(--gold-primary);">Action:</strong> Pre-portion roasted chana or almonds for cravings.';
             }
-            modal.classList.add('active');
+            document.getElementById('recipe-modal').classList.add('active');
         }
-        function closeModal() {
-            document.getElementById('recipe-modal').classList.remove('active');
-        }
+        function closeModal() { document.getElementById('recipe-modal').classList.remove('active'); }
 
-        // 7. Suno Text-to-Speech Engine
-        function speakText(elementId) {
-            const text = document.getElementById(elementId).innerText;
-            const utterance = new SpeechSynthesisUtterance(text);
-            const lang = document.getElementById('btn-hi').classList.contains('active') ? 'hi-IN' : 'en-IN';
-            utterance.lang = lang;
-            window.speechSynthesis.speak(utterance);
-        }
-
-        // 8. Translation Dictionary 
         const translations = {
             en: {
                 "t-title": "Swasth OS", "t-subtitle": "The Longevity Protocol", "t-tab1": "The Daily Arc", "t-tab2": "Kitchen Swaps",
                 "t-audio-title": "Hemant's Weekly Check-in", "t-audio-sub": "Tap to listen to this week's focus...",
-                "t-arc-title": "The Daily Arc", "t-dawn": "Dawn: Awakening", "t-dawn-desc": "<strong>Surya Darshan:</strong> View natural sunlight outside for 5-10 minutes to clear brain fog and set your sleep timer.<br><br><strong>Hydration Sequence:</strong> Drink 2 glasses of warm water before tea. Replenishing fluids lost overnight is critical for metabolism.", "t-dawn-check": "Dawn Sequence Complete",
-                "t-dusk": "Dusk: Restoration", "t-dusk-desc": "<strong>Ghar Ki Sair:</strong> A 15-minute gentle walk post-dinner to clear blood glucose and aid digestion.<br><br><strong>Digital Sunset:</strong> Turn off screens 60 minutes before sleep to allow your brain to synthesize melatonin.", "t-dusk-check": "Dusk Sequence Complete",
-                "t-kitchen-title": "Kitchen Swaps", "t-pantry-desc": "Send the Swasth-approved grocery list to WhatsApp to ensure the pantry stays stocked.", "t-pantry-btn": "Send Pantry Matrix to WhatsApp",
-                "t-oil": "Lipid Optimization", "t-oil-desc": "Swap saturated fats for olive, peanut, or mustard oil. Strictly eliminate Vanaspati (Trans Fats).",
-                "t-grain": "Grain Transition", "t-grain-desc": "Transition to brown rice, millets, and buckwheat. Phase out refined biscuits and white bread.",
-                "t-omega": "Omega Fortification", "t-omega-desc": "Integrate ground flaxseed into daily chapati dough for cardiovascular health.",
-                "t-bev": "Beverage Audit", "t-bev-desc": "Replace fruit juices and sweet lassi with whole fruits, infused water, or unsweetened tea.",
-                "t-snack": "The Snack Swap", "t-snack-desc": "Trade high-fat processed snacks like Bhujia or chips for roasted chana, almonds, or fresh papaya.",
-                "t-sauce": "Hidden Sugars", "t-sauce-desc": "Eliminate store-bought ketchup and sweetened curries. Rely on traditional fresh herbs and spices.",
+                "t-arc-title": "The Daily Arc", "t-dawn": "Dawn: Awakening",
+                "t-habit-sun": "Surya Darshan", "t-habit-sun-desc": "5-10 mins of natural morning sunlight.",
+                "t-habit-water": "Hydration", "t-habit-water-desc": "Drink 2 glasses of warm water before tea.",
+                "t-noon": "Noon: Sustenance", "t-habit-salad": "Fibre First", "t-habit-salad-desc": "Eat a raw salad before the main lunch.",
+                "t-dusk": "Dusk: Restoration", 
+                "t-habit-walk": "Ghar Ki Sair", "t-habit-walk-desc": "15-minute walk after dinner.",
+                "t-habit-screen": "Digital Sunset", "t-habit-screen-desc": "Turn off all screens 1 hour before sleep.",
+                "t-kitchen-title": "Kitchen Swaps", "t-pantry-desc": "Send the grocery list to WhatsApp.", "t-pantry-btn": "Send Pantry Matrix to WhatsApp",
+                "t-oil": "Lipid Optimization", "t-oil-desc": "Swap saturated fats for olive, peanut, or mustard oil. Strictly eliminate Vanaspati.",
+                "t-grain": "Grain Transition", "t-grain-desc": "Transition to brown rice, millets, and buckwheat. Phase out refined biscuits.",
+                "t-bev": "Beverage Audit", "t-bev-desc": "Replace fruit juices with whole fruits or unsweetened tea.",
+                "t-snack": "The Snack Swap", "t-snack-desc": "Trade high-fat snacks for roasted chana, almonds, or fresh papaya.",
                 "t-reflect": "End of Day Reflection", "t-reflect-desc": "How did you feel today? Any improvements in energy, or just a good moment to share?", "t-reflect-btn": "Send Note to Hemant"
             },
             hi: {
                 "t-title": "Swasth OS", "t-subtitle": "Parivaar Ki Sehat", "t-tab1": "Din Ki Shuruaat", "t-tab2": "Rasoi Ke Badlaav",
                 "t-audio-title": "Hemant Ka Sandesh", "t-audio-sub": "Is hafte ka message sunne ke liye tap karein...",
-                "t-arc-title": "Din Ki Shuruaat", "t-dawn": "Subah: Surya Aur Jal", "t-dawn-desc": "<strong>Surya Darshan:</strong> 5-10 minute dhoop mein baithein. Isse neend achi aati hai aur energy milti hai.<br><br><strong>Garam Paani:</strong> Chai se pehle 2 glass gunguna paani piyein. Raat bhar ki thakan mitane ke liye zaruri hai.", "t-dawn-check": "Subah Ka Routine Pura Hua",
-                "t-dusk": "Shaam: Aaram Aur Sair", "t-dusk-desc": "<strong>Ghar Ki Sair:</strong> Khana khane ke baad 15 minute ki sair. Sugar control aur hazme ke liye sabse best.<br><br><strong>No Screens:</strong> Sone se 1 ghanta pehle TV aur phone band karein.", "t-dusk-check": "Shaam Ka Routine Pura Hua",
-                "t-kitchen-title": "Rasoi Ke Badlaav", "t-pantry-desc": "Is hafte ki healthy grocery list sidha WhatsApp par bhejein.", "t-pantry-btn": "WhatsApp Par List Bhejein",
-                "t-oil": "Sahi Tel Ka Chunav", "t-oil-desc": "Ghee ki jagah Olive ya Mustard tel apnayein. Vanaspati (Dalda) bilkul band karein.",
-                "t-grain": "Anaj Mein Badlaav", "t-grain-desc": "Safed chawal ki jagah Brown Rice, Bajra, aur Kuttu apnayein. Biscuits chhod dein.",
-                "t-omega": "Flaxseed Ka Upyog", "t-omega-desc": "Roti ke aate mein pisi hui alsi (flaxseed) milayein dil ki sehat ke liye.",
-                "t-bev": "Sahi Pey Jal", "t-bev-desc": "Meethi lassi aur juice ki jagah taza fal, seltzer, ya bina cheeni ki chai piyein.",
-                "t-snack": "Snack Mein Badlaav", "t-snack-desc": "Bhujia aur chips ki jagah bhuna chana, badam, ya papita khayein.",
-                "t-sauce": "Chhupi Hui Cheeni", "t-sauce-desc": "Bazar ke ketchup aur sauces chhod kar taze masale aur ghar ki chutney apnayein.",
+                "t-arc-title": "Din Ki Shuruaat", "t-dawn": "Subah: Surya Aur Jal",
+                "t-habit-sun": "Surya Darshan", "t-habit-sun-desc": "5-10 minute dhoop mein baithein.",
+                "t-habit-water": "Garam Paani", "t-habit-water-desc": "Chai se pehle 2 glass gunguna paani piyein.",
+                "t-noon": "Dopahar: Sahi Khana", "t-habit-salad": "Salad Pehle", "t-habit-salad-desc": "Khana khane se pehle ek katori salad khayein.",
+                "t-dusk": "Shaam: Aaram Aur Sair", 
+                "t-habit-walk": "Ghar Ki Sair", "t-habit-walk-desc": "Khana khane ke baad 15 minute ki sair.",
+                "t-habit-screen": "No Screens", "t-habit-screen-desc": "Sone se 1 ghanta pehle TV aur phone band karein.",
+                "t-kitchen-title": "Rasoi Ke Badlaav", "t-pantry-desc": "Healthy grocery list sidha WhatsApp par bhejein.", "t-pantry-btn": "WhatsApp Par List Bhejein",
+                "t-oil": "Sahi Tel Ka Chunav", "t-oil-desc": "Ghee ki jagah Olive ya Mustard tel apnayein.",
+                "t-grain": "Anaj Mein Badlaav", "t-grain-desc": "Safed chawal ki jagah Brown Rice aur Bajra apnayein.",
+                "t-bev": "Sahi Pey Jal", "t-bev-desc": "Juice ki jagah taza fal ya bina cheeni ki chai piyein.",
+                "t-snack": "Snack Mein Badlaav", "t-snack-desc": "Bhujia ki jagah bhuna chana ya badam khayein.",
                 "t-reflect": "Aaj Ka Anubhav", "t-reflect-desc": "Aaj kaisa mehsoos hua? Thakan kam hui ya koi achi baat share karni ho?", "t-reflect-btn": "Hemant Ko Bhejein"
             }
         };
@@ -357,53 +331,52 @@
         function setLang(lang) {
             document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById(`btn-${lang}`).classList.add('active');
-            
             for (let key in translations[lang]) {
-                const elements = document.querySelectorAll(`.${key}`);
-                elements.forEach(el => el.innerHTML = translations[lang][key]);
+                document.querySelectorAll(`.${key}`).forEach(el => el.innerHTML = translations[lang][key]);
             }
         }
 
-        // 9. GOOGLE SHEETS DATABASE CONNECTION
+        // --- GOOGLE SHEETS DATABASE CONNECTION ---
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwKfXl-7nWsukE2VoBfgKEYIlbduJHd6OW7qy2FAPbNSM8khBiNZfosS4hUowGR5rpt/exec";
 
         function syncToDatabase() {
-            const checkboxes = document.querySelectorAll('.protocol-check');
-            const dawnScore = (checkboxes[0] && checkboxes[0].checked) ? 1 : 0;
-            const duskScore = (checkboxes[1] && checkboxes[1].checked) ? 1 : 0;
-            const totalScore = dawnScore + duskScore;
+            // Track exactly which of the 5 habits are checked
+            const sunlight = document.getElementById('chk-sunlight').checked ? 1 : 0;
+            const water = document.getElementById('chk-water').checked ? 1 : 0;
+            const salad = document.getElementById('chk-salad').checked ? 1 : 0;
+            const walk = document.getElementById('chk-walk').checked ? 1 : 0;
+            const screens = document.getElementById('chk-screens').checked ? 1 : 0;
             
+            const totalScore = sunlight + water + salad + walk + screens;
             const today = new Date().toLocaleDateString('en-IN', { weekday: 'short', month: 'short', day: 'numeric' });
 
             const payload = {
                 date: today,
                 user: "Family",
-                dawn: dawnScore,
-                dusk: duskScore,
+                sunlight: sunlight,
+                water: water,
+                salad: salad,
+                walk: walk,
+                screens: screens,
                 total: totalScore
             };
 
             fetch(WEB_APP_URL, {
                 method: 'POST',
                 mode: 'no-cors', 
-                headers: {
-                    'Content-Type': 'text/plain;charset=utf-8',
-                },
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                 body: JSON.stringify(payload)
-            }).then(() => {
-                console.log("Data successfully fired to Google Sheets!");
-            }).catch(error => console.error("Sync Error:", error));
+            }).then(() => console.log("Specific Habits Fired to Sheets!")).catch(e => console.error(e));
         }
 
-        // Trigger the sync every time a box is ticked or unticked
+        // Sync whenever any of the 5 checkboxes is toggled
         document.querySelectorAll('.protocol-check').forEach(box => {
             box.addEventListener('change', syncToDatabase);
         });
 
-        // 10. End of Day Reflection Submission
+        // End of Day Reflection Submission
         function submitReflection() {
             const reflectionText = document.getElementById('daily-reflection').value;
-            
             if(!reflectionText.trim()) return; 
 
             const today = new Date().toLocaleDateString('en-IN', { weekday: 'short', month: 'short', day: 'numeric' });
