@@ -344,6 +344,46 @@
                 elements.forEach(el => el.innerHTML = translations[lang][key]);
             }
         }
+    // --- 9. GOOGLE SHEETS DATABASE CONNECTION ---
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwKfXl-7nWsukE2VoBfgKEYIlbduJHd6OW7qy2FAPbNSM8khBiNZfosS4hUowGR5rpt/exec";
+
+        function syncToDatabase() {
+            // Find the checkboxes (Dawn is 1st, Dusk is 2nd)
+            const checkboxes = document.querySelectorAll('.protocol-check');
+            const dawnScore = (checkboxes[0] && checkboxes[0].checked) ? 1 : 0;
+            const duskScore = (checkboxes[1] && checkboxes[1].checked) ? 1 : 0;
+            const totalScore = dawnScore + duskScore;
+            
+            // Get today's date
+            const today = new Date().toLocaleDateString('en-IN', { weekday: 'short', month: 'short', day: 'numeric' });
+
+            // Package the data
+            const payload = {
+                date: today,
+                user: "Family",
+                dawn: dawnScore,
+                dusk: duskScore,
+                total: totalScore
+            };
+
+            // Send to Google Sheets invisibly
+            fetch(WEB_APP_URL, {
+                method: 'POST',
+                mode: 'no-cors', // THIS BYPASSES THE SECURITY BLOCK
+                headers: {
+                    'Content-Type': 'text/plain;charset=utf-8',
+                },
+                body: JSON.stringify(payload)
+            }).then(() => {
+                console.log("Data successfully fired to Google Sheets!");
+            }).catch(error => console.error("Sync Error:", error));
+        }
+
+        // Trigger the sync every time a box is ticked or unticked
+        document.querySelectorAll('.protocol-check').forEach(box => {
+            box.addEventListener('change', syncToDatabase);
+        });
+        
     </script>
 </body>
 </html>
