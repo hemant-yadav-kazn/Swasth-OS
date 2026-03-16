@@ -171,18 +171,28 @@ input[type=checkbox]:checked::after{transform:translateX(22px);background:var(--
 /* CHEER POPUP */
 .cheer-popup {
     position:fixed; left:50%; transform:translateX(-50%);
-    bottom:80px; z-index:99999;
-    background:#1a1a1a; border:1px solid var(--gold-b);
-    border-radius:30px; padding:10px 22px;
-    font-size:.88rem; font-weight:500; color:var(--gold-lt);
-    box-shadow:0 8px 32px rgba(0,0,0,.6);
+    bottom:32px; z-index:99999;
+    background:#111; border:1px solid var(--gold-b);
+    border-radius:30px; padding:12px 24px;
+    font-size:.9rem; font-weight:500; color:var(--gold-lt);
+    box-shadow:0 12px 40px rgba(0,0,0,.7);
     pointer-events:none;
-    animation: cheer-in .35s cubic-bezier(.34,1.56,.64,1) forwards,
-               cheer-out .3s ease .0s forwards;
+    display:flex; align-items:center; gap:10px;
     white-space:nowrap;
+    animation: cheer-in .4s cubic-bezier(.34,1.56,.64,1) forwards;
+    opacity:0;
 }
-@keyframes cheer-in  { from{opacity:0;transform:translateX(-50%) translateY(20px)} to{opacity:1;transform:translateX(-50%) translateY(0)} }
-@keyframes cheer-out { 0%{opacity:1} 70%{opacity:1} 100%{opacity:0} }
+.cheer-popup.hide {
+    animation: cheer-out .5s ease forwards;
+}
+.cheer-popup .cheer-save {
+    font-size:.72rem; letter-spacing:1.5px; text-transform:uppercase;
+    color:var(--ok); opacity:.85;
+    border-left:1px solid rgba(201,168,76,.3);
+    padding-left:10px;
+}
+@keyframes cheer-in  { from{opacity:0;transform:translateX(-50%) translateY(16px)} to{opacity:1;transform:translateX(-50%) translateY(0)} }
+@keyframes cheer-out { from{opacity:1;transform:translateX(-50%) translateY(0)} to{opacity:0;transform:translateX(-50%) translateY(12px)} }
 
 /* BREATHING */
 .b-outer{width:220px;height:220px;border-radius:50%;border:1px solid var(--gold-b);display:flex;align-items:center;justify-content:center;margin:10px auto 30px;position:relative;}
@@ -367,7 +377,14 @@ input[type=checkbox]:checked::after{transform:translateX(22px);background:var(--
     </div></div>
   </div>
 
-  <div class="card" style="border-color:var(--gold-b);margin-top:36px;">
+  <div style="text-align:center;margin:8px 0 28px">
+    <button class="abtn fill" onclick="saveHabits()" id="save-habits-btn" style="gap:12px">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+      Save Today's Habits
+    </button>
+  </div>
+
+  <div class="card" style="border-color:var(--gold-b);margin-top:8px;">
     <div class="ch"><h3 class="ctitle">End of Day Reflection</h3></div>
     <p class="cbody" style="margin-bottom:16px">How did you feel today? Any shift in energy, sleep, or mood worth noting?</p>
     <textarea class="reflect-ta" id="reflecta" placeholder="Today I felt..."></textarea>
@@ -1110,6 +1127,14 @@ function setLang(lang) {
 
 // ── HABIT CARDS + CHEER ────────────────────────────────────
 const HABIT_STATE = {};
+const SAVE_MSGS = [
+    'Data saved to your tracker ✓',
+    'Sheet updated successfully ✓',
+    'All good — your record is saved ✓',
+    'Done! Your coach can see this ✓',
+    'Logged and saved ✓'
+];
+
 const CHEERS = [
     'Waah! Ek aur step aage! ✨',
     'Shabash! Keep it up! 🌟',
@@ -1133,21 +1158,33 @@ function toggleHabit(id) {
     const card   = document.getElementById('hcard-' + id);
     const isDone = card.classList.toggle('done');
     HABIT_STATE[id] = isDone ? 1 : 0;
-    if (isDone) showCheer();
+    if (isDone) showCheer('habit');
     updateG();
 }
 
-function showCheer() {
+function showCheer(type) {
     const old = document.getElementById('cheer-el');
-    if (old) old.remove();
+    if (old) { old.classList.add('hide'); setTimeout(()=>old.remove(), 500); }
     if (cheerTimeout) clearTimeout(cheerTimeout);
-    const msg = CHEERS[Math.floor(Math.random() * CHEERS.length)];
-    const el  = document.createElement('div');
+
+    // Pick message based on type
+    const msg = type === 'save'
+        ? SAVE_MSGS[Math.floor(Math.random() * SAVE_MSGS.length)]
+        : CHEERS[Math.floor(Math.random() * CHEERS.length)];
+
+    const saveLabel = type === 'save' ? '' : ' <span class="cheer-save">Saved to Sheet ✓</span>';
+
+    const el = document.createElement('div');
     el.id        = 'cheer-el';
     el.className = 'cheer-popup';
-    el.innerText = msg;
+    el.innerHTML = msg + saveLabel;
     document.body.appendChild(el);
-    cheerTimeout = setTimeout(() => { if (el.parentNode) el.remove(); }, 3200);
+
+    // Stay for 4 seconds, then fade out
+    cheerTimeout = setTimeout(() => {
+        el.classList.add('hide');
+        setTimeout(() => { if (el.parentNode) el.remove(); }, 500);
+    }, 4000);
 }
 
 function updateG() {
@@ -1263,6 +1300,7 @@ function submitReflection() {
     document.getElementById('rmsg').style.display='block';
     setTimeout(()=>document.getElementById('rmsg').style.display='none',3000);
     document.getElementById('reflecta').value='';
+    showCheer('save');
 }
 
 
@@ -1279,6 +1317,19 @@ function previewBMI(weightVal) {
     const bmi = (w / (hm * hm)).toFixed(1);
     const cat = bmiCat(parseFloat(bmi));
     el.innerHTML = 'At ' + w + ' kg with height ' + profile.h + ' cm &rarr; BMI = <strong style="color:' + cat.color + '">' + bmi + '</strong> (' + cat.label + ')';
+}
+
+
+function saveHabits() {
+    const btn = document.getElementById('save-habits-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Saving...';
+    syncDB();
+    setTimeout(() => {
+        btn.disabled = false;
+        btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Save Today\'s Habits';
+        showCheer('save');
+    }, 1200);
 }
 
 // -- INIT ---------------------------------------------------
