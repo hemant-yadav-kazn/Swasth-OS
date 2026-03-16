@@ -100,7 +100,6 @@
     <nav class="tab-nav">
         <button class="tab-btn active t-tab1" onclick="openTab(event, 'Arc')">The Daily Arc</button>
         <button class="tab-btn t-tab2" onclick="openTab(event, 'Alchemy')">Kitchen Swaps</button>
-        <button class="tab-btn t-tab3" onclick="openTab(event, 'Metrics')">Vital Metrics</button> 
     </nav>
 
     <main class="container">
@@ -113,7 +112,7 @@
                     <div class="audio-title t-audio-title">Hemant's Weekly Check-in</div>
                     <div class="audio-subtitle t-audio-sub">Tap to listen to this week's focus...</div>
                 </div>
-                <audio id="weekly-voice" src="placeholder.mp3"></audio>
+                <audio id="weekly-voice" src="weekly-voice.mp3"></audio>
             </div>
 
             <h2 class="section-title t-arc-title">The Daily Arc</h2>
@@ -151,6 +150,23 @@
                     <input type="checkbox" class="protocol-check">
                 </div>
             </div>
+
+            <div class="glass-card" style="margin-top: 40px; border-color: var(--gold-primary);">
+                <div class="card-header">
+                    <h3 class="card-title t-reflect">End of Day Reflection</h3>
+                </div>
+                <div class="card-body">
+                    <p class="t-reflect-desc" style="margin-bottom: 15px;">How did you feel today? Any improvements in energy, or just a good moment to share?</p>
+                    
+                    <textarea id="daily-reflection" placeholder="..." style="width: 100%; height: 100px; padding: 15px; background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); color: #fff; border-radius: 12px; font-family: 'Montserrat'; resize: none; margin-bottom: 15px;"></textarea>
+                    
+                    <button class="action-btn" onclick="submitReflection()" style="width: 100%; justify-content: center; background: var(--gold-primary); color: #000; font-weight: 600;">
+                        <span class="t-reflect-btn">Send Note to Hemant</span>
+                    </button>
+                    <p id="reflect-msg" style="color: var(--success); font-size: 0.85rem; margin-top: 10px; text-align: center; display: none;">Message sent securely to the tracker!</p>
+                </div>
+            </div>
+
         </div>
 
         <div id="Alchemy" class="tab-content">
@@ -201,68 +217,6 @@
             <div class="card-body" id="modal-body" style="font-size: 1.05rem; color: var(--text-light);">Loading...</div>
         </div>
     </div>
-    
-    <div id="Metrics" class="tab-content">
-            <h2 class="section-title t-metrics-title">Vital Metrics</h2>
-            
-            <div class="glass-card">
-                <div class="card-header">
-                    <h3 class="card-title t-progress">Family Dashboard</h3>
-                </div>
-                <div class="card-body t-progress-desc" style="margin-bottom: 15px;">
-                    Watch the daily vitality score grow over time.
-                </div>
-                <div class="iframe-container" style="border-radius: 12px; overflow: hidden; border: 1px solid var(--glass-border); background: #ffffff;">
-                    <iframe width="100%" height="371" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQazMbHk6mOc7HenNIMUmqgDq9WDInlAJsc7-ephCmDWUPct7bfJ5SHf0u12i2U3lfFAp0n4YCGPQPT/pubchart?oid=1231937022&amp;format=interactive" style="display: block;"></iframe>
-                </div>
-            </div>
-
-            <div class="glass-card">
-                <div class="card-header">
-                    <h3 class="card-title t-log">Manual Health Log</h3>
-                </div>
-                <div class="card-body">
-                    <p class="t-log-desc" style="margin-bottom: 20px;">Log clinical numbers. Target Fasting Sugar: &lt;100 mg/dL. Target BP: &lt;130/80 mmHg.</p>
-                    
-                    <div style="display: flex; gap: 15px; margin-bottom: 15px;">
-                        <input type="number" id="bp-sys" placeholder="BP (Top)" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); color: #fff; border-radius: 8px; font-family: 'Montserrat';">
-                        <input type="number" id="bp-dia" placeholder="BP (Bottom)" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); color: #fff; border-radius: 8px; font-family: 'Montserrat';">
-                    </div>
-                    <div style="margin-bottom: 20px;">
-                        <input type="number" id="sugar-level" placeholder="Fasting Sugar (mg/dL)" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); color: #fff; border-radius: 8px; font-family: 'Montserrat';">
-                    </div>
-                    
-                    <button class="action-btn" onclick="submitVitals()" style="width: 100%; justify-content: center;">
-                        <span class="t-submit-btn">Save Health Data</span>
-                    </button>
-                    <p id="save-msg" style="color: var(--success); font-size: 0.85rem; margin-top: 10px; text-align: center; display: none;">Data securely saved to tracker!</p>
-                </div>
-            </div>
-        </div>
-            </div>
-
-            <div class="glass-card">
-                <div class="card-header">
-                    <h3 class="card-title t-log">Manual Health Log</h3>
-                </div>
-                <div class="card-body">
-                    <p class="t-log-desc" style="margin-bottom: 20px;">Log clinical numbers. Target Fasting Sugar: &lt;100 mg/dL. Target BP: &lt;130/80 mmHg.</p>
-                    
-                    <div style="display: flex; gap: 15px; margin-bottom: 15px;">
-                        <input type="number" id="bp-sys" placeholder="BP (Top)" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); color: #fff; border-radius: 8px; font-family: 'Montserrat';">
-                        <input type="number" id="bp-dia" placeholder="BP (Bottom)" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); color: #fff; border-radius: 8px; font-family: 'Montserrat';">
-                    </div>
-                    <div style="margin-bottom: 20px;">
-                        <input type="number" id="sugar-level" placeholder="Fasting Sugar (mg/dL)" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); color: #fff; border-radius: 8px; font-family: 'Montserrat';">
-                    </div>
-                    
-                    <button class="action-btn" onclick="submitVitals()" style="width: 100%; justify-content: center;">
-                        <span class="t-submit-btn">Save Health Data</span>
-                    </button>
-                    <p id="save-msg" style="color: var(--success); font-size: 0.85rem; margin-top: 10px; text-align: center; display: none;">Data securely saved to tracker!</p>
-                </div>
-            </div>
-        </div>
 
     <script>
         // 1. Tab Navigation
@@ -273,7 +227,7 @@
             evt.currentTarget.classList.add("active");
         }
 
-        // 2. WhatsApp Grocery List Export (Updated)
+        // 2. WhatsApp Grocery List Export
         function sendWhatsAppList() {
             const message = `*Swasth OS - Weekly Pantry Matrix* 🛒\n\n✅ Heart-Healthy Oils (Olive/Mustard)\n✅ Ancient Grains (Brown Rice, Millets, Buckwheat)\n✅ Ground Flaxseeds (Mix in Roti Atta)\n✅ Rolled Oats (for Upma)\n✅ Fresh Non-Starchy Veggies (Greens, Eggplants, Tomatoes)\n✅ Pulses/Lentils (High fibre protein)\n✅ Roasted Chana & Almonds (Snack Swaps)\n✅ Whole Fruits (Papaya, Oranges)\n\n_Let's stick to the protocol this week!_ 💪`;
             const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
@@ -328,7 +282,7 @@
         }
         document.querySelectorAll('.protocol-check').forEach(box => box.addEventListener('change', updateGamification));
 
-        // 6. Glassmorphic Modal Engine (Updated with Full Clinical Research)
+        // 6. Glassmorphic Modal Engine
         function openModal(type) {
             const modal = document.getElementById('recipe-modal');
             const title = document.getElementById('modal-title');
@@ -368,7 +322,7 @@
             window.speechSynthesis.speak(utterance);
         }
 
-        // 8. Translation Dictionary (Expanded)
+        // 8. Translation Dictionary 
         const translations = {
             en: {
                 "t-title": "Swasth OS", "t-subtitle": "The Longevity Protocol", "t-tab1": "The Daily Arc", "t-tab2": "Kitchen Swaps",
@@ -381,7 +335,8 @@
                 "t-omega": "Omega Fortification", "t-omega-desc": "Integrate ground flaxseed into daily chapati dough for cardiovascular health.",
                 "t-bev": "Beverage Audit", "t-bev-desc": "Replace fruit juices and sweet lassi with whole fruits, infused water, or unsweetened tea.",
                 "t-snack": "The Snack Swap", "t-snack-desc": "Trade high-fat processed snacks like Bhujia or chips for roasted chana, almonds, or fresh papaya.",
-                "t-sauce": "Hidden Sugars", "t-sauce-desc": "Eliminate store-bought ketchup and sweetened curries. Rely on traditional fresh herbs and spices."
+                "t-sauce": "Hidden Sugars", "t-sauce-desc": "Eliminate store-bought ketchup and sweetened curries. Rely on traditional fresh herbs and spices.",
+                "t-reflect": "End of Day Reflection", "t-reflect-desc": "How did you feel today? Any improvements in energy, or just a good moment to share?", "t-reflect-btn": "Send Note to Hemant"
             },
             hi: {
                 "t-title": "Swasth OS", "t-subtitle": "Parivaar Ki Sehat", "t-tab1": "Din Ki Shuruaat", "t-tab2": "Rasoi Ke Badlaav",
@@ -394,7 +349,8 @@
                 "t-omega": "Flaxseed Ka Upyog", "t-omega-desc": "Roti ke aate mein pisi hui alsi (flaxseed) milayein dil ki sehat ke liye.",
                 "t-bev": "Sahi Pey Jal", "t-bev-desc": "Meethi lassi aur juice ki jagah taza fal, seltzer, ya bina cheeni ki chai piyein.",
                 "t-snack": "Snack Mein Badlaav", "t-snack-desc": "Bhujia aur chips ki jagah bhuna chana, badam, ya papita khayein.",
-                "t-sauce": "Chhupi Hui Cheeni", "t-sauce-desc": "Bazar ke ketchup aur sauces chhod kar taze masale aur ghar ki chutney apnayein."
+                "t-sauce": "Chhupi Hui Cheeni", "t-sauce-desc": "Bazar ke ketchup aur sauces chhod kar taze masale aur ghar ki chutney apnayein.",
+                "t-reflect": "Aaj Ka Anubhav", "t-reflect-desc": "Aaj kaisa mehsoos hua? Thakan kam hui ya koi achi baat share karni ho?", "t-reflect-btn": "Hemant Ko Bhejein"
             }
         };
 
@@ -407,20 +363,18 @@
                 elements.forEach(el => el.innerHTML = translations[lang][key]);
             }
         }
-    // --- 9. GOOGLE SHEETS DATABASE CONNECTION ---
+
+        // 9. GOOGLE SHEETS DATABASE CONNECTION
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwKfXl-7nWsukE2VoBfgKEYIlbduJHd6OW7qy2FAPbNSM8khBiNZfosS4hUowGR5rpt/exec";
 
         function syncToDatabase() {
-            // Find the checkboxes (Dawn is 1st, Dusk is 2nd)
             const checkboxes = document.querySelectorAll('.protocol-check');
             const dawnScore = (checkboxes[0] && checkboxes[0].checked) ? 1 : 0;
             const duskScore = (checkboxes[1] && checkboxes[1].checked) ? 1 : 0;
             const totalScore = dawnScore + duskScore;
             
-            // Get today's date
             const today = new Date().toLocaleDateString('en-IN', { weekday: 'short', month: 'short', day: 'numeric' });
 
-            // Package the data
             const payload = {
                 date: today,
                 user: "Family",
@@ -429,10 +383,9 @@
                 total: totalScore
             };
 
-            // Send to Google Sheets invisibly
             fetch(WEB_APP_URL, {
                 method: 'POST',
-                mode: 'no-cors', // THIS BYPASSES THE SECURITY BLOCK
+                mode: 'no-cors', 
                 headers: {
                     'Content-Type': 'text/plain;charset=utf-8',
                 },
@@ -447,22 +400,19 @@
             box.addEventListener('change', syncToDatabase);
         });
 
-        function submitVitals() {
-            const bpSys = document.getElementById('bp-sys').value;
-            const bpDia = document.getElementById('bp-dia').value;
-            const sugar = document.getElementById('sugar-level').value;
+        // 10. End of Day Reflection Submission
+        function submitReflection() {
+            const reflectionText = document.getElementById('daily-reflection').value;
             
-            // Prevent accidental empty submissions
-            if(!bpSys && !sugar) return; 
+            if(!reflectionText.trim()) return; 
 
             const today = new Date().toLocaleDateString('en-IN', { weekday: 'short', month: 'short', day: 'numeric' });
             
             const payload = {
                 date: today,
                 user: "Family",
-                type: "Vitals",
-                bp: bpSys ? `${bpSys}/${bpDia}` : "",
-                sugar: sugar || ""
+                type: "Reflection",
+                note: reflectionText
             };
 
             fetch(WEB_APP_URL, {
@@ -471,12 +421,9 @@
                 headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                 body: JSON.stringify(payload)
             }).then(() => {
-                // Show success message and clear the form
-                document.getElementById('save-msg').style.display = 'block';
-                setTimeout(() => document.getElementById('save-msg').style.display = 'none', 3000);
-                document.getElementById('bp-sys').value = '';
-                document.getElementById('bp-dia').value = '';
-                document.getElementById('sugar-level').value = '';
+                document.getElementById('reflect-msg').style.display = 'block';
+                setTimeout(() => document.getElementById('reflect-msg').style.display = 'none', 3000);
+                document.getElementById('daily-reflection').value = '';
             });
         }
     </script>
