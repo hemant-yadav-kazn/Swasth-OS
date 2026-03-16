@@ -949,424 +949,492 @@
 </div>
 
 <script>
-// ── TABS ──────────────────────────────────────────────
-function openTab(evt, tabName) {
-    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById(tabName).classList.add('active');
-    evt.currentTarget.classList.add('active');
-    if (tabName === 'Progress') renderWeekChart();
-    if (tabName === 'Recipes') renderRecipes('all');
-    if (tabName === 'Breathe') buildSessionDots();
+// ── TABS ───────────────────────────────────────────────
+function openTab(e, id) {
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.tbtn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('on');
+  e.currentTarget.classList.add('active');
+  if (id==='Progress') { renderChart(); renderBMI(); }
+  if (id==='Recipes')  renderRecipes('all');
+  if (id==='Breathe')  buildDots();
 }
 
-// ── AUDIO ─────────────────────────────────────────────
-const audio = document.getElementById('weekly-voice');
-const playBtn = document.getElementById('play-btn');
+// ── AUDIO ──────────────────────────────────────────────
+const aud = document.getElementById('waudio');
 function toggleAudio() {
-    if (audio.paused) { audio.play().catch(()=>{}); playBtn.innerHTML = '⏸'; }
-    else { audio.pause(); playBtn.innerHTML = '▶'; }
+  if (aud.paused) { aud.play().catch(()=>{}); document.getElementById('pbtn').innerHTML='&#9646;&#9646;'; }
+  else { aud.pause(); document.getElementById('pbtn').innerHTML='&#9654;'; }
 }
 
-// ── SUNRISE ───────────────────────────────────────────
+// ── SUNRISE (BUG 3 FIXED) ───────────────────────────────
 async function fetchSunrise() {
-    try {
-        const r = await fetch('https://api.sunrise-sunset.org/json?lat=28.6139&lng=77.2090&formatted=0');
-        const d = await r.json();
-        const t = new Date(d.results.sunrise).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
-        document.getElementById('sunrise-time').innerText = `🌅 Sunrise: ${t}`;
-    } catch(e) {
-        document.getElementById('sunrise-time').innerText = `🌅 Sunrise: 6:15 AM`;
-    }
-}
-window.onload = () => { fetchSunrise(); renderWeekChart(); buildSessionDots(); renderHealthLog(); renderRecipes('all'); };
-
-// ── GAMIFICATION ──────────────────────────────────────
-function updateGamification() {
-    const all = document.querySelectorAll('.protocol-check');
-    const done = document.querySelectorAll('.protocol-check:checked').length;
-    const pct = done / all.length;
-    const tulsi = document.getElementById('tulsi-plant');
-    tulsi.style.transform = `scale(${0.78 + pct * 0.44})`;
-    tulsi.style.opacity = 0.25 + pct * 0.75;
-    tulsi.style.filter = `drop-shadow(0 0 ${12 + pct*28}px rgba(46,125,50,${0.2 + pct*0.7}))`;
-    const hint = document.getElementById('progress-hint');
-    const msgs = ['Complete habits to nourish the Tulsi','Good start — keep going!','Halfway there — you\'re thriving!','Almost complete — incredible!','✨ Full protocol complete today!'];
-    hint.innerText = msgs[Math.min(Math.floor(pct * 4.5), 4)];
-    syncToDatabase();
-}
-document.querySelectorAll('.protocol-check').forEach(b => b.addEventListener('change', updateGamification));
-
-// ── SUPPLEMENTS ───────────────────────────────────────
-function toggleSupp(id) {
-    const el = document.getElementById(`supp-${id}`);
-    el.classList.toggle('taken');
+  try {
+    const r = await fetch('https://api.sunrise-sunset.org/json?lat=28.6139&lng=77.2090&formatted=0');
+    const d = await r.json();
+    const t = new Date(d.results.sunrise).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    document.getElementById('sunrise-tag').innerHTML = '&#127749; Sunrise: ' + t;
+  } catch(e) { document.getElementById('sunrise-tag').innerHTML = '&#127749; Sunrise: 6:15 AM'; }
 }
 
-// ── WEEKLY CHART ──────────────────────────────────────
+// ── GAMIFICATION (BUG 1 & 2 FIXED) ──────────────────────
+const MAX_H = 7;
+
+// Safely parse old data to prevent Script Crash
+let savedWeek = JSON.parse(localStorage.getItem('sw-week') || 'null');
+let weekData = (Array.isArray(savedWeek) && savedWeek.length === 7) ? savedWeek : Array(7).fill(0);
+
+function updateG() {
+  const checks = document.querySelectorAll('.pchk');
+  const done = document.querySelectorAll('.pchk:checked').length;
+  const p = done / checks.length;
+  
+  const t = document.getElementById('tulsi');
+  t.style.transform = `scale(${.78 + p*.44})`;
+  t.style.opacity = .25 + p*.75;
+  t.style.filter = `drop-shadow(0 0 ${12+p*28}px rgba(46,125,50,${.2+p*.7}))`;
+  
+  const hints = ['Complete habits to nourish the Tulsi','Good start — keep going!','Halfway there — you\'re thriving!','Almost complete — incredible!','✨ Full protocol complete today!'];
+  document.getElementById('phint').innerText = hints[Math.min(Math.floor(p*4.5),4)];
+  
+  weekData[new Date().getDay()] = done;
+  localStorage.setItem('sw-week', JSON.stringify(weekData));
+  
+  // Save specific checkbox states so they survive a page refresh
+  const states = Array.from(checks).map(c => c.checked);
+  localStorage.setItem('sw-checks', JSON.stringify(states));
+  
+  syncDB();
+}
+
+// Restores checkboxes when the app is opened
+function restoreChecks() {
+  const savedStates = JSON.parse(localStorage.getItem('sw-checks') || '[]');
+  document.querySelectorAll('.pchk').forEach((c, i) => {
+    if (savedStates[i]) c.checked = true;
+  });
+  
+  // Update visual plant without triggering syncDB immediately
+  const done = document.querySelectorAll('.pchk:checked').length;
+  const p = done / 7;
+  const t = document.getElementById('tulsi');
+  t.style.transform = `scale(${.78 + p*.44})`;
+  t.style.opacity = .25 + p*.75;
+  t.style.filter = `drop-shadow(0 0 ${12+p*28}px rgba(46,125,50,${.2+p*.7}))`;
+}
+
+document.querySelectorAll('.pchk').forEach(c => c.addEventListener('change', updateG));
+
+// ── WEEK CHART ──────────────────────────────────────────
 const DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-let weekData = JSON.parse(localStorage.getItem('swasth-week') || 'null') || [0,0,0,0,0,0,0];
-const MAX_HABITS = 7;
 
-function renderWeekChart() {
-    const today = new Date().getDay();
-    // update today's score from current checkboxes
-    const done = document.querySelectorAll('.protocol-check:checked').length;
-    weekData[today] = done;
-    localStorage.setItem('swasth-week', JSON.stringify(weekData));
-
-    const avg = Math.round((weekData.reduce((a,b)=>a+b,0) / MAX_HABITS * 10) / 10);
-    const best = Math.max(...weekData);
-    let streak = 0;
-    for(let i = today; i >= 0; i--) { if(weekData[i] > 0) streak++; else break; }
-
-    document.getElementById('stat-streak').innerText = streak;
-    document.getElementById('stat-avg').innerHTML = `${avg}<span style="font-size:1.4rem">/${MAX_HABITS}</span>`;
-    document.getElementById('stat-best').innerText = best;
-
-    const now = new Date();
-    const startDay = new Date(now); startDay.setDate(now.getDate() - today);
-    document.getElementById('week-range').innerText =
-        startDay.toLocaleDateString('en-IN',{month:'short',day:'numeric'}) + ' – ' +
-        now.toLocaleDateString('en-IN',{month:'short',day:'numeric'});
-
-    const chart = document.getElementById('week-chart');
-    chart.innerHTML = '';
-    weekData.forEach((score, i) => {
-        const pct = Math.round((score / MAX_HABITS) * 100);
-        const isToday = i === today;
-        chart.innerHTML += `
-        <div class="day-col">
-            <div class="day-label" style="${isToday ? 'color:var(--gold-primary)' : ''}">${DAYS[i]}</div>
-            <div class="day-bar-wrap">
-                <div class="day-bar" style="height:${pct}%; ${isToday ? 'background: linear-gradient(to top, var(--gold-light), rgba(201,168,76,0.5))' : ''}"></div>
-            </div>
-            <div class="day-score">${score}</div>
-        </div>`;
-    });
+function renderChart() {
+  const today = new Date().getDay();
+  const avg = (weekData.reduce((a,b)=>a+b,0)/7).toFixed(1);
+  const best = Math.max(...weekData);
+  let streak = 0;
+  for (let i=today; i>=0; i--) { if (weekData[i]>0) streak++; else break; }
+  document.getElementById('s-streak').innerText = streak;
+  document.getElementById('s-avg').innerHTML = avg + `<span style="font-size:1.3rem">/${MAX_H}</span>`;
+  document.getElementById('s-best').innerText = best;
+  const now = new Date();
+  const s = new Date(now); s.setDate(now.getDate()-today);
+  document.getElementById('wrange').innerText = s.toLocaleDateString('en-IN',{month:'short',day:'numeric'}) + ' – ' + now.toLocaleDateString('en-IN',{month:'short',day:'numeric'});
+  document.getElementById('wchart').innerHTML = weekData.map((sc,i) => {
+    const pct = Math.round((sc/MAX_H)*100);
+    const tod = i===today;
+    return `<div class="dcol"><div class="dlabel" style="${tod?'color:var(--gold)':''}">${DAYS[i]}</div><div class="dbar-wrap"><div class="dbar" style="height:${pct}%;${tod?'background:linear-gradient(to top,var(--gold-lt),rgba(201,168,76,.45))':''}"></div></div><div class="dscore">${sc}</div></div>`;
+  }).join('');
 }
 
-// ── HEALTH LOG ────────────────────────────────────────
-let healthLog = JSON.parse(localStorage.getItem('swasth-health') || '[]');
+// ── HEALTH / BMI ─────────────────────────────────────────
+let profile = JSON.parse(localStorage.getItem('sw-profile') || 'null');
+let savedHlog = JSON.parse(localStorage.getItem('sw-hlog') || '[]');
+let hlog = Array.isArray(savedHlog) ? savedHlog : []; // Safe parse
+
+function saveProfile() {
+  const h = parseFloat(document.getElementById('ih').value);
+  const a = parseInt(document.getElementById('ia').value);
+  if (!h || !a) { alert('Please enter height and age.'); return; }
+  profile = { h, a, g: document.getElementById('ig').value, ac: document.getElementById('iac').value };
+  localStorage.setItem('sw-profile', JSON.stringify(profile));
+  renderBMI();
+}
 
 function logHealth() {
-    const w = document.getElementById('inp-weight').value;
-    const bp = document.getElementById('inp-bp').value;
-    if (!w && !bp) return;
-    const today = new Date().toLocaleDateString('en-IN',{weekday:'short',month:'short',day:'numeric'});
-    healthLog.unshift({ date: today, weight: w || '—', bp: bp || '—' });
-    if (healthLog.length > 10) healthLog.pop();
-    localStorage.setItem('swasth-health', JSON.stringify(healthLog));
-    document.getElementById('inp-weight').value = '';
-    document.getElementById('inp-bp').value = '';
-    renderHealthLog();
-    syncHealthToDatabase({ date: today, weight: w, bp });
+  const w = document.getElementById('iw').value;
+  const bp = document.getElementById('ibp').value;
+  if (!w && !bp) return;
+  const iso = new Date().toISOString().split('T')[0];
+  const label = new Date().toLocaleDateString('en-IN',{weekday:'short',month:'short',day:'numeric'});
+  const entry = { date: label, iso, w: w ? parseFloat(w) : null, bp: bp || null };
+  const idx = hlog.findIndex(e=>e.iso===iso);
+  if (idx>=0) hlog[idx]=entry; else hlog.unshift(entry);
+  if (hlog.length>30) hlog.pop();
+  localStorage.setItem('sw-hlog', JSON.stringify(hlog));
+  document.getElementById('iw').value = '';
+  document.getElementById('ibp').value = '';
+  const m = document.getElementById('logsaved');
+  m.style.display='block'; setTimeout(()=>m.style.display='none', 2500);
+  if (profile) renderBMI();
+  syncHealthDB(entry);
 }
 
-function renderHealthLog() {
-    const el = document.getElementById('log-history');
-    if (!healthLog.length) {
-        el.innerHTML = '<p style="font-size:0.8rem;color:var(--text-muted);text-align:center;padding:16px 0;">No readings logged yet.</p>';
-        return;
+function bmiCat(bmi) {
+  if (bmi < 18.5) return { label:'Underweight',    color:'#64B5F6' };
+  if (bmi < 23)   return { label:'Normal (Asian)',  color:'#66BB6A' };
+  if (bmi < 27.5) return { label:'Overweight',      color:'#FFB74D' };
+  return               { label:'Obese',            color:'#EF5350' };
+}
+
+function weeklyRate(activity, habitAvg) {
+  const base = activity==='sedentary' ? 0.09 : activity==='light' ? 0.17 : 0.25;
+  return base + (habitAvg / MAX_H) * 0.12;
+}
+
+function renderBMI() {
+  if (profile) {
+    document.getElementById('ih').value  = profile.h;
+    document.getElementById('ia').value  = profile.a;
+    document.getElementById('ig').value  = profile.g;
+    document.getElementById('iac').value = profile.ac;
+  }
+  const latest = hlog.find(e=>e.w);
+  if (!latest || !profile) { document.getElementById('bmidash').style.display='none'; return; }
+  document.getElementById('bmidash').style.display='block';
+
+  const hm = profile.h / 100;
+  const bmi = latest.w / (hm * hm);
+  const tBMI = profile.g === 'female' ? 21.5 : 22.0;
+  const tW   = (tBMI * hm * hm).toFixed(1);
+  const diff = (latest.w - parseFloat(tW)).toFixed(1);
+  const cat  = bmiCat(bmi);
+  const barPct = Math.min(100, Math.max(0, ((bmi-16)/24)*100));
+
+  document.getElementById('d-bmi').innerText = bmi.toFixed(1);
+  document.getElementById('d-bmi').style.color = cat.color;
+  document.getElementById('d-bmicat').innerText = cat.label;
+  document.getElementById('d-bmicat').style.color = cat.color;
+  document.getElementById('d-bmibar').style.width = barPct + '%';
+  document.getElementById('d-bmibar').style.background = cat.color;
+  document.getElementById('d-target').innerText = tBMI.toFixed(1);
+  document.getElementById('d-tw').innerText = 'Ideal weight: ' + tW + ' kg';
+
+  const toGoEl = document.getElementById('d-togo');
+  const d = parseFloat(diff);
+  if (d > 0.5)       toGoEl.innerHTML = `<span style="color:#FFB74D">${diff} kg to lose</span> to reach ideal BMI`;
+  else if (d < -0.5) toGoEl.innerHTML = `<span style="color:#64B5F6">${Math.abs(diff)} kg to gain</span> to reach ideal range`;
+  else               toGoEl.innerHTML = `<span style="color:#66BB6A">&#10003; Within target range</span>`;
+
+  const avgH = parseFloat((weekData.reduce((a,b)=>a+b,0)/7).toFixed(1));
+  const wr   = weeklyRate(profile.ac, avgH);
+  const wks  = d > 0.5 ? Math.ceil(d / wr) : 0;
+  const mRate= (wr*4.33).toFixed(2);
+
+  let ins = '';
+  if (bmi >= 25) {
+    ins = `Your current BMI is <strong style="color:${cat.color}">${bmi.toFixed(1)}</strong> — <strong style="color:${cat.color}">${cat.label}</strong> on the Asian scale. With your habit score of ${avgH.toFixed(1)}/${MAX_H} and activity level, a sustainable pace is <strong style="color:var(--gold)">${mRate} kg/month</strong>. At this rate, you could reach your ideal BMI in approximately <strong style="color:var(--gold)">${wks} weeks (${Math.ceil(wks/4.3)} months)</strong>. Every additional habit you tick shortens this timeline — the tracker will update as your score improves.`;
+  } else if (bmi < 18.5) {
+    ins = `Your BMI of <strong style="color:#64B5F6">${bmi.toFixed(1)}</strong> suggests you may be underweight. The focus here is <strong style="color:var(--gold)">nutrient-dense calorie addition</strong> — protein from lentils, paneer, and eggs, plus healthy fats from ghee (in moderation) and nuts. The Breakfast and Lunch recipe categories have the most relevant options. Avoid processed calorie sources entirely.`;
+  } else {
+    ins = `Your BMI of <strong style="color:#66BB6A">${bmi.toFixed(1)}</strong> is in the <strong style="color:#66BB6A">healthy range</strong> for Asian adults. The goal now shifts from weight loss to <strong style="color:var(--gold)">metabolic maintenance</strong> — preserving muscle mass, keeping fasting glucose stable, and sustaining blood pressure. The protocol is working. The habit streak is what matters most from here.`;
+  }
+  document.getElementById('d-insight').innerHTML = `<strong>Insight</strong>${ins}`;
+
+  const projEl = document.getElementById('d-proj');
+  const now = new Date();
+  const months = d > 0.5 ? [1,2,3,6,12] : [1,3,6];
+  let rows = `<div class="proj-row"><div class="pdot"></div><div class="pdate">Today</div><div class="pdet"><strong>${latest.w} kg</strong> · BMI ${bmi.toFixed(1)}</div></div>`;
+  months.forEach(m => {
+    const pd = new Date(now); pd.setMonth(pd.getMonth()+m);
+    const pl = pd.toLocaleDateString('en-IN',{month:'short',year:'numeric'});
+    let pw;
+    if (d > 0.5) pw = Math.max(parseFloat(tW), latest.w - wr*4.33*m);
+    else         pw = Math.min(parseFloat(tW), latest.w + 0.4*m);
+    const pb   = (pw / (hm*hm)).toFixed(1);
+    const pc   = bmiCat(parseFloat(pb));
+    const goal = d > 0.5 && pw <= parseFloat(tW);
+    rows += `<div class="proj-row"><div class="pdot f"></div><div class="pdate">${pl}</div><div class="pdet"><strong>${pw.toFixed(1)} kg</strong> · BMI <span style="color:${pc.color}">${pb}</span>${goal?' <span style="color:#66BB6A">&#10003; Goal</span>':''}</div></div>`;
+  });
+  projEl.innerHTML = rows;
+
+  const histEl = document.getElementById('d-hist');
+  if (!hlog.length) { histEl.innerHTML='<p style="font-size:.8rem;color:var(--muted);padding:10px 0">No readings yet.</p>'; return; }
+  histEl.innerHTML = hlog.slice(0,12).map((e,i) => {
+    let arrow='—', aCol='var(--muted)';
+    if (e.w) {
+      const prev = hlog.slice(i+1).find(x=>x.w);
+      if (prev) {
+        const delta = (e.w - prev.w).toFixed(1);
+        if (parseFloat(delta) < 0) { arrow=`&#9660; ${Math.abs(delta)} kg`; aCol='#66BB6A'; }
+        else if (parseFloat(delta) > 0) { arrow=`&#9650; ${delta} kg`; aCol='#EF5350'; }
+        else arrow='&#8594; No change';
+      }
     }
-    el.innerHTML = healthLog.map(e => `
-    <div class="log-entry">
-        <span class="date">${e.date}</span>
-        <span class="values">${e.weight !== '—' ? e.weight + ' kg' : ''} ${e.weight !== '—' && e.bp !== '—' ? '·' : ''} ${e.bp !== '—' ? e.bp + ' mmHg' : ''}</span>
-    </div>`).join('');
+    return `<div class="trow2"><span style="color:var(--muted)">${e.date}</span><span style="color:var(--text);font-weight:500">${e.w ? e.w+' kg':''} ${e.w&&e.bp?' · ':''} ${e.bp ? e.bp+' mmHg':''}</span><span style="color:${aCol};font-size:.75rem">${arrow}</span></div>`;
+  }).join('');
 }
 
-// ── BREATHING TIMER ───────────────────────────────────
-const techniques = {
-    anulom:  { name: 'Anulom Vilom', desc: 'Alternate nostril breathing. Balances the nervous system, reduces anxiety, and improves focus.', phases: ['Inhale (L)', 'Hold', 'Exhale (R)', 'Hold'], times: [4,2,4,2], sessions: 7 },
-    box:     { name: 'Box Breathing', desc: 'Used by Navy SEALs. 4 equal counts per phase. Instantly calms the stress response.', phases: ['Inhale', 'Hold', 'Exhale', 'Hold'], times: [4,4,4,4], sessions: 5 },
-    '478':   { name: '4-7-8 Sleep', desc: 'Dr. Weil\'s sleep-induction technique. Inhale 4s, hold 7s, exhale 8s. For falling asleep faster.', phases: ['Inhale', 'Hold', 'Exhale'], times: [4,7,8], sessions: 4 },
-    bhramari:{ name: 'Bhramari', desc: 'Humming bee breath. The vibration calms the mind and has clinically shown to reduce blood pressure.', phases: ['Inhale', 'Hum Exhale'], times: [4,8], sessions: 7 }
+// ── BREATHING ────────────────────────────────────────────
+const TECHS = {
+  anulom:  { desc:'Alternate nostril breathing. Balances the nervous system and reduces anxiety. Recommended before morning meditation.', phases:['Inhale (L)','Hold','Exhale (R)','Hold'], times:[4,2,4,2], sessions:7 },
+  box:     { desc:'Used by Navy SEALs. Four equal counts per phase. Instantly calms the stress response and lowers cortisol.', phases:['Inhale','Hold','Exhale','Hold'], times:[4,4,4,4], sessions:5 },
+  '478':   { desc:'Dr. Weil\'s sleep-induction technique. Inhale 4s, hold 7s, exhale 8s. For faster sleep onset.', phases:['Inhale','Hold','Exhale'], times:[4,7,8], sessions:4 },
+  bhramari:{ desc:'Humming bee breath. The resonant vibration calms the mind. Clinically shown to reduce blood pressure.', phases:['Inhale','Hum Exhale'], times:[4,8], sessions:7 }
 };
-let currentTechnique = 'anulom';
-let breathRunning = false;
-let breathTimer = null;
-let sessionsComplete = 0;
-let phaseIndex = 0;
-let countdown = 0;
+let curT='anulom', bRunning=false, bTimer=null, bSessions=0, bPhase=0, bCount=0;
 
-function selectTechnique(key, btn) {
-    if (breathRunning) stopBreath();
-    currentTechnique = key;
-    document.querySelectorAll('.technique-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById('technique-desc').innerText = techniques[key].desc;
-    resetBreath();
-    buildSessionDots();
+function selectT(k, btn) {
+  if (bRunning) stopBreath();
+  curT = k;
+  document.querySelectorAll('.ttech').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tdesc').innerText = TECHS[k].desc;
+  resetBreath(); buildDots();
 }
-
-function buildSessionDots() {
-    const t = techniques[currentTechnique];
-    const el = document.getElementById('session-dots');
-    el.innerHTML = Array.from({length: t.sessions}, (_, i) =>
-        `<div class="session-dot ${i < sessionsComplete ? 'done' : ''}" id="dot-${i}"></div>`).join('');
+function buildDots() {
+  document.getElementById('sdots').innerHTML = Array.from({length:TECHS[curT].sessions}, (_,i) =>
+    `<div class="sdot ${i<bSessions?'done':''}" id="d${i}"></div>`).join('');
 }
-
-function toggleBreath() {
-    if (breathRunning) stopBreath();
-    else startBreath();
-}
-
+function toggleBreath() { bRunning ? stopBreath() : startBreath(); }
 function startBreath() {
-    breathRunning = true;
-    document.getElementById('breath-start-btn').querySelector('span').innerText = '⏸ Pause';
-    if (countdown === 0) nextPhase();
-    else runCountdown();
+  bRunning = true;
+  document.getElementById('bsbtn').innerText = '⏸ Pause';
+  if (bCount===0) nextPhase(); else runCount();
 }
-
 function stopBreath() {
-    breathRunning = false;
-    clearTimeout(breathTimer);
-    document.getElementById('breath-start-btn').querySelector('span').innerText = '▶ Resume';
+  bRunning = false; clearTimeout(bTimer);
+  document.getElementById('bsbtn').innerText = '▶ Resume';
 }
-
 function nextPhase() {
-    const t = techniques[currentTechnique];
-    phaseIndex = phaseIndex % t.phases.length;
-    countdown = t.times[phaseIndex];
-    document.getElementById('breath-phase').innerText = t.phases[phaseIndex];
-    const isExhale = t.phases[phaseIndex].toLowerCase().includes('exhale') || t.phases[phaseIndex].toLowerCase().includes('hum');
-    const circle = document.getElementById('breath-circle');
-    circle.style.transition = `transform ${countdown}s ease-in-out`;
-    circle.style.transform = isExhale ? 'scale(0.82)' : 'scale(1.12)';
-    runCountdown();
+  const t = TECHS[curT];
+  bPhase = bPhase % t.phases.length;
+  bCount = t.times[bPhase];
+  document.getElementById('bphase').innerText = t.phases[bPhase];
+  const ex = t.phases[bPhase].toLowerCase().includes('exhale') || t.phases[bPhase].toLowerCase().includes('hum');
+  const c = document.getElementById('bcircle');
+  c.style.transition = `transform ${bCount}s ease-in-out`;
+  c.style.transform = ex ? 'scale(.82)' : 'scale(1.12)';
+  runCount();
 }
-
-function runCountdown() {
-    document.getElementById('breath-count').innerText = countdown;
-    if (countdown <= 0) {
-        phaseIndex++;
-        const t = techniques[currentTechnique];
-        if (phaseIndex >= t.phases.length) {
-            phaseIndex = 0;
-            sessionsComplete++;
-            const dot = document.getElementById(`dot-${sessionsComplete - 1}`);
-            if (dot) dot.classList.add('done');
-            if (sessionsComplete >= t.sessions) {
-                document.getElementById('breath-phase').innerText = '✓ Done';
-                document.getElementById('breath-count').innerText = '🌿';
-                document.getElementById('breath-start-btn').querySelector('span').innerText = '▶ Begin Session';
-                breathRunning = false;
-                return;
-            }
-        }
-        if (breathRunning) nextPhase();
-        return;
+function runCount() {
+  document.getElementById('bcount').innerText = bCount;
+  if (bCount <= 0) {
+    bPhase++;
+    if (bPhase >= TECHS[curT].phases.length) {
+      bPhase = 0; bSessions++;
+      const dot = document.getElementById('d'+(bSessions-1));
+      if (dot) dot.classList.add('done');
+      if (bSessions >= TECHS[curT].sessions) {
+        document.getElementById('bphase').innerText = '✓ Complete';
+        document.getElementById('bcount').innerText = '🌿';
+        document.getElementById('bsbtn').innerText = '▶ Begin Session';
+        bRunning = false; return;
+      }
     }
-    if (breathRunning) {
-        breathTimer = setTimeout(() => { countdown--; runCountdown(); }, 1000);
-    }
+    if (bRunning) nextPhase();
+    return;
+  }
+  if (bRunning) bTimer = setTimeout(()=>{ bCount--; runCount(); }, 1000);
 }
-
 function resetBreath() {
-    clearTimeout(breathTimer);
-    breathRunning = false;
-    phaseIndex = 0; countdown = 0; sessionsComplete = 0;
-    document.getElementById('breath-phase').innerText = 'Ready';
-    document.getElementById('breath-count').innerText = '—';
-    document.getElementById('breath-circle').style.transform = 'scale(1)';
-    document.getElementById('breath-start-btn').querySelector('span').innerText = '▶ Begin Session';
-    buildSessionDots();
+  clearTimeout(bTimer); bRunning=false; bPhase=0; bCount=0; bSessions=0;
+  document.getElementById('bphase').innerText = 'Ready';
+  document.getElementById('bcount').innerText = '—';
+  document.getElementById('bcircle').style.transform = 'scale(1)';
+  document.getElementById('bsbtn').innerText = '▶ Begin Session';
+  buildDots();
 }
 
-// ── RECIPES ───────────────────────────────────────────
-const recipeData = [
-    { id:1, icon:'🥗', name:'Moong Salad', tags:['heart','diabetes'], tagLabels:['Heart','Blood Sugar'], time:'10 min', desc:'Sprouted moong with cucumber, tomato, lemon & chaat masala. High protein, zero fat.',
-      steps:'<strong style="color:var(--gold-primary)">Ingredients:</strong> 1 cup sprouted moong, ½ cucumber, 1 tomato, 1 tbsp lemon juice, chaat masala, coriander.<br><br><strong style="color:var(--gold-primary)">Method:</strong> Toss all ingredients together. Add a pinch of black salt. Eat 20 mins before lunch to prime digestion and control blood sugar spike.' },
-    { id:2, icon:'🍵', name:'Haldi Doodh', tags:['immunity','heart'], tagLabels:['Immunity','Anti-inflammatory'], time:'5 min', desc:'Golden milk with turmeric, black pepper & a drop of ghee for curcumin absorption.',
-      steps:'<strong style="color:var(--gold-primary)">Ingredients:</strong> 1 cup warm low-fat milk, ½ tsp turmeric, a pinch of black pepper, ½ tsp honey (optional).<br><br><strong style="color:var(--gold-primary)">Method:</strong> Whisk turmeric and pepper into warm milk. The piperine in black pepper boosts curcumin absorption by 2000%. Drink 30 mins before sleep.' },
-    { id:3, icon:'🥣', name:'Ragi Porridge', tags:['diabetes','digestion'], tagLabels:['Blood Sugar','Digestion'], time:'15 min', desc:'Finger millet porridge. Low GI, calcium-rich, keeps you full for hours.',
-      steps:'<strong style="color:var(--gold-primary)">Ingredients:</strong> ½ cup ragi flour, 2 cups water, a pinch of salt, cardamom, jaggery (optional).<br><br><strong style="color:var(--gold-primary)">Method:</strong> Whisk flour into cold water, bring to a boil, stir continuously for 8-10 mins until thick. Ragi\'s low glycemic index makes it ideal for breakfast.' },
-    { id:4, icon:'🫐', name:'Amla Chutney', tags:['immunity','digestion'], tagLabels:['Immunity','Digestion'], time:'8 min', desc:'Highest natural source of Vitamin C. One amla daily boosts immunity significantly.',
-      steps:'<strong style="color:var(--gold-primary)">Ingredients:</strong> 2 amla, 2 tbsp mint, 1 green chili, ginger, black salt, lemon juice.<br><br><strong style="color:var(--gold-primary)">Method:</strong> Blend all ingredients. Eat 1 tsp with every meal. Amla\'s Vitamin C content is 20x that of an orange and remains stable even after cooking.' },
-    { id:5, icon:'🫘', name:'Rajma Soup', tags:['heart','diabetes'], tagLabels:['Heart','Protein'], time:'20 min', desc:'Kidney bean broth with whole spices. High fibre, lowers LDL cholesterol.',
-      steps:'<strong style="color:var(--gold-primary)">Ingredients:</strong> 1 cup boiled rajma, 1 onion, 2 tomatoes, cumin, turmeric, minimal salt.<br><br><strong style="color:var(--gold-primary)">Method:</strong> Sauté onion in mustard oil, add tomatoes, spices, blend half the rajma for creaminess. The soluble fibre in rajma acts as a natural cholesterol-binding agent.' },
-    { id:6, icon:'🫚', name:'Jeera Ajwain Water', tags:['digestion','heart'], tagLabels:['Digestion','Detox'], time:'5 min', desc:'Morning digestive tonic. Reduces bloating and activates metabolism.',
-      steps:'<strong style="color:var(--gold-primary)">Ingredients:</strong> 1 tsp cumin, ½ tsp ajwain, 500ml water.<br><br><strong style="color:var(--gold-primary)">Method:</strong> Boil for 5 mins, cool slightly, drink first thing in the morning (before water). This Ayurvedic combination stimulates digestive enzymes and reduces acid reflux.' }
+// ── RECIPES ──────────────────────────────────────────────
+const RECIPES = [
+  { id:1, meal:'breakfast', icon:'🥣', name:'Ragi Porridge', tags:['Low GI','Calcium'], time:'15 min',
+    desc:'Finger millet porridge. Calcium-rich, low glycemic index, keeps you full for hours with no crash.',
+    body:'<b style="color:var(--gold)">Ingredients:</b> ½ cup ragi flour, 2 cups water, cardamom, pinch of salt, small amount of jaggery (optional).<br><br><b style="color:var(--gold)">Method:</b> Whisk ragi flour into cold water to prevent lumps. Bring to a boil over medium heat, stirring continuously for 8–10 mins until thick and smooth. Add cardamom. Serve warm.<br><br><b style="color:var(--gold)">Why it works:</b> Ragi has a glycemic index of only 68 versus 73 for white rice. Its calcium content of 344 mg per 100 g directly supports bone density. The amino acid tryptophan reduces appetite naturally, preventing mid-morning snacking.' },
+  { id:2, meal:'breakfast', icon:'🫓', name:'Moong Dal Chilla', tags:['High Protein','Low GI'], time:'20 min',
+    desc:'Savoury green mung pancakes. Protein-dense, zero refined flour, crispy and deeply satisfying.',
+    body:'<b style="color:var(--gold)">Ingredients:</b> 1 cup moong dal (soaked overnight), ginger, green chilli, cumin, salt, diced onion, tomato, coriander.<br><br><b style="color:var(--gold)">Method:</b> Blend soaked moong with ginger and chilli into a batter. Stir in onion, tomato, cumin. Pour onto a hot non-stick tawa with a few drops of mustard oil. Cook 3 mins per side until golden.<br><br><b style="color:var(--gold)">Why it works:</b> 24 g protein per cup of moong. Zero refined carbohydrates. Overnight soaking removes phytic acid (an anti-nutrient) and increases B-vitamin availability significantly.' },
+  { id:3, meal:'breakfast', icon:'🌾', name:'Overnight Oats with Chia', tags:['LDL Reducer','Heart'], time:'5 min prep',
+    desc:'Steel-cut oats with chia and flaxseed. Clinically proven to reduce LDL cholesterol in 6 weeks.',
+    body:'<b style="color:var(--gold)">Ingredients:</b> ½ cup rolled oats, 1 tbsp chia seeds, 1 cup low-fat milk, 1 tbsp ground flaxseed, banana or papaya to top, pinch of cinnamon.<br><br><b style="color:var(--gold)">Method:</b> Mix oats, chia, flaxseed, cinnamon in a jar. Pour over milk. Refrigerate overnight. Top with fresh fruit in the morning. No cooking needed.<br><br><b style="color:var(--gold)">Why it works:</b> Beta-glucan in oats reduces LDL by up to 10% in 6 weeks of consistent use. Chia adds 5 g fibre per tablespoon plus omega-3. The combination stabilises blood sugar for the entire morning.' },
+  { id:4, meal:'breakfast', icon:'🫚', name:'Methi Thepla', tags:['Blood Sugar','Digestive'], time:'20 min',
+    desc:'Whole wheat flatbread with fresh fenugreek leaves. A metabolic powerhouse from Gujarati tradition.',
+    body:'<b style="color:var(--gold)">Ingredients:</b> 1 cup whole wheat flour, ½ cup chopped fresh methi leaves, ½ tsp turmeric, cumin, minimal salt, a little mustard oil for cooking.<br><br><b style="color:var(--gold)">Method:</b> Mix all ingredients, knead into a stiff dough. Roll thin and cook on a hot tawa with minimal oil until light brown on both sides.<br><br><b style="color:var(--gold)">Why it works:</b> Fenugreek contains 4-hydroxyisoleucine, a compound that directly improves insulin secretion. Clinical trials show regular methi consumption reduces fasting blood sugar by 13%.' },
+  { id:5, meal:'breakfast', icon:'🥛', name:'Chaas with Jeera', tags:['Probiotic','Cooling'], time:'3 min',
+    desc:'Spiced buttermilk — a daily probiotic that supports gut flora and reduces inflammation.',
+    body:'<b style="color:var(--gold)">Ingredients:</b> 1 cup fresh low-fat curd, 1 glass water, roasted cumin powder, black salt, fresh coriander, small piece of ginger.<br><br><b style="color:var(--gold)">Method:</b> Blend curd with water until frothy. Add cumin, black salt, grated ginger. Serve at room temperature, not chilled. Drink with or just after breakfast.<br><br><b style="color:var(--gold)">Why it works:</b> Fresh Indian curd contains 10+ probiotic strains. Combined with jeera, it is one of the most effective natural remedies for IBS, bloating, and acid reflux — all very common after 55.' },
+  { id:6, meal:'breakfast', icon:'🍌', name:'Banana Walnut Smoothie', tags:['Heart','Omega-3'], time:'5 min',
+    desc:'No-sugar smoothie with banana, walnut and flaxseed. Heart-protective and anti-inflammatory.',
+    body:'<b style="color:var(--gold)">Ingredients:</b> 1 ripe banana, 5–6 walnut halves, 1 tbsp ground flaxseed, 1 cup low-fat milk, pinch of cinnamon.<br><br><b style="color:var(--gold)">Method:</b> Blend all ingredients. No added sugar. Drink immediately for maximum omega-3 freshness from freshly ground flaxseed.<br><br><b style="color:var(--gold)">Why it works:</b> Walnuts are among the few nuts with significant plant-based omega-3 (ALA). Banana provides potassium which directly supports blood pressure. Flaxseed lignans reduce LDL by up to 8% in 3 months.' },
+  { id:7, meal:'lunch', icon:'🫘', name:'Dal Palak', tags:['Iron','Complete Protein'], time:'25 min',
+    desc:'Toor dal with spinach — a complete protein and iron combination. Pairs perfectly with brown rice.',
+    body:'<b style="color:var(--gold)">Ingredients:</b> 1 cup toor dal, 2 cups chopped spinach, 1 tomato, cumin, mustard seeds, turmeric, asafoetida, 1 tsp mustard oil, garlic, minimal salt.<br><br><b style="color:var(--gold)">Method:</b> Pressure cook dal until soft. Heat mustard oil, temper with mustard seeds, cumin, asafoetida, garlic. Add tomato, cook until mushy. Add spinach 2 mins. Add dal, simmer 5 mins. Finish with lemon juice.<br><br><b style="color:var(--gold)">Why it works:</b> Toor dal provides 19 g protein per 100 g cooked. Spinach adds non-heme iron. The lemon squeeze is critical — vitamin C converts non-heme iron into its absorbable form, doubling effective iron intake.' },
+  { id:8, meal:'lunch', icon:'🌿', name:'Moong Sprout Bowl', tags:['Heart','Low GI'], time:'10 min',
+    desc:'Sprouted moong with raw vegetables. High protein, zero fat, maximum micronutrients.',
+    body:'<b style="color:var(--gold)">Ingredients:</b> 1 cup sprouted moong, ½ cucumber, 1 tomato, 1 carrot, ¼ red onion, lemon juice, chaat masala, coriander, black salt.<br><br><b style="color:var(--gold)">Method:</b> Toss all ingredients. Eat 15–20 mins before the main lunch meal to prime digestion and reduce the glycemic impact of the meal that follows.<br><br><b style="color:var(--gold)">Why it works:</b> The fibre-first principle — eating raw vegetables before carbohydrates reduces the post-meal blood sugar spike by up to 30% according to multiple clinical studies.' },
+  { id:9, meal:'lunch', icon:'🍛', name:'Brown Rice Rajma', tags:['Cholesterol','Protein'], time:'30 min',
+    desc:'Kidney beans over brown rice. Soluble fibre binds to and removes cholesterol from circulation.',
+    body:'<b style="color:var(--gold)">Ingredients:</b> 1 cup boiled rajma, 1 onion, 2 tomatoes, 1 tsp mustard oil, cumin, coriander, turmeric, minimal garam masala, garlic, ginger.<br><br><b style="color:var(--gold)">Method:</b> Sauté onion in mustard oil until golden. Add ginger-garlic, tomatoes, spices. Cook until thick masala. Add boiled rajma, simmer 10 mins. Blend ¼ of the rajma back in for creaminess without using cream.<br><br><b style="color:var(--gold)">Why it works:</b> Rajma soluble fibre forms a gel in the gut that binds to bile acids (made from cholesterol), forcing the body to use blood cholesterol to produce more. LDL reduction of 5–10% shown consistently.' },
+  { id:10, meal:'lunch', icon:'✨', name:'Quinoa Khichdi', tags:['Complete Protein','Gluten Free'], time:'20 min',
+    desc:'Quinoa with moong dal — one of the few plant-based complete proteins. Light yet deeply nutritious.',
+    body:'<b style="color:var(--gold)">Ingredients:</b> ½ cup quinoa, ½ cup yellow moong dal, 1 carrot, ½ cup peas, cumin, turmeric, ginger, 1 tsp ghee, salt.<br><br><b style="color:var(--gold)">Method:</b> Rinse quinoa well (removes bitter saponins). Pressure cook with moong, carrot, peas, spices in 2.5 cups water for 2 whistles. Finish with a tiny tadka of ghee and cumin.<br><br><b style="color:var(--gold)">Why it works:</b> Quinoa contains all 9 essential amino acids — rare in plant foods. Glycemic index of 53 vs. rice at 73 or wheat at 71. Extremely easy to digest even for sensitive stomachs.' },
+  { id:11, meal:'lunch', icon:'🫕', name:'Palak Tofu Curry', tags:['Plant Protein','Iron'], time:'25 min',
+    desc:'A protein-dense, iron-rich alternative to paneer. Lower in saturated fat, equally satisfying.',
+    body:'<b style="color:var(--gold)">Ingredients:</b> 200 g firm tofu (cubed, lightly pan-fried), 3 cups spinach, 1 onion, 1 tomato, ginger, garlic, 1 tsp mustard oil, spices.<br><br><b style="color:var(--gold)">Method:</b> Blend cooked spinach into a smooth purée. Sauté onion, tomato, spices in mustard oil. Add spinach purée, simmer 5 mins. Add tofu cubes, cook 5 mins. Add lemon before serving.<br><br><b style="color:var(--gold)">Why it works:</b> Tofu provides 17 g protein per 200 g with minimal saturated fat compared to paneer. Isoflavones in tofu have shown cholesterol-lowering effects particularly in post-menopausal women.' },
+  { id:12, meal:'lunch', icon:'🍲', name:'Vegetable Barley Soup', tags:['Cholesterol','High Fibre'], time:'35 min',
+    desc:'Warming soup with pearl barley — one of the highest beta-glucan sources in Indian markets.',
+    body:'<b style="color:var(--gold)">Ingredients:</b> ½ cup pearl barley (soaked 2 hrs), 1 carrot, 1 small potato, ½ cup green beans, 1 onion, garlic, black pepper, cumin, low-sodium stock or water.<br><br><b style="color:var(--gold)">Method:</b> Sauté onion and garlic. Add vegetables, barley, stock. Simmer 25–30 mins until barley is tender. Season with pepper. No cream needed — barley thickens naturally.<br><br><b style="color:var(--gold)">Why it works:</b> Pearl barley contains more beta-glucan than oats. Beta-glucan is the single most evidence-backed natural cholesterol reducer — LDL reduction of 5–15% with consistent consumption.' },
+  { id:13, meal:'dinner', icon:'🥘', name:'Lauki Dal', tags:['Heart','Light','Digestive'], time:'25 min',
+    desc:'The ideal Indian dinner. Extremely light on digestion, alkaline and heart-protective.',
+    body:'<b style="color:var(--gold)">Ingredients:</b> 1 cup moong or masoor dal, 2 cups chopped lauki (bottle gourd), 1 tomato, 1 tsp mustard oil, cumin, turmeric, asafoetida, ginger, coriander.<br><br><b style="color:var(--gold)">Method:</b> Pressure cook dal with lauki until very soft. Prepare a light tadka with cumin, ginger, tomato. Combine and simmer 5 mins. Serve with 1 whole wheat roti.<br><br><b style="color:var(--gold)">Why it works:</b> Lauki is 95% water, extremely low in calories, alkaline, and easy to digest. Ayurveda prescribes it specifically for high blood pressure and acid reflux — ideal for dinner when digestion is slowest.' },
+  { id:14, meal:'dinner', icon:'🍵', name:'Masoor Shorba', tags:['Light Protein','Immunity'], time:'20 min',
+    desc:'Thin spiced red lentil broth. Maximum nutrition with minimum digestive burden for evenings.',
+    body:'<b style="color:var(--gold)">Ingredients:</b> ½ cup red masoor dal, 1 tomato, ½ onion, garlic, turmeric, black pepper, cumin, 1 tsp mustard oil, fresh lemon, coriander.<br><br><b style="color:var(--gold)">Method:</b> Boil masoor with tomato until completely dissolved. Blend smooth. Prepare tadka separately, add to blended dal. Thin with water to a soup consistency. Finish with lemon and coriander.<br><br><b style="color:var(--gold)">Why it works:</b> Red lentils are the fastest-digesting legume. Eating a light liquid dinner 3+ hours before sleep is one of the highest-impact changes for morning blood sugar and sleep quality simultaneously.' },
+  { id:15, meal:'dinner', icon:'🫓', name:'Bajra Roti with Garlic Chutney', tags:['Heart','Low GI'], time:'15 min',
+    desc:'Pearl millet flatbread — a Rajasthani staple with extraordinary cardiovascular benefits.',
+    body:'<b style="color:var(--gold)">Ingredients:</b> 1 cup bajra flour, warm water, pinch of salt. Chutney: 10 roasted garlic cloves, 1 tbsp mustard oil, 2 dried red chillies, pinch of salt.<br><br><b style="color:var(--gold)">Method:</b> Knead bajra with warm water into a soft dough (keep it warm — bajra cracks when cool). Pat into rotis by hand. Cook on a hot tawa, finish 30 seconds directly on flame. Blend roasted garlic with oil and chillies for chutney.<br><br><b style="color:var(--gold)">Why it works:</b> Bajra glycemic index is only 54. Niacin (B3) in bajra raises HDL, the protective cholesterol. Allicin in garlic chutney is one of the most studied natural compounds for cardiovascular health.' },
+  { id:16, meal:'dinner', icon:'🥬', name:'Seasonal Sabzi Stir-Fry', tags:['Immunity','Anti-inflammatory'], time:'15 min',
+    desc:'A flexible daily-rotation vegetable stir-fry using whatever is in season. The simplest anti-inflammatory meal.',
+    body:'<b style="color:var(--gold)">Best seasonal choices:</b> Karela (most potent for blood sugar), Tinda, Turai, Parwal, Bhindi, Cabbage, Cauliflower, Gawar.<br><br><b style="color:var(--gold)">Method:</b> Heat 1 tsp mustard oil in a kadai. Pop mustard seeds. Add finely chopped sabzi, turmeric, pinch of salt. Cook covered on low heat 8–10 mins without water. Finish with coriander and lemon.<br><br><b style="color:var(--gold)">Why it works:</b> Seasonal vegetables contain micronutrients the body needs at that time of year. Karela contains polypeptide-P, a plant insulin-like compound with documented blood sugar effects.' },
+  { id:17, meal:'dinner', icon:'🍜', name:'Tomato Rasam', tags:['Immunity','Digestive'], time:'15 min',
+    desc:'South Indian thin tamarind-tomato soup. A powerful digestive, immune booster and decongestant.',
+    body:'<b style="color:var(--gold)">Ingredients:</b> 3 ripe tomatoes, small tamarind piece (soaked), 1 tsp black pepper, 1 tsp cumin, mustard seeds, curry leaves, dried red chillies, garlic, turmeric, 1 tsp coconut oil.<br><br><b style="color:var(--gold)">Method:</b> Blend tomatoes with tamarind water. Heat coconut oil, crackle mustard seeds, add curry leaves, garlic, chillies. Add tomato mixture, turmeric, pepper, cumin. Simmer 10 mins until fragrant.<br><br><b style="color:var(--gold)">Why it works:</b> Black pepper is a natural digestive enzyme stimulator and expectorant. Tamarind is prebiotic. Garlic and turmeric together have significant immune-modulating effects well documented in clinical literature.' },
+  { id:18, meal:'dinner', icon:'🌙', name:'Satvik Khichdi', tags:['Complete Meal','Easiest Digest'], time:'20 min',
+    desc:'The original Ayurvedic complete meal. Brown rice and moong dal — perfect amino acid balance, lowest digestive burden.',
+    body:'<b style="color:var(--gold)">Ingredients:</b> ½ cup brown rice, ½ cup yellow moong dal, 1 tsp ghee (just one), cumin, turmeric, asafoetida, ginger, salt, optional seasonal vegetable.<br><br><b style="color:var(--gold)">Method:</b> Wash rice and dal together. Pressure cook with 3 cups water, turmeric, ginger, salt for 4 whistles until very soft — this is intentional. Heat ghee, crackle cumin and asafoetida, pour over khichdi.<br><br><b style="color:var(--gold)">Why it works:</b> Ayurveda considers khichdi the only tridoshic food — balanced for all constitutions. The very soft texture reduces intestinal stress significantly. Ghee\'s butyric acid directly feeds and heals the intestinal lining.' },
+  { id:19, meal:'bedtime', icon:'🥛', name:'Haldi Doodh', tags:['Anti-inflammatory','Sleep'], time:'5 min',
+    desc:'Golden milk. The most evidence-backed bedtime drink in both Ayurveda and modern clinical research.',
+    body:'<b style="color:var(--gold)">Ingredients:</b> 1 cup warm low-fat milk, ½ tsp turmeric, generous pinch of black pepper, 1 tsp honey or none, pinch of cinnamon (optional).<br><br><b style="color:var(--gold)">Method:</b> Whisk turmeric and black pepper into warm — not boiling — milk. Do not boil after adding turmeric. Drink 30–45 mins before sleep.<br><br><b style="color:var(--gold)">Why it works:</b> Black pepper increases curcumin bioavailability by 2,000%. Milk tryptophan converts to serotonin then melatonin, promoting sleep. Shown to reduce inflammatory markers CRP and IL-6 in 4 weeks of consistent use.' },
+  { id:20, meal:'bedtime', icon:'🌿', name:'Triphala Churna Water', tags:['Gut Health','Detox'], time:'2 min',
+    desc:'A 3,000-year Ayurvedic formulation. Gently cleanses the bowel overnight and supports immunity.',
+    body:'<b style="color:var(--gold)">Ingredients:</b> ½ tsp Triphala churna (available at Patanjali or Himalaya stores), 1 cup warm water.<br><br><b style="color:var(--gold)">Method:</b> Stir Triphala into warm water. Drink 30 mins before sleep. Start with ¼ tsp for the first week to let the gut adjust gradually.<br><br><b style="color:var(--gold)">Why it works:</b> Triphala (Amalaki, Bibhitaki, Haritaki) acts as a gentle prebiotic, not a laxative. It feeds beneficial gut bacteria and reduces intestinal inflammation. Clinical trials show reduced fasting blood sugar and total cholesterol over 12 weeks of consistent use.' },
+  { id:21, meal:'bedtime', icon:'🌸', name:'Ashwagandha Milk', tags:['Stress Relief','Sleep'], time:'5 min',
+    desc:'Adaptogen-based bedtime drink. Clinically shown to reduce cortisol by 27% and improve sleep depth.',
+    body:'<b style="color:var(--gold)">Ingredients:</b> 1 cup warm low-fat milk, ½ tsp ashwagandha powder, pinch of nutmeg, pinch of cardamom, ½ tsp honey (optional).<br><br><b style="color:var(--gold)">Method:</b> Whisk ashwagandha into warm milk. Nutmeg is a natural mild sedative — do not skip it. Drink 1 hour before sleep.<br><br><b style="color:var(--gold)">Why it works:</b> Multiple RCTs show ashwagandha root extract reduces cortisol by 27–30% in 8 weeks. It improves sleep onset time, sleep quality, and total sleep duration. Nutmeg contains myristicin, a documented mild sedative compound.' },
+  { id:22, meal:'bedtime', icon:'🍵', name:'Chamomile Tulsi Tea', tags:['Sleep','Immunity'], time:'5 min',
+    desc:'Zero-caffeine herbal blend. Powerful for sleep onset, stress reduction and immune regulation.',
+    body:'<b style="color:var(--gold)">Ingredients:</b> 1 tsp dried chamomile (or 1 tea bag), 4–5 fresh tulsi leaves, 1 cup boiling water, ½ tsp honey (optional).<br><br><b style="color:var(--gold)">Method:</b> Steep chamomile and tulsi in boiling water for 5 mins. Strain. Drink 30–45 mins before sleep.<br><br><b style="color:var(--gold)">Why it works:</b> Chamomile contains apigenin, which binds to GABA receptors in the brain — the same receptors targeted by sleep medications, but gently and naturally. Tulsi modulates the stress response. Together they reduce time to fall asleep by up to 20 mins consistently.' },
+  { id:23, meal:'bedtime', icon:'🥄', name:'Soaked Almonds and Figs', tags:['Magnesium','Deep Sleep'], time:'2 min (prep night before)',
+    desc:'Overnight soaked almonds and dried figs. Magnesium-rich combination that promotes deep, restorative sleep.',
+    body:'<b style="color:var(--gold)">Ingredients:</b> 5–6 almonds soaked overnight, 1–2 dried figs soaked overnight.<br><br><b style="color:var(--gold)">Method:</b> Soak almonds and figs overnight separately. Soaking removes phytic acid (an anti-nutrient that blocks mineral absorption). Eat both 1 hour before bed — do not eat the soaking water.<br><br><b style="color:var(--gold)">Why it works:</b> Almonds contain 76 mg magnesium per 28 g serving. Magnesium regulates melatonin and GABA, both essential for sleep onset and depth. Soaking removes 25% of phytic acid, making soaked almonds dramatically more nutritious than raw ones. Figs add prebiotic fibre and natural tryptophan.' }
 ];
 
+const MEAL_META = {
+  breakfast: { oji:'🌅', title:'Breakfast',   sub:'6:30 – 9:00 AM  ·  Start Strong' },
+  lunch:     { oji:'☀️', title:'Lunch',       sub:'12:00 – 2:00 PM  ·  Your Largest Meal' },
+  dinner:    { oji:'🌙', title:'Dinner',      sub:'7:00 – 8:30 PM  ·  Light and Early' },
+  bedtime:   { oji:'🌛', title:'Before Bed',  sub:'9:00 – 10:00 PM  ·  Wind Down' }
+};
+
 function renderRecipes(filter) {
-    const grid = document.getElementById('recipe-grid');
-    const filtered = filter === 'all' ? recipeData : recipeData.filter(r => r.tags.includes(filter));
-    grid.innerHTML = filtered.map(r => `
-    <div class="recipe-card" onclick="openRecipeModal(${r.id})">
-        <div class="recipe-icon">${r.icon}</div>
-        <div class="recipe-name">${r.name}</div>
-        <div class="recipe-meta">
-            ${r.tagLabels.map(l => `<span class="recipe-tag green">${l}</span>`).join('')}
-            <span class="recipe-tag">${r.time}</span>
-        </div>
-        <div class="recipe-desc">${r.desc}</div>
-    </div>`).join('');
+  const wrap = document.getElementById('recipes-wrap');
+  const order = filter==='all' ? ['breakfast','lunch','dinner','bedtime'] : [filter];
+  wrap.innerHTML = order.map(meal => {
+    const recs = RECIPES.filter(r => r.meal===meal);
+    if (!recs.length) return '';
+    const m = MEAL_META[meal];
+    return `<div class="msec">
+      <div class="mhdr"><div class="moji">${m.oji}</div><div><div class="mtxt">${m.title}</div><div class="msub">${m.sub}</div></div></div>
+      <div class="rgrid">${recs.map(r=>`
+        <div class="rcard" onclick="openRecipe(${r.id})">
+          <div class="ricon">${r.icon}</div>
+          <div class="rname">${r.name}</div>
+          <div class="rmeta">${r.tags.map(t=>`<span class="rtag">${t}</span>`).join('')}<span class="rtag b">${r.time}</span></div>
+          <div class="rdesc">${r.desc}</div>
+        </div>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
 }
 
-function filterRecipes(filter, btn) {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    renderRecipes(filter);
+function filterMeal(f, btn) {
+  document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderRecipes(f);
 }
 
-function openRecipeModal(id) {
-    const r = recipeData.find(x => x.id === id);
-    document.getElementById('modal-title').innerText = r.icon + ' ' + r.name;
-    document.getElementById('modal-body').innerHTML = r.steps;
-    document.getElementById('recipe-modal').classList.add('active');
+function openRecipe(id) {
+  const r = RECIPES.find(x=>x.id===id);
+  document.getElementById('mtitle').innerText = r.icon + '  ' + r.name;
+  document.getElementById('mbody').innerHTML = r.body;
+  document.getElementById('modal').classList.add('on');
 }
 
-// ── KITCHEN MODALS ────────────────────────────────────
+// ── KITCHEN MODALS ────────────────────────────────────────
 function openModal(type) {
-    const t = document.getElementById('modal-title');
-    const b = document.getElementById('modal-body');
-    const data = {
-        grain: { title:'🌾 Grain Transition',
-            body:'<strong style="color:var(--gold-primary)">The Science:</strong> Refined grains are stripped of fibre and cause rapid blood sugar spikes.<br><br><strong style="color:var(--gold-primary)">Action:</strong> Transition to ancient whole grains — millet (bajra/jowar), brown rice, and buckwheat. These have 3× the fibre of refined grains and a much lower glycemic index.<br><br><strong style="color:var(--gold-primary)">Start Here:</strong> Replace just one meal a day with a millet-based dish this week.' },
-        lipid: { title:'🥑 Lipid Optimization',
-            body:'<strong style="color:var(--gold-primary)">The Science:</strong> Trans fats (Vanaspati, Dalda) raise LDL and lower HDL — a double blow to cardiovascular health.<br><br><strong style="color:var(--gold-primary)">Action:</strong> Switch to cold-pressed mustard oil for daily cooking and olive oil for low-heat preparations. Use ghee sparingly (1 tsp/day max).<br><br><strong style="color:var(--gold-primary)">Eliminate Immediately:</strong> All hydrogenated oils and packaged fried snacks.' },
-        beverage: { title:'💧 Beverage Audit',
-            body:'<strong style="color:var(--gold-primary)">The Science:</strong> Liquid calories bypass fullness signals entirely and lack fibre. A glass of orange juice has the sugar of 4 oranges with none of the benefits.<br><br><strong style="color:var(--gold-primary)">Action:</strong> Hydrate with warm water, herbal tea, or coconut water. Choose the whole fruit over the juice, always.<br><br><strong style="color:var(--gold-primary)">Chai Rule:</strong> Max 2 cups of chai per day, made with low-fat milk and no sugar.' },
-        snack: { title:'🥜 The Snack Swap',
-            body:'<strong style="color:var(--gold-primary)">The Science:</strong> Deep-fried snacks like bhujia and namkeen are calorie-dense, inflammatory, and provide no nutritional value.<br><br><strong style="color:var(--gold-primary)">Action:</strong> Pre-portion a small bowl of roasted chana (15g) or 8-10 almonds. Keep a bowl of cut papaya or cucumber in the fridge for evening cravings.<br><br><strong style="color:var(--gold-primary)">The 5pm Rule:</strong> Nothing fried after 5pm.' }
-    };
-    t.innerText = data[type].title;
-    b.innerHTML = data[type].body;
-    document.getElementById('recipe-modal').classList.add('active');
-}
-function closeModal() { document.getElementById('recipe-modal').classList.remove('active'); }
-
-// ── WHATSAPP ──────────────────────────────────────────
-function sendWhatsAppList() {
-    const msg = `*Swasth OS — Weekly Pantry Matrix* 🛒\n\n✅ Cold-pressed Mustard / Olive Oil\n✅ Millets (Bajra, Jowar, Ragi)\n✅ Brown Rice & Buckwheat\n✅ Sprouted Moong & Rajma\n✅ Ground Flaxseeds\n✅ Rolled Oats\n✅ Fresh Salad Vegetables\n✅ Roasted Chana & Almonds (10 per day)\n✅ Whole Fruits (Papaya, Amla, Oranges)\n✅ Low-fat Milk\n\n_This week's focus: No Vanaspati, No Packaged Snacks_ 💪`;
-    window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+  const M = {
+    lipid: { t:'Lipid Optimization', b:'<b style="color:var(--gold)">The Science:</b> Trans fats in Vanaspati raise LDL and lower HDL simultaneously — a double cardiovascular blow. Even occasional use accumulates damage over years.<br><br><b style="color:var(--gold)">Action:</b> Cold-pressed mustard oil for daily cooking. Olive oil for low-heat use. Ghee maximum 1 tsp per day. The flavour adapts within 2 weeks.<br><br><b style="color:var(--gold)">Eliminate immediately:</b> All hydrogenated oils, packaged fried snacks, and any product listing "partially hydrogenated" on the label.' },
+    grain: { t:'Grain Transition', b:'<b style="color:var(--gold)">The Science:</b> Refined grains are stripped of all fibre and cause rapid blood sugar spikes followed by crashes. They are effectively empty carbohydrates at that point.<br><br><b style="color:var(--gold)">Action:</b> Transition to millets (bajra, jowar, ragi), brown rice, and buckwheat over 4 weeks. These have 3× the fibre and a glycemic index 20–30 points lower than refined equivalents.<br><br><b style="color:var(--gold)">Start here:</b> Replace one meal per day with a millet-based dish this week. The Recipe tab has options for every meal time.' },
+    bev:   { t:'Beverage Audit', b:'<b style="color:var(--gold)">The Science:</b> Liquid calories bypass fullness signals entirely. A glass of orange juice contains the sugar of 4 oranges with none of the fibre — a concentrated glucose delivery system.<br><br><b style="color:var(--gold)">Action:</b> Hydrate with water, herbal tea, or coconut water. Always choose the whole fruit over any juice. The fibre is the medicine.<br><br><b style="color:var(--gold)">Chai rule:</b> Maximum 2 cups per day, low-fat milk, zero added sugar. Switching from whole milk to low-fat milk in chai alone reduces daily saturated fat intake significantly over a year.' },
+    snack: { t:'The Snack Swap', b:'<b style="color:var(--gold)">The Science:</b> Deep-fried snacks like bhujia and namkeen are calorically dense, highly inflammatory, and nutritionally empty. They are the single largest source of trans and oxidised fats in the typical Indian diet.<br><br><b style="color:var(--gold)">Action:</b> Pre-portion a small bowl of roasted chana (15 g) or 8–10 soaked almonds. Keep cut papaya or cucumber in the fridge for the 5 pm craving window.<br><br><b style="color:var(--gold)">The 5 pm rule:</b> Nothing fried after 5 pm. Digestion slows markedly in the evening — fried food at this time has a disproportionate impact on cholesterol and blood sugar overnight.' }
+  };
+  document.getElementById('mtitle').innerText = M[type].t;
+  document.getElementById('mbody').innerHTML = M[type].b;
+  document.getElementById('modal').classList.add('on');
 }
 
-// ── REFLECTION ────────────────────────────────────────
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwKfXl-7nWsukE2VoBfgKEYIlbduJHd6OW7qy2FAPbNSM8khBiNZfosS4hUowGR5rpt/exec";
+function closeModal() { document.getElementById('modal').classList.remove('on'); }
+
+// ── SUGGESTIONS EXPAND ─────────────────────────────────────
+function xp(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('on');
+  el.previousElementSibling.innerText = el.classList.contains('on') ? 'Read less ▴' : 'Read more ▾';
+}
+
+// ── WHATSAPP ───────────────────────────────────────────────
+function sendWA() {
+  const msg = `*Swasth OS — Weekly Pantry Matrix* 🛒\n\n✅ Cold-pressed Mustard / Olive Oil\n✅ Millets — Bajra, Jowar, Ragi flour\n✅ Brown Rice & Quinoa\n✅ Sprouted Moong & Rajma\n✅ Masoor Dal & Toor Dal\n✅ Ground Flaxseed & Chia Seeds\n✅ Rolled Oats & Pearl Barley\n✅ Spinach, Lauki & Seasonal Sabzi\n✅ Roasted Chana & Soaked Almonds\n✅ Whole Fruits — Papaya, Amla, Banana\n✅ Low-fat Milk & Fresh Curd\n✅ Triphala Churna & Ashwagandha Powder\n✅ Chamomile & Tulsi (dried)\n\n_This week: No Vanaspati. No packaged snacks. Light dinner before 8 pm._ 💪`;
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+}
+
+// ── REFLECTION ─────────────────────────────────────────────
+const SHEETS = "https://script.google.com/macros/s/AKfycbwKfXl-7nWsukE2VoBfgKEYIlbduJHd6OW7qy2FAPbNSM8khBiNZfosS4hUowGR5rpt/exec";
 
 function submitReflection() {
-    const txt = document.getElementById('daily-reflection').value;
-    if (!txt.trim()) return;
-    const today = new Date().toLocaleDateString('en-IN',{weekday:'short',month:'short',day:'numeric'});
-    fetch(WEB_APP_URL, { method:'POST', mode:'no-cors',
-        headers:{'Content-Type':'text/plain;charset=utf-8'},
-        body: JSON.stringify({ date:today, user:'Family', type:'Reflection', note:txt })
-    }).then(() => {
-        document.getElementById('reflect-msg').style.display = 'block';
-        setTimeout(() => document.getElementById('reflect-msg').style.display = 'none', 3000);
-        document.getElementById('daily-reflection').value = '';
-    });
+  const txt = document.getElementById('reflecta').value.trim();
+  if (!txt) return;
+  const d = new Date().toLocaleDateString('en-IN',{weekday:'short',month:'short',day:'numeric'});
+  fetch(SHEETS,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({date:d,user:'Family',type:'Reflection',note:txt})}).then(()=>{
+    document.getElementById('rmsg').style.display='block';
+    setTimeout(()=>document.getElementById('rmsg').style.display='none',3000);
+    document.getElementById('reflecta').value='';
+  });
 }
 
-// ── SHEETS SYNC ───────────────────────────────────────
-function syncToDatabase() {
-    const get = id => document.getElementById(id).checked ? 1 : 0;
-    const today = new Date().toLocaleDateString('en-IN',{weekday:'short',month:'short',day:'numeric'});
-    const payload = {
-        date: today, user: 'Family',
-        sunlight: get('chk-sunlight'), water: get('chk-water'),
-        salad: get('chk-salad'), vajrasana: get('chk-vajrasana'),
-        walk: get('chk-walk'), prana: get('chk-prana'),
-        screens: get('chk-screens'),
-        total: ['chk-sunlight','chk-water','chk-salad','chk-vajrasana','chk-walk','chk-prana','chk-screens'].filter(id => document.getElementById(id).checked).length
-    };
-    fetch(WEB_APP_URL, { method:'POST', mode:'no-cors',
-        headers:{'Content-Type':'text/plain;charset=utf-8'},
-        body: JSON.stringify(payload)
-    }).catch(e => console.error(e));
-    // update week data
-    weekData[new Date().getDay()] = payload.total;
-    localStorage.setItem('swasth-week', JSON.stringify(weekData));
+// ── SHEETS SYNC ────────────────────────────────────────────
+function syncDB() {
+  const ids = ['c1','c2','c3','c4','c5','c6','c7'];
+  const d = new Date().toLocaleDateString('en-IN',{weekday:'short',month:'short',day:'numeric'});
+  const p = {date:d,user:'Family',c1:+document.getElementById('c1').checked,c2:+document.getElementById('c2').checked,c3:+document.getElementById('c3').checked,c4:+document.getElementById('c4').checked,c5:+document.getElementById('c5').checked,c6:+document.getElementById('c6').checked,c7:+document.getElementById('c7').checked,total:ids.filter(id=>document.getElementById(id).checked).length};
+  fetch(SHEETS,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(p)}).catch(()=>{});
+}
+function syncHealthDB(e) {
+  fetch(SHEETS,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({...e,user:'Family',type:'HealthLog'})}).catch(()=>{});
 }
 
-function syncHealthToDatabase(data) {
-    fetch(WEB_APP_URL, { method:'POST', mode:'no-cors',
-        headers:{'Content-Type':'text/plain;charset=utf-8'},
-        body: JSON.stringify({ ...data, user:'Family', type:'HealthLog' })
-    }).catch(e => console.error(e));
-}
-
-// ── TRANSLATIONS ──────────────────────────────────────
-const translations = {
-    en: {
-        't-title':'Swasth <span>OS</span>', 't-subtitle':'The Longevity Protocol',
-        't-tab1':'The Daily Arc', 't-tab2':'Kitchen Swaps', 't-tab3':'Weekly Tracker', 't-tab4':'Breathe', 't-tab5':'Recipes',
-        't-audio-title':"Hemant's Weekly Check-in", 't-audio-sub':'Tap to listen to this week\'s focus...',
-        't-arc-title':'The Daily Arc', 't-dawn':'Dawn: Awakening',
-        't-habit-sun':'Surya Darshan', 't-habit-sun-desc':'5–10 mins of natural morning sunlight.',
-        't-habit-water':'Hydration', 't-habit-water-desc':'2 glasses of warm water before tea.',
-        't-noon':'Noon: Sustenance',
-        't-habit-salad':'Fibre First', 't-habit-salad-desc':'Eat a raw salad before the main lunch.',
-        't-habit-vajrasana':'Vajrasana Rest', 't-habit-vajrasana-desc':'Sit in Vajrasana for 10 mins post-lunch.',
-        't-supps':'Supplements', 't-supps-desc':'Tap each to mark as taken today.',
-        't-s-vitd':'Vitamin D3', 't-s-vitd-t':'Morning', 't-s-omega':'Omega-3', 't-s-omega-t':'With Lunch',
-        't-s-b12':'Vitamin B12', 't-s-b12-t':'Morning', 't-s-mag':'Magnesium', 't-s-mag-t':'Night',
-        't-s-coq':'CoQ10', 't-s-coq-t':'With Meal', 't-s-ash':'Ashwagandha', 't-s-ash-t':'Night',
-        't-dusk':'Dusk: Restoration',
-        't-habit-walk':'Ghar Ki Sair', 't-habit-walk-desc':'15-minute walk after dinner.',
-        't-habit-prana':'Evening Pranayama', 't-habit-prana-desc':'10 mins of Anulom Vilom before sleep.',
-        't-habit-screen':'Digital Sunset', 't-habit-screen-desc':'All screens off 1 hour before sleep.',
-        't-reflect':'End of Day Reflection', 't-reflect-desc':'How did you feel today? Any improvements in energy?', 't-reflect-btn':'Send Note to Hemant',
-        't-kitchen-title':'Kitchen Swaps',
-        't-pantry-desc':'Send the Swasth-approved grocery list to WhatsApp to ensure the pantry stays stocked.',
-        't-pantry-btn':'Send Pantry Matrix to WhatsApp',
-        't-oil':'Lipid Optimization', 't-oil-desc':'Swap saturated fats for olive, peanut, or mustard oil. Strictly eliminate Vanaspati.',
-        't-grain':'Grain Transition', 't-grain-desc':'Transition to brown rice, millets, and buckwheat. Phase out refined biscuits.',
-        't-bev':'Beverage Audit', 't-bev-desc':'Replace fruit juices with whole fruits or unsweetened tea.',
-        't-snack':'The Snack Swap', 't-snack-desc':'Trade high-fat snacks for roasted chana, almonds, or fresh papaya.',
-        't-progress-title':'Weekly Tracker', 't-stat-streak':'Day Streak', 't-stat-avg':'Avg Habits / Day', 't-stat-best':'Best Day',
-        't-week-habits':'Habit Completion', 't-health-log':'Health Log', 't-log-tag':'Weight · BP',
-        't-log-desc':'Track your weight and blood pressure weekly to see the protocol working.',
-        't-log-weight':'Weight', 't-log-bp':'Blood Pressure', 't-log-btn':'+ Log Today\'s Reading',
-        't-breathe-title':'Breathe', 't-breath-start':'▶ Begin Session', 't-breath-reset':'↺ Reset',
-        't-prana-guide':'Pranayama Guide',
-        't-recipes-title':'Swasth Kitchen'
-    },
-    hi: {
-        't-title':'Swasth <span>OS</span>', 't-subtitle':'Parivaar Ki Sehat',
-        't-tab1':'Din Ki Shuruaat', 't-tab2':'Rasoi Badlaav', 't-tab3':'Hafta Tracker', 't-tab4':'Saans', 't-tab5':'Recipes',
-        't-audio-title':'Hemant Ka Sandesh', 't-audio-sub':'Is hafte ka message sunne ke liye tap karein...',
-        't-arc-title':'Din Ki Shuruaat', 't-dawn':'Subah: Surya Aur Jal',
-        't-habit-sun':'Surya Darshan', 't-habit-sun-desc':'5-10 minute subah dhoop mein baithein.',
-        't-habit-water':'Garam Paani', 't-habit-water-desc':'Chai se pehle 2 glass gunguna paani piyein.',
-        't-noon':'Dopahar: Sahi Khana',
-        't-habit-salad':'Salad Pehle', 't-habit-salad-desc':'Khana khane se pehle ek katori salad khayein.',
-        't-habit-vajrasana':'Vajrasana', 't-habit-vajrasana-desc':'Lunch ke baad 10 minute Vajrasana mein baithein.',
-        't-supps':'Supplements', 't-supps-desc':'Har supplement par tap karke mark karein.',
-        't-s-vitd':'Vitamin D3', 't-s-vitd-t':'Subah', 't-s-omega':'Omega-3', 't-s-omega-t':'Khane Ke Saath',
-        't-s-b12':'Vitamin B12', 't-s-b12-t':'Subah', 't-s-mag':'Magnesium', 't-s-mag-t':'Raat',
-        't-s-coq':'CoQ10', 't-s-coq-t':'Khane Ke Saath', 't-s-ash':'Ashwagandha', 't-s-ash-t':'Raat',
-        't-dusk':'Shaam: Aaram',
-        't-habit-walk':'Ghar Ki Sair', 't-habit-walk-desc':'Khane ke baad 15 minute ki sair karein.',
-        't-habit-prana':'Sham Pranayam', 't-habit-prana-desc':'Sone se pehle 10 minute Anulom Vilom karein.',
-        't-habit-screen':'No Screens', 't-habit-screen-desc':'Sone se 1 ghanta pehle TV aur phone band karein.',
-        't-reflect':'Aaj Ka Anubhav', 't-reflect-desc':'Aaj kaisa mehsoos hua?', 't-reflect-btn':'Hemant Ko Bhejein',
-        't-kitchen-title':'Rasoi Ke Badlaav',
-        't-pantry-desc':'Healthy grocery list sidha WhatsApp par bhejein.',
-        't-pantry-btn':'WhatsApp Par List Bhejein',
-        't-oil':'Sahi Tel', 't-oil-desc':'Ghee ki jagah Olive ya Mustard tel apnayein.',
-        't-grain':'Anaj Badlaav', 't-grain-desc':'Safed chawal ki jagah Brown Rice aur Bajra apnayein.',
-        't-bev':'Sahi Peena', 't-bev-desc':'Juice ki jagah taza fal ya bina cheeni ki chai piyein.',
-        't-snack':'Snack Badlaav', 't-snack-desc':'Bhujia ki jagah bhuna chana ya badam khayein.',
-        't-progress-title':'Hafta Tracker', 't-stat-streak':'Din Streak', 't-stat-avg':'Avg Habits / Din', 't-stat-best':'Best Din',
-        't-week-habits':'Habits Completion', 't-health-log':'Sehat Log', 't-log-tag':'Vajan · BP',
-        't-log-desc':'Apna vajan aur blood pressure track karein.',
-        't-log-weight':'Vajan', 't-log-bp':'Blood Pressure', 't-log-btn':'+ Aaj Ka Log Karein',
-        't-breathe-title':'Saans', 't-breath-start':'▶ Shuru Karein', 't-breath-reset':'↺ Reset',
-        't-prana-guide':'Pranayam Margdarshika',
-        't-recipes-title':'Swasth Rasoi'
-    }
-};
+// ── TRANSLATIONS ───────────────────────────────────────────
 function setLang(lang) {
-    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById(`btn-${lang}`).classList.add('active');
-    for (let key in translations[lang]) {
-        document.querySelectorAll(`.${key}`).forEach(el => el.innerHTML = translations[lang][key]);
-    }
+  document.querySelectorAll('.lbtn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('btn-'+lang).classList.add('active');
+  const T = { en:{'t-sub':'The Longevity Protocol'}, hi:{'t-sub':'Parivaar Ki Sehat'} };
+  for (let k in T[lang]) document.querySelectorAll('.'+k).forEach(el=>el.innerText=T[lang][k]);
 }
+
+// ── INIT ───────────────────────────────────────────────────
+window.onload = () => {
+  restoreChecks(); // Fixed Bug 2: Load the checkboxes FIRST
+  fetchSunrise();
+  renderChart();
+  buildDots();
+  renderRecipes('all');
+  if (profile) {
+    document.getElementById('ih').value  = profile.h;
+    document.getElementById('ia').value  = profile.a;
+    document.getElementById('ig').value  = profile.g;
+    document.getElementById('iac').value = profile.ac;
+  }
+};
 </script>
 </body>
 </html>
