@@ -204,6 +204,11 @@ input[type=checkbox]:checked::after{transform:translateX(22px);background:var(--
 <div class="top-bar">
   <button class="lbtn active" onclick="setLang('en')" id="btn-en">EN</button>
   <button class="lbtn" onclick="setLang('hi')" id="btn-hi">HI</button>
+
+  <div id="user-badge" onclick="document.getElementById('profile-modal').classList.add('on')" style="background:rgba(201,168,76,.1);border:1px solid var(--gold-b);color:var(--gold);padding:5px 14px;border-radius:20px;cursor:pointer;font-size:.72rem;font-family:Montserrat,sans-serif;letter-spacing:1px;display:flex;align-items:center;gap:6px">
+    <span style="font-size:.9rem">&#128100;</span>
+    <span id="user-badge-name">Set Up Profile</span>
+  </div>
 </div>
 
 <header class="hero">
@@ -500,6 +505,41 @@ input[type=checkbox]:checked::after{transform:translateX(22px);background:var(--
       <div class="xpanel" id="x10"><strong style="color:var(--gold)">Checklist by age:</strong> Annual ECG and echo after 55. Eye exam annually — diabetic retinopathy has no symptoms until advanced. Bone density DEXA scan — especially critical for women post-menopause. Annual skin check. PSA for men over 50. Colonoscopy every 5–10 years from age 50. Mammogram for women every 2 years. Most are available free or subsidised at government hospitals. CGHS and ESI cover the majority of these under preventive health packages. The blood panel in Suggestion 1 is the foundation for all of them.</div>
     </div>
 
+  </div>
+</div>
+
+
+<!-- PROFILE MODAL -->
+<div class="moverlay" id="profile-modal" onclick="">
+  <div class="mbox" style="max-width:480px">
+    <h3 class="mtitle" style="font-size:1.8rem">Your Profile</h3>
+    <p class="cbody" style="margin-bottom:20px;font-size:.85rem">Set up once. Your data will be tracked individually so progress is always yours.</p>
+    <div class="g2c" style="margin-bottom:16px">
+      <div class="lwrap" style="grid-column:1/-1">
+        <label class="llabel">Your Name</label>
+        <input type="text" id="p-name" class="linput" placeholder="e.g. Mum or Dad">
+      </div>
+      <div class="lwrap" style="grid-column:1/-1">
+        <label class="llabel">Phone (optional, for WhatsApp reports)</label>
+        <input type="text" id="p-phone" class="linput" placeholder="91XXXXXXXXXX">
+      </div>
+      <div class="lwrap"><label class="llabel">Height</label><input type="number" id="p-height" class="linput" placeholder="165"><span class="lunit">cm</span></div>
+      <div class="lwrap"><label class="llabel">Age</label><input type="number" id="p-age" class="linput" placeholder="58"><span class="lunit">yrs</span></div>
+      <div class="lwrap">
+        <label class="llabel">Gender</label>
+        <select id="p-gender" class="linput" style="cursor:pointer"><option value="male">Male</option><option value="female">Female</option></select>
+      </div>
+      <div class="lwrap">
+        <label class="llabel">Activity Level</label>
+        <select id="p-activity" class="linput" style="cursor:pointer">
+          <option value="sedentary">Mostly Sedentary</option>
+          <option value="light" selected>Light (1-2 walks/wk)</option>
+          <option value="moderate">Moderate (daily walks)</option>
+        </select>
+      </div>
+    </div>
+    <button class="abtn fill" onclick="saveUserProfile()" style="width:100%;justify-content:center">Save Profile & Begin</button>
+    <p id="profile-saved-msg" style="color:var(--ok);font-size:.82rem;margin-top:10px;text-align:center;display:none">Profile saved. Welcome aboard.</p>
   </div>
 </div>
 
@@ -939,7 +979,7 @@ function sendWA() {
 }
 
 // -- REFLECTION ---------------------------------------------
-const SHEETS = "https://script.google.com/macros/s/AKfycbwKfXl-7nWsukE2VoBfgKEYIlbduJHd6OW7qy2FAPbNSM8khBiNZfosS4hUowGR5rpt/exec";
+const SHEETS = "https://script.google.com/macros/s/AKfycbzz8_pDWM9nTxg3p628czw8vEIkS063bwpAtwwIvWu6UlC5N9XrY0w3vBAmlb4kaYA/exec";
 
 function submitReflection() {
   const txt = document.getElementById('reflecta').value.trim();
@@ -974,6 +1014,7 @@ function setLang(lang) {
 // -- INIT ---------------------------------------------------
 window.onload = () => {
   fetchSunrise();
+  initUser();
   renderChart();
   buildDots();
   renderRecipes('all');
