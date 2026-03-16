@@ -1,955 +1,521 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Swasth OS | The Premium Protocol</title>
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#050505">
-    <link rel="apple-touch-icon" href="icon-192.png">
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-deep: #060606;
-            --bg-surface: #0e0e0e;
-            --gold-primary: #C9A84C;
-            --gold-light: #E2C97E;
-            --gold-dim: rgba(201, 168, 76, 0.12);
-            --gold-border: rgba(201, 168, 76, 0.3);
-            --text-light: #F5F0E8;
-            --text-muted: #7A7570;
-            --text-soft: #B8B0A4;
-            --glass-bg: rgba(18, 16, 14, 0.7);
-            --glass-border: rgba(255, 255, 255, 0.055);
-            --glass-border-hover: rgba(201, 168, 76, 0.2);
-            --success: #4CAF50;
-            --radius: 14px;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Swasth OS | The Premium Protocol</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#050505">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg: #060606;
+  --gold: #C9A84C;
+  --gold-lt: #E2C97E;
+  --gold-dim: rgba(201,168,76,.12);
+  --gold-b: rgba(201,168,76,.3);
+  --text: #F5F0E8;
+  --muted: #7A7570;
+  --soft: #B8B0A4;
+  --glass: rgba(18,16,14,.72);
+  --gb: rgba(255,255,255,.055);
+  --gh: rgba(201,168,76,.2);
+  --ok: #4CAF50;
+  --r: 14px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 50% at 50% -10%,rgba(201,168,76,.06) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 80% 80%,rgba(46,125,50,.04) 0%,transparent 50%);pointer-events:none;z-index:0;}
 
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: var(--bg-deep);
-            color: var(--text-light);
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
+/* TOP BAR */
+.top-bar{position:absolute;top:20px;right:24px;z-index:1000;display:flex;gap:8px;}
+.lbtn{background:rgba(10,10,10,.6);border:1px solid var(--gb);color:var(--muted);padding:5px 14px;border-radius:20px;cursor:pointer;font-size:.75rem;font-family:'Montserrat',sans-serif;letter-spacing:1.5px;text-transform:uppercase;backdrop-filter:blur(10px);transition:all .3s;}
+.lbtn.active{color:var(--gold);border-color:var(--gold-b);}
 
-        /* Ambient background */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background:
-                radial-gradient(ellipse 80% 50% at 50% -10%, rgba(201,168,76,0.06) 0%, transparent 60%),
-                radial-gradient(ellipse 50% 40% at 80% 80%, rgba(46,125,50,0.04) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: 0;
-        }
+/* HERO */
+.hero{height:52vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;background:linear-gradient(to bottom,rgba(6,6,6,.2) 0%,rgba(6,6,6,.72) 70%,var(--bg) 100%),url('images/parents-hero-image.jpg') center/cover no-repeat;position:relative;}
+.hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold-b),transparent);}
+.eyebrow{font-size:.7rem;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;opacity:.8;}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:5.5rem;font-weight:600;color:var(--text);line-height:1;letter-spacing:-1px;text-shadow:0 4px 40px rgba(0,0,0,.9);}
+.hero h1 span{color:var(--gold);}
+.hero-sub{font-size:.75rem;letter-spacing:6px;text-transform:uppercase;color:var(--muted);margin-top:16px;}
 
-        /* ── TOP BAR ── */
-        .top-bar {
-            position: absolute; top: 20px; right: 24px;
-            z-index: 1000; display: flex; gap: 8px;
-        }
-        .lang-btn {
-            background: rgba(10,10,10,0.6);
-            border: 1px solid var(--glass-border);
-            color: var(--text-muted);
-            padding: 5px 14px; border-radius: 20px;
-            cursor: pointer; font-size: 0.75rem;
-            font-family: 'Montserrat', sans-serif;
-            letter-spacing: 1.5px; text-transform: uppercase;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s;
-        }
-        .lang-btn.active { color: var(--gold-primary); border-color: var(--gold-border); }
+/* NAV */
+.tab-nav{display:flex;justify-content:center;gap:6px;padding:13px 20px;position:sticky;top:0;background:rgba(6,6,6,.93);backdrop-filter:blur(20px) saturate(180%);z-index:100;border-bottom:1px solid var(--gb);flex-wrap:wrap;}
+.tbtn{background:transparent;color:var(--muted);border:1px solid transparent;padding:9px 18px;font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:500;text-transform:uppercase;letter-spacing:2px;border-radius:30px;cursor:pointer;transition:all .35s;white-space:nowrap;}
+.tbtn:hover{color:var(--soft);}
+.tbtn.active{color:var(--gold);border-color:var(--gold-b);background:var(--gold-dim);}
 
-        /* ── HERO ── */
-        .hero {
-            height: 52vh;
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            text-align: center;
-            background: linear-gradient(to bottom, rgba(6,6,6,0.2) 0%, rgba(6,6,6,0.7) 70%, var(--bg-deep) 100%),
-                        url('images/parents-hero-image.jpg') center/cover no-repeat;
-            position: relative;
-        }
-        .hero::after {
-            content: '';
-            position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
-            background: linear-gradient(90deg, transparent, var(--gold-border), transparent);
-        }
-        .hero-eyebrow {
-            font-size: 0.7rem; letter-spacing: 5px; text-transform: uppercase;
-            color: var(--gold-primary); margin-bottom: 14px;
-            opacity: 0.8;
-        }
-        .hero h1 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 5.5rem; font-weight: 600;
-            color: var(--text-light);
-            line-height: 1;
-            letter-spacing: -1px;
-            text-shadow: 0 4px 40px rgba(0,0,0,0.9);
-        }
-        .hero h1 span { color: var(--gold-primary); }
-        .hero p {
-            font-size: 0.75rem; letter-spacing: 6px;
-            text-transform: uppercase; color: var(--text-muted);
-            margin-top: 16px;
-        }
+/* LAYOUT */
+.wrap{max-width:900px;margin:44px auto;padding:0 22px;position:relative;z-index:1;}
+.tab{display:none;animation:fu .5s cubic-bezier(.4,0,.2,1);}
+.tab.on{display:block;}
+@keyframes fu{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
 
-        /* ── NAV ── */
-        .tab-nav {
-            display: flex; justify-content: center; gap: 6px;
-            padding: 16px 20px;
-            position: sticky; top: 0;
-            background: rgba(6, 6, 6, 0.92);
-            backdrop-filter: blur(20px) saturate(180%);
-            z-index: 100;
-            border-bottom: 1px solid var(--glass-border);
-            flex-wrap: wrap;
-        }
-        .tab-btn {
-            background: transparent;
-            color: var(--text-muted);
-            border: 1px solid transparent;
-            padding: 10px 22px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.75rem; font-weight: 500;
-            text-transform: uppercase; letter-spacing: 2px;
-            border-radius: 30px; cursor: pointer;
-            transition: all 0.35s ease;
-            white-space: nowrap;
-        }
-        .tab-btn:hover { color: var(--text-soft); }
-        .tab-btn.active {
-            color: var(--gold-primary);
-            border: 1px solid var(--gold-border);
-            background: var(--gold-dim);
-        }
+/* TYPOGRAPHY */
+.stitle{font-family:'Cormorant Garamond',serif;font-size:2.9rem;font-weight:400;margin-bottom:32px;padding-bottom:18px;text-align:center;position:relative;color:var(--text);}
+.stitle::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:60px;height:1px;background:var(--gold);}
+.sec-label{font-size:.7rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;display:block;}
 
-        /* ── LAYOUT ── */
-        .container {
-            max-width: 880px; margin: 44px auto;
-            padding: 0 22px; position: relative; z-index: 1;
-        }
-        .tab-content { display: none; animation: fadeUp 0.55s cubic-bezier(0.4, 0, 0.2, 1); }
-        .tab-content.active { display: block; }
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(24px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+/* CARDS */
+.card{background:var(--glass);backdrop-filter:blur(12px);border:1px solid var(--gb);border-radius:var(--r);padding:28px 30px;margin-bottom:20px;transition:border-color .4s,transform .4s,box-shadow .4s;}
+.card.click{cursor:pointer;}
+.card.click:hover{transform:translateY(-4px);border-color:var(--gh);box-shadow:0 16px 40px rgba(0,0,0,.5);}
+.ch{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:22px;}
+.ctitle{font-family:'Cormorant Garamond',serif;font-size:1.65rem;font-weight:600;color:var(--gold-lt);}
+.tag{font-size:.65rem;text-transform:uppercase;letter-spacing:2px;padding:4px 12px;border-radius:20px;background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold-b);white-space:nowrap;flex-shrink:0;margin-left:10px;}
+.cbody{font-size:.9rem;color:var(--soft);line-height:1.85;}
 
-        /* ── TYPOGRAPHY ── */
-        .section-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 3rem; font-weight: 400;
-            margin-bottom: 32px;
-            padding-bottom: 18px;
-            text-align: center;
-            position: relative;
-            color: var(--text-light);
-        }
-        .section-title::after {
-            content: '';
-            position: absolute; bottom: 0;
-            left: 50%; transform: translateX(-50%);
-            width: 60px; height: 1px;
-            background: var(--gold-primary);
-        }
+/* TOGGLE */
+.trow{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--gb);}
+.trow:last-child{border-bottom:none;padding-bottom:0;}
+.trow:first-child{padding-top:0;}
+.tlabel strong{color:var(--text);font-size:.95rem;font-weight:500;display:block;margin-bottom:3px;}
+.tlabel p{font-size:.8rem;color:var(--muted);line-height:1.5;}
+input[type=checkbox]{appearance:none;width:48px;height:26px;background:rgba(255,255,255,.05);border-radius:30px;position:relative;cursor:pointer;outline:none;border:1px solid rgba(255,255,255,.1);transition:background .4s,border-color .4s;flex-shrink:0;margin-left:16px;}
+input[type=checkbox]::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;background:var(--muted);border-radius:50%;transition:transform .4s cubic-bezier(.4,0,.2,1),background .4s;}
+input[type=checkbox]:checked{background:var(--gold-dim);border-color:var(--gold);}
+input[type=checkbox]:checked::after{transform:translateX(22px);background:var(--gold);}
 
-        /* ── GLASS CARD ── */
-        .glass-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--glass-border);
-            border-radius: var(--radius);
-            padding: 28px 30px;
-            margin-bottom: 20px;
-            transition: border-color 0.4s ease, transform 0.4s ease, box-shadow 0.4s ease;
-        }
-        .glass-card.interactive { cursor: pointer; }
-        .glass-card.interactive:hover {
-            transform: translateY(-4px);
-            border-color: var(--glass-border-hover);
-            box-shadow: 0 16px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(201,168,76,0.06);
-        }
+/* AUDIO */
+.aplayer{display:flex;align-items:center;gap:16px;background:rgba(201,168,76,.05);padding:16px 22px;border-radius:var(--r);border:1px solid var(--gold-b);margin-bottom:36px;}
+.pbtn{background:var(--gold);color:#000;border:none;width:42px;height:42px;border-radius:50%;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .2s,background .2s;}
+.pbtn:hover{background:var(--gold-lt);transform:scale(1.06);}
 
-        .card-header {
-            display: flex; justify-content: space-between;
-            align-items: flex-start; margin-bottom: 22px;
-        }
-        .card-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.65rem; font-weight: 600;
-            color: var(--gold-light);
-        }
-        .tag {
-            font-size: 0.65rem; text-transform: uppercase;
-            letter-spacing: 2px; padding: 4px 12px;
-            border-radius: 20px;
-            background: var(--gold-dim);
-            color: var(--gold-primary);
-            border: 1px solid var(--gold-border);
-            white-space: nowrap; flex-shrink: 0; margin-left: 10px;
-        }
-        .card-body { font-size: 0.9rem; color: var(--text-soft); line-height: 1.85; }
+/* TULSI */
+.tulsi{text-align:center;font-size:4rem;margin-bottom:10px;transition:transform .7s cubic-bezier(.4,0,.2,1),opacity .7s,filter .7s;opacity:.25;transform:scale(.78);}
+.phint{text-align:center;font-size:.72rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:30px;}
 
-        /* ── TOGGLE ROWS ── */
-        .toggle-wrapper {
-            display: flex; align-items: center;
-            justify-content: space-between;
-            padding: 14px 0;
-            border-bottom: 1px solid var(--glass-border);
-            transition: background 0.2s;
-        }
-        .toggle-wrapper:last-child { border-bottom: none; padding-bottom: 0; }
-        .toggle-wrapper:first-child { padding-top: 0; }
-        .toggle-label strong {
-            color: var(--text-light);
-            font-size: 0.95rem; font-weight: 500;
-            display: block; margin-bottom: 3px;
-        }
-        .toggle-label p { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; }
+/* BUTTONS */
+.abtn{background:transparent;color:var(--gold);border:1px solid var(--gold-b);padding:12px 26px;border-radius:30px;font-family:'Montserrat',sans-serif;font-size:.8rem;font-weight:500;letter-spacing:1px;cursor:pointer;transition:all .35s;display:inline-flex;align-items:center;gap:10px;}
+.abtn:hover{background:var(--gold);color:#060606;}
+.abtn.fill{background:var(--gold);color:#060606;font-weight:700;}
+.abtn.fill:hover{background:var(--gold-lt);}
 
-        /* Custom Toggle */
-        input[type="checkbox"] {
-            appearance: none; width: 48px; height: 26px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 30px; position: relative;
-            cursor: pointer; outline: none;
-            border: 1px solid rgba(255,255,255,0.1);
-            transition: background 0.4s, border-color 0.4s;
-            flex-shrink: 0; margin-left: 16px;
-        }
-        input[type="checkbox"]::after {
-            content: ''; position: absolute;
-            top: 3px; left: 3px;
-            width: 18px; height: 18px;
-            background: var(--text-muted);
-            border-radius: 50%;
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), background 0.4s;
-        }
-        input[type="checkbox"]:checked {
-            background: var(--gold-dim);
-            border-color: var(--gold-primary);
-        }
-        input[type="checkbox"]:checked::after {
-            transform: translateX(22px);
-            background: var(--gold-primary);
-        }
+/* GRID */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.g2c{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+.div{height:1px;background:linear-gradient(90deg,transparent,var(--gb),transparent);margin:28px 0;}
 
-        /* ── AUDIO PLAYER ── */
-        .audio-player {
-            display: flex; align-items: center; gap: 16px;
-            background: rgba(201,168,76,0.05);
-            padding: 16px 22px; border-radius: var(--radius);
-            border: 1px solid var(--gold-border);
-            margin-bottom: 36px;
-        }
-        .play-btn {
-            background: var(--gold-primary); color: #000;
-            border: none; width: 42px; height: 42px;
-            border-radius: 50%; font-size: 1rem;
-            cursor: pointer; display: flex;
-            align-items: center; justify-content: center;
-            flex-shrink: 0; transition: transform 0.2s, background 0.2s;
-        }
-        .play-btn:hover { background: var(--gold-light); transform: scale(1.06); }
-        .audio-info { flex: 1; }
-        .audio-title { font-size: 0.88rem; font-weight: 600; color: var(--text-light); }
-        .audio-subtitle { font-size: 0.75rem; color: var(--text-muted); margin-top: 3px; }
+/* MODAL */
+.moverlay{position:fixed;inset:0;background:rgba(0,0,0,.86);backdrop-filter:blur(14px);display:none;justify-content:center;align-items:center;z-index:2000;}
+.moverlay.on{display:flex;}
+.mbox{background:#0c0c0c;border:1px solid var(--gold-b);border-radius:18px;padding:40px;max-width:560px;width:92%;position:relative;box-shadow:0 30px 80px rgba(0,0,0,.9);max-height:88vh;overflow-y:auto;}
+.mclose{position:absolute;top:16px;right:20px;font-size:1.5rem;color:var(--muted);cursor:pointer;background:none;border:none;line-height:1;}
+.mclose:hover{color:var(--text);}
+.mtitle{font-family:'Cormorant Garamond',serif;font-size:2.2rem;color:var(--gold-lt);margin-bottom:18px;}
 
-        /* ── TULSI ── */
-        .tulsi-container {
-            text-align: center; font-size: 4rem;
-            margin-bottom: 28px;
-            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.7s, filter 0.7s;
-            opacity: 0.25; transform: scale(0.78);
-            filter: drop-shadow(0 0 12px rgba(46,125,50,0.2));
-        }
-        .progress-hint {
-            text-align: center;
-            font-size: 0.72rem; letter-spacing: 3px;
-            text-transform: uppercase; color: var(--text-muted);
-            margin-top: -18px; margin-bottom: 30px;
-        }
+/* WEEK CHART */
+.wsummary{display:flex;gap:14px;margin-bottom:28px;flex-wrap:wrap;}
+.sblock{flex:1;min-width:80px;background:rgba(201,168,76,.05);border:1px solid var(--gold-b);border-radius:12px;padding:18px;text-align:center;}
+.snum{font-family:'Cormorant Garamond',serif;font-size:2.8rem;color:var(--gold);line-height:1;}
+.slabel{font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:6px;}
+.wgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:10px;}
+.dcol{text-align:center;}
+.dlabel{font-size:.65rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px;}
+.dbar-wrap{height:90px;background:rgba(255,255,255,.04);border-radius:8px;position:relative;overflow:hidden;border:1px solid var(--gb);}
+.dbar{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,var(--gold),rgba(201,168,76,.35));border-radius:8px;transition:height .8s cubic-bezier(.4,0,.2,1);}
+.dscore{font-size:.75rem;color:var(--gold);margin-top:6px;font-weight:600;}
 
-        /* ── ACTION BTN ── */
-        .action-btn {
-            background: transparent;
-            color: var(--gold-primary);
-            border: 1px solid var(--gold-border);
-            padding: 12px 26px; border-radius: 30px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.8rem; font-weight: 500;
-            letter-spacing: 1px; cursor: pointer;
-            transition: all 0.35s;
-            display: inline-flex; align-items: center; gap: 10px;
-        }
-        .action-btn:hover { background: var(--gold-primary); color: #060606; }
-        .action-btn.filled {
-            background: var(--gold-primary); color: #060606;
-            font-weight: 700;
-        }
-        .action-btn.filled:hover { background: var(--gold-light); }
+/* HEALTH / BMI */
+.bmi-dash{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0;}
+.bmi-card{background:rgba(0,0,0,.32);border:1px solid var(--gb);border-radius:12px;padding:18px;text-align:center;}
+.bmi-val{font-family:'Cormorant Garamond',serif;font-size:2.6rem;line-height:1;margin-bottom:6px;}
+.bmi-lbl{font-size:.68rem;text-transform:uppercase;letter-spacing:2px;color:var(--muted);}
+.bmi-track{height:8px;background:rgba(255,255,255,.07);border-radius:4px;margin:14px 0 8px;overflow:hidden;}
+.bmi-fill{height:100%;border-radius:4px;transition:width 1s ease;}
+.bmi-zones{display:flex;justify-content:space-between;font-size:.6rem;color:var(--muted);}
+.insight{background:rgba(201,168,76,.05);border:1px solid rgba(201,168,76,.15);border-radius:12px;padding:16px 18px;margin:16px 0;font-size:.85rem;color:var(--soft);line-height:1.75;}
+.insight strong{color:var(--gold);display:block;margin-bottom:6px;font-size:.72rem;letter-spacing:2px;text-transform:uppercase;}
+.trow2{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--gb);font-size:.82rem;}
+.trow2:last-child{border-bottom:none;}
+.proj-row{display:flex;align-items:center;gap:14px;padding:11px 0;border-bottom:1px solid var(--gb);}
+.proj-row:last-child{border-bottom:none;}
+.pdot{width:10px;height:10px;border-radius:50%;background:var(--gold);flex-shrink:0;}
+.pdot.f{background:transparent;border:1px solid var(--gold-b);}
+.pdate{font-size:.78rem;color:var(--muted);width:90px;flex-shrink:0;}
+.pdet{font-size:.82rem;color:var(--soft);}
+.pdet strong{color:var(--gold-lt);}
 
-        /* ── GRID ── */
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+/* BREATHING */
+.b-outer{width:220px;height:220px;border-radius:50%;border:1px solid var(--gold-b);display:flex;align-items:center;justify-content:center;margin:10px auto 30px;position:relative;}
+.b-ring{width:200px;height:200px;border-radius:50%;border:2px solid transparent;border-top-color:var(--gold);position:absolute;}
+.b-circle{width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(201,168,76,.15) 0%,rgba(201,168,76,.03) 70%);border:1px solid var(--gold-dim);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:transform 4s ease-in-out;}
+.b-phase{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--gold-lt);}
+.b-count{font-size:2.2rem;font-weight:300;color:var(--text);line-height:1;}
+.tsel{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:28px;}
+.ttech{background:var(--glass);border:1px solid var(--gb);color:var(--muted);padding:10px 18px;border-radius:25px;font-family:'Montserrat',sans-serif;font-size:.78rem;cursor:pointer;transition:all .3s;}
+.ttech.active{background:var(--gold-dim);border-color:var(--gold-b);color:var(--gold);}
+.bctrl{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.sdots{display:flex;gap:10px;justify-content:center;margin:0 0 22px;}
+.sdot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.1);border:1px solid var(--gb);transition:background .4s;}
+.sdot.done{background:var(--gold);border-color:var(--gold);}
 
-        /* ── MODAL ── */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.82);
-            backdrop-filter: blur(12px);
-            display: none; justify-content: center; align-items: center;
-            z-index: 2000;
-            opacity: 0; transition: opacity 0.3s;
-        }
-        .modal-overlay.active { display: flex; opacity: 1; }
-        .modal-content {
-            background: #0c0c0c;
-            border: 1px solid var(--gold-border);
-            border-radius: 18px; padding: 40px;
-            max-width: 520px; width: 90%;
-            position: relative;
-            box-shadow: 0 30px 80px rgba(0,0,0,0.9);
-        }
-        .close-modal {
-            position: absolute; top: 16px; right: 20px;
-            font-size: 1.4rem; color: var(--text-muted);
-            cursor: pointer; background: none; border: none;
-            transition: color 0.3s; line-height: 1;
-        }
-        .close-modal:hover { color: var(--text-light); }
-        .modal-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2.2rem; color: var(--gold-light);
-            margin-bottom: 18px;
-        }
+/* RECIPES */
+.msec{margin-bottom:44px;}
+.mhdr{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--gb);}
+.moji{font-size:2rem;}
+.mtxt{font-family:'Cormorant Garamond',serif;font-size:2rem;color:var(--gold-lt);}
+.msub{font-size:.7rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);}
+.rfilt{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px;justify-content:center;}
+.fbtn{background:transparent;border:1px solid var(--gb);color:var(--muted);padding:8px 18px;border-radius:20px;font-family:'Montserrat',sans-serif;font-size:.75rem;cursor:pointer;transition:all .3s;}
+.fbtn.active{background:var(--gold-dim);border-color:var(--gold-b);color:var(--gold);}
+.rgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.rcard{background:var(--glass);border:1px solid var(--gb);border-radius:var(--r);padding:22px;cursor:pointer;transition:all .35s;}
+.rcard:hover{border-color:var(--gh);transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,.4);}
+.ricon{font-size:2.1rem;margin-bottom:10px;}
+.rname{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--gold-lt);margin-bottom:8px;}
+.rmeta{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:9px;}
+.rtag{font-size:.61rem;text-transform:uppercase;letter-spacing:1.5px;padding:3px 9px;border-radius:14px;background:rgba(46,125,50,.1);color:#66BB6A;border:1px solid rgba(46,125,50,.2);}
+.rtag.b{background:rgba(30,80,160,.1);color:#64B5F6;border-color:rgba(30,80,160,.2);}
+.rdesc{font-size:.79rem;color:var(--muted);line-height:1.6;}
 
-        /* ── WEEKLY PROGRESS ── */
-        .week-grid {
-            display: grid; grid-template-columns: repeat(7, 1fr);
-            gap: 8px; margin-bottom: 30px;
-        }
-        .day-col { text-align: center; }
-        .day-label {
-            font-size: 0.65rem; text-transform: uppercase;
-            letter-spacing: 1px; color: var(--text-muted);
-            margin-bottom: 8px;
-        }
-        .day-bar-wrap {
-            height: 90px; background: rgba(255,255,255,0.04);
-            border-radius: 8px; position: relative;
-            overflow: hidden; border: 1px solid var(--glass-border);
-        }
-        .day-bar {
-            position: absolute; bottom: 0; left: 0; right: 0;
-            background: linear-gradient(to top, var(--gold-primary), rgba(201,168,76,0.4));
-            border-radius: 8px;
-            transition: height 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .day-score {
-            font-size: 0.75rem; color: var(--gold-primary);
-            margin-top: 6px; font-weight: 600;
-        }
-        .week-summary {
-            display: flex; gap: 14px; margin-bottom: 28px;
-        }
-        .stat-block {
-            flex: 1; background: rgba(201,168,76,0.05);
-            border: 1px solid var(--gold-border);
-            border-radius: 12px; padding: 18px;
-            text-align: center;
-        }
-        .stat-num {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2.8rem; color: var(--gold-primary);
-            line-height: 1;
-        }
-        .stat-label {
-            font-size: 0.7rem; letter-spacing: 2px;
-            text-transform: uppercase; color: var(--text-muted);
-            margin-top: 6px;
-        }
+/* SUGGESTIONS */
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.scard{background:var(--glass);border:1px solid var(--gb);border-radius:var(--r);padding:22px;transition:all .35s;}
+.scard:hover{border-color:var(--gh);transform:translateY(-3px);}
+.sicon{font-size:1.9rem;margin-bottom:10px;}
+.stxt{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--gold-lt);margin-bottom:8px;}
+.sbody{font-size:.79rem;color:var(--muted);line-height:1.65;margin-bottom:12px;}
+.xbtn{background:none;border:none;color:var(--gold);font-size:.74rem;font-family:'Montserrat',sans-serif;cursor:pointer;padding:3px 0;letter-spacing:.5px;}
+.xpanel{display:none;margin-top:14px;font-size:.81rem;color:var(--soft);line-height:1.75;border-top:1px solid var(--gb);padding-top:14px;}
+.xpanel.on{display:block;}
 
-        /* Health Log */
-        .log-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
-        .log-input-wrap { position: relative; }
-        .log-label {
-            font-size: 0.72rem; text-transform: uppercase;
-            letter-spacing: 2px; color: var(--text-muted);
-            margin-bottom: 8px; display: block;
-        }
-        .log-input {
-            width: 100%; padding: 12px 16px;
-            background: rgba(0,0,0,0.5);
-            border: 1px solid var(--glass-border);
-            border-radius: 10px;
-            color: var(--text-light);
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.9rem;
-            transition: border-color 0.3s;
-            outline: none;
-        }
-        .log-input:focus { border-color: var(--gold-border); }
-        .log-unit {
-            position: absolute; right: 14px; top: 38px;
-            font-size: 0.75rem; color: var(--text-muted);
-        }
-        .log-history { margin-top: 18px; }
-        .log-entry {
-            display: flex; justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid var(--glass-border);
-            font-size: 0.82rem;
-        }
-        .log-entry:last-child { border-bottom: none; }
-        .log-entry .date { color: var(--text-muted); }
-        .log-entry .values { color: var(--text-light); font-weight: 500; }
+/* INPUTS */
+.linput{width:100%;padding:12px 16px;background:rgba(0,0,0,.5);border:1px solid var(--gb);border-radius:10px;color:var(--text);font-family:'Montserrat',sans-serif;font-size:.9rem;transition:border-color .3s;outline:none;}
+.linput:focus{border-color:var(--gold-b);}
+.lwrap{position:relative;}
+.llabel{font-size:.72rem;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-bottom:8px;display:block;}
+.lunit{position:absolute;right:14px;top:38px;font-size:.75rem;color:var(--muted);}
+.reflect-ta{width:100%;height:100px;padding:14px 16px;background:rgba(0,0,0,.4);border:1px solid var(--gb);color:var(--text);border-radius:12px;font-family:'Montserrat',sans-serif;font-size:.88rem;resize:none;outline:none;transition:border-color .3s;margin-bottom:14px;}
+.reflect-ta:focus{border-color:var(--gold-b);}
 
-        /* ── BREATHING TIMER ── */
-        .breath-outer {
-            width: 220px; height: 220px;
-            border-radius: 50%;
-            border: 1px solid var(--gold-border);
-            display: flex; align-items: center; justify-content: center;
-            margin: 10px auto 30px;
-            position: relative;
-        }
-        .breath-ring {
-            width: 200px; height: 200px;
-            border-radius: 50%;
-            border: 2px solid transparent;
-            border-top-color: var(--gold-primary);
-            position: absolute;
-            transition: transform 0.1s linear;
-        }
-        .breath-circle {
-            width: 160px; height: 160px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(201,168,76,0.15) 0%, rgba(201,168,76,0.03) 70%);
-            border: 1px solid var(--gold-dim);
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            transition: transform 4s ease-in-out;
-        }
-        .breath-phase {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.4rem; color: var(--gold-light);
-        }
-        .breath-count {
-            font-size: 2.2rem; font-weight: 300;
-            color: var(--text-light); line-height: 1;
-        }
-        .breath-technique-select {
-            display: flex; gap: 10px; justify-content: center;
-            flex-wrap: wrap; margin-bottom: 28px;
-        }
-        .technique-btn {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            color: var(--text-muted);
-            padding: 10px 18px; border-radius: 25px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.78rem; cursor: pointer;
-            transition: all 0.3s;
-        }
-        .technique-btn.active {
-            background: var(--gold-dim);
-            border-color: var(--gold-border);
-            color: var(--gold-primary);
-        }
-        .breath-controls { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
-        .breath-sessions {
-            display: flex; gap: 10px; justify-content: center;
-            margin-top: 8px; margin-bottom: 22px;
-        }
-        .session-dot {
-            width: 10px; height: 10px; border-radius: 50%;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid var(--glass-border);
-            transition: background 0.4s;
-        }
-        .session-dot.done { background: var(--gold-primary); border-color: var(--gold-primary); }
-
-        /* ── RECIPE SECTION ── */
-        .recipe-filter {
-            display: flex; gap: 10px; flex-wrap: wrap;
-            margin-bottom: 28px; justify-content: center;
-        }
-        .filter-btn {
-            background: transparent;
-            border: 1px solid var(--glass-border);
-            color: var(--text-muted);
-            padding: 8px 18px; border-radius: 20px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.75rem; cursor: pointer;
-            transition: all 0.3s; letter-spacing: 1px;
-        }
-        .filter-btn.active {
-            background: var(--gold-dim);
-            border-color: var(--gold-border);
-            color: var(--gold-primary);
-        }
-        .recipe-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-        .recipe-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: var(--radius);
-            padding: 24px;
-            cursor: pointer;
-            transition: all 0.35s;
-        }
-        .recipe-card:hover {
-            border-color: var(--glass-border-hover);
-            transform: translateY(-4px);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.4);
-        }
-        .recipe-icon { font-size: 2.4rem; margin-bottom: 12px; }
-        .recipe-name {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.45rem; color: var(--gold-light);
-            margin-bottom: 8px;
-        }
-        .recipe-meta {
-            display: flex; gap: 10px; flex-wrap: wrap;
-            margin-bottom: 10px;
-        }
-        .recipe-tag {
-            font-size: 0.65rem; text-transform: uppercase;
-            letter-spacing: 1.5px; padding: 3px 10px;
-            border-radius: 15px;
-            background: rgba(201,168,76,0.07);
-            color: var(--gold-primary);
-            border: 1px solid rgba(201,168,76,0.15);
-        }
-        .recipe-tag.green {
-            background: rgba(46,125,50,0.1);
-            color: #66BB6A;
-            border-color: rgba(46,125,50,0.2);
-        }
-        .recipe-desc { font-size: 0.82rem; color: var(--text-muted); line-height: 1.6; }
-
-        /* Supplement tracker */
-        .supp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 6px; }
-        .supp-card {
-            background: rgba(0,0,0,0.3);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px; padding: 16px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .supp-card:hover { border-color: var(--gold-border); }
-        .supp-card.taken {
-            background: var(--gold-dim);
-            border-color: var(--gold-border);
-        }
-        .supp-icon { font-size: 1.8rem; margin-bottom: 6px; }
-        .supp-name { font-size: 0.78rem; color: var(--text-soft); font-weight: 500; }
-        .supp-time { font-size: 0.68rem; color: var(--text-muted); margin-top: 3px; }
-        .supp-card.taken .supp-name { color: var(--gold-primary); }
-
-        /* Reflection */
-        .reflect-textarea {
-            width: 100%; height: 100px; padding: 14px 16px;
-            background: rgba(0,0,0,0.4);
-            border: 1px solid var(--glass-border);
-            color: var(--text-light);
-            border-radius: 12px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.88rem; resize: none; outline: none;
-            transition: border-color 0.3s; margin-bottom: 14px;
-        }
-        .reflect-textarea:focus { border-color: var(--gold-border); }
-
-        /* divider */
-        .divider {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
-            margin: 32px 0;
-        }
-
-        @media (max-width: 680px) {
-            .grid-2 { grid-template-columns: 1fr; }
-            .recipe-grid { grid-template-columns: 1fr; }
-            .supp-grid { grid-template-columns: repeat(2, 1fr); }
-            .hero h1 { font-size: 3.6rem; }
-            .week-grid { gap: 5px; }
-            .log-grid { grid-template-columns: 1fr; }
-            .week-summary { flex-wrap: wrap; }
-        }
-    </style>
+@media(max-width:680px){
+  .g2,.g2c,.rgrid,.sgrid,.bmi-dash{grid-template-columns:1fr;}
+  .hero h1{font-size:3.4rem;}
+  .wgrid{gap:4px;}
+  .wsummary{flex-wrap:wrap;}
+}
+</style>
 </head>
 <body>
 
 <div class="top-bar">
-    <button class="lang-btn active" onclick="setLang('en')" id="btn-en">EN</button>
-    <button class="lang-btn" onclick="setLang('hi')" id="btn-hi">HI</button>
+  <button class="lbtn active" onclick="setLang('en')" id="btn-en">EN</button>
+  <button class="lbtn" onclick="setLang('hi')" id="btn-hi">HI</button>
 </div>
 
 <header class="hero">
-    <div class="hero-eyebrow">Premium Wellness Protocol</div>
-    <h1 class="t-title">Swasth <span>OS</span></h1>
-    <p class="t-subtitle">The Longevity Protocol</p>
+  <div class="eyebrow">Premium Wellness Protocol</div>
+  <h1>Swasth <span>OS</span></h1>
+  <p class="hero-sub t-sub">The Longevity Protocol</p>
 </header>
 
 <nav class="tab-nav">
-    <button class="tab-btn active t-tab1" onclick="openTab(event, 'Arc')">The Daily Arc</button>
-    <button class="tab-btn t-tab2" onclick="openTab(event, 'Alchemy')">Kitchen Swaps</button>
-    <button class="tab-btn t-tab3" onclick="openTab(event, 'Progress')">Weekly Tracker</button>
-    <button class="tab-btn t-tab4" onclick="openTab(event, 'Breathe')">Breathe</button>
-    <button class="tab-btn t-tab5" onclick="openTab(event, 'Recipes')">Recipes</button>
+  <button class="tbtn active" onclick="openTab(event,'Arc')">Daily Arc</button>
+  <button class="tbtn" onclick="openTab(event,'Kitchen')">Kitchen Swaps</button>
+  <button class="tbtn" onclick="openTab(event,'Progress')">Weekly Tracker</button>
+  <button class="tbtn" onclick="openTab(event,'Breathe')">Breathe</button>
+  <button class="tbtn" onclick="openTab(event,'Recipes')">Recipes</button>
+  <button class="tbtn" onclick="openTab(event,'Suggest')">Suggestions</button>
 </nav>
 
-<main class="container">
+<main class="wrap">
 
-    <!-- ═══════════════════════════════════════════
-         TAB 1: THE DAILY ARC
-    ═══════════════════════════════════════════ -->
-    <div id="Arc" class="tab-content active">
+<!-- ════════════════════════════════
+     TAB 1 — DAILY ARC
+════════════════════════════════ -->
+<div id="Arc" class="tab on">
+  <div class="aplayer">
+    <button class="pbtn" id="pbtn" onclick="toggleAudio()">&#9654;</button>
+    <div>
+      <div style="font-size:.88rem;font-weight:600;color:var(--text)">Hemant's Weekly Check-in</div>
+      <div style="font-size:.75rem;color:var(--muted);margin-top:3px">Tap to listen to this week's focus...</div>
+    </div>
+    <audio id="waudio" src="weekly-voice.mp3"></audio>
+  </div>
 
-        <div class="audio-player">
-            <button class="play-btn" id="play-btn" onclick="toggleAudio()">▶</button>
-            <div class="audio-info">
-                <div class="audio-title t-audio-title">Hemant's Weekly Check-in</div>
-                <div class="audio-subtitle t-audio-sub">Tap to listen to this week's focus...</div>
-            </div>
-            <audio id="weekly-voice" src="weekly-voice.mp3"></audio>
+  <h2 class="stitle">The Daily Arc</h2>
+  <div class="tulsi" id="tulsi">&#127807;</div>
+  <p class="phint" id="phint">Complete habits to nourish the Tulsi</p>
+
+  <div class="card">
+    <div class="ch"><h3 class="ctitle">Dawn: Awakening</h3><span class="tag" id="sunrise-tag">&#127749; Sunrise…</span></div>
+    <div class="trow"><div class="tlabel"><strong>Surya Darshan</strong><p>5–10 mins of natural morning sunlight.</p></div><input type="checkbox" class="pchk" id="c1"></div>
+    <div class="trow"><div class="tlabel"><strong>Hydration</strong><p>2 glasses of warm water before tea or chai.</p></div><input type="checkbox" class="pchk" id="c2"></div>
+  </div>
+
+  <div class="card">
+    <div class="ch"><h3 class="ctitle">Noon: Sustenance</h3><span class="tag">12:00 – 14:00</span></div>
+    <div class="trow"><div class="tlabel"><strong>Fibre First</strong><p>Eat a raw salad before the main lunch meal.</p></div><input type="checkbox" class="pchk" id="c3"></div>
+    <div class="trow"><div class="tlabel"><strong>Vajrasana Rest</strong><p>Sit in Vajrasana for 10 mins post-lunch to aid digestion.</p></div><input type="checkbox" class="pchk" id="c4"></div>
+  </div>
+
+  <div class="card">
+    <div class="ch"><h3 class="ctitle">Dusk: Restoration</h3><span class="tag">19:00 – 22:00</span></div>
+    <div class="trow"><div class="tlabel"><strong>Ghar Ki Sair</strong><p>15-minute walk after dinner.</p></div><input type="checkbox" class="pchk" id="c5"></div>
+    <div class="trow"><div class="tlabel"><strong>Evening Pranayama</strong><p>10 mins of Anulom Vilom before sleep.</p></div><input type="checkbox" class="pchk" id="c6"></div>
+    <div class="trow"><div class="tlabel"><strong>Digital Sunset</strong><p>All screens off 1 hour before sleep.</p></div><input type="checkbox" class="pchk" id="c7"></div>
+  </div>
+
+  <div class="card" style="border-color:var(--gold-b);margin-top:36px;">
+    <div class="ch"><h3 class="ctitle">End of Day Reflection</h3></div>
+    <p class="cbody" style="margin-bottom:16px">How did you feel today? Any shift in energy, sleep, or mood worth noting?</p>
+    <textarea class="reflect-ta" id="reflecta" placeholder="Today I felt..."></textarea>
+    <button class="abtn fill" onclick="submitReflection()" style="width:100%;justify-content:center">Send Note to Hemant</button>
+    <p id="rmsg" style="color:var(--ok);font-size:.82rem;margin-top:10px;text-align:center;display:none">&#10003; Sent to the tracker</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     TAB 2 — KITCHEN SWAPS
+════════════════════════════════ -->
+<div id="Kitchen" class="tab">
+  <h2 class="stitle">Kitchen Swaps</h2>
+  <div class="card" style="text-align:center;margin-bottom:36px">
+    <p class="cbody" style="margin-bottom:18px">Send the Swasth-approved grocery list directly to WhatsApp.</p>
+    <button class="abtn" onclick="sendWA()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Send Pantry Matrix to WhatsApp
+    </button>
+  </div>
+  <div class="g2">
+    <div class="card click" onclick="openModal('lipid')"><h3 class="ctitle">Lipid Optimization</h3><p class="cbody" style="margin-top:10px">Swap saturated fats for olive, peanut, or mustard oil. Eliminate Vanaspati entirely.</p></div>
+    <div class="card click" onclick="openModal('grain')"><h3 class="ctitle">Grain Transition</h3><p class="cbody" style="margin-top:10px">Transition to brown rice, millets, and buckwheat. Phase out refined biscuits and white bread.</p></div>
+    <div class="card click" onclick="openModal('bev')"><h3 class="ctitle">Beverage Audit</h3><p class="cbody" style="margin-top:10px">Replace packaged fruit juices and sweet lassi with whole fruits or unsweetened herbal tea.</p></div>
+    <div class="card click" onclick="openModal('snack')"><h3 class="ctitle">The Snack Swap</h3><p class="cbody" style="margin-top:10px">Trade bhujia and namkeen for roasted chana, almonds, or fresh seasonal fruit.</p></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     TAB 3 — WEEKLY TRACKER
+════════════════════════════════ -->
+<div id="Progress" class="tab">
+  <h2 class="stitle">Weekly Tracker</h2>
+
+  <div class="wsummary">
+    <div class="sblock"><div class="snum" id="s-streak">0</div><div class="slabel">Day Streak</div></div>
+    <div class="sblock"><div class="snum" id="s-avg">0<span style="font-size:1.3rem">/7</span></div><div class="slabel">Avg Habits/Day</div></div>
+    <div class="sblock"><div class="snum" id="s-best">0</div><div class="slabel">Best Day</div></div>
+  </div>
+
+  <div class="card" style="cursor:default">
+    <div class="ch"><h3 class="ctitle">Habit Completion</h3><span class="tag" id="wrange">This Week</span></div>
+    <div class="wgrid" id="wchart"></div>
+  </div>
+
+  <div class="div"></div>
+
+  <!-- ── HEALTH INTELLIGENCE ── -->
+  <div class="card" style="cursor:default">
+    <div class="ch"><h3 class="ctitle">Health Intelligence</h3><span class="tag">BMI · Trend · Projection</span></div>
+    <p class="cbody" style="margin-bottom:24px">Set your profile once. Log readings as often as you like. The tracker calculates your current BMI, your ideal target, and projects how quickly the protocol will get you there based on your actual habit score.</p>
+
+    <span class="sec-label">Your Profile</span>
+    <div class="g2c">
+      <div class="lwrap"><label class="llabel">Height</label><input type="number" id="ih" class="linput" placeholder="165"><span class="lunit">cm</span></div>
+      <div class="lwrap"><label class="llabel">Age</label><input type="number" id="ia" class="linput" placeholder="58"><span class="lunit">yrs</span></div>
+      <div class="lwrap"><label class="llabel">Gender</label><select id="ig" class="linput" style="cursor:pointer"><option value="male">Male</option><option value="female">Female</option></select></div>
+      <div class="lwrap"><label class="llabel">Activity Level</label><select id="iac" class="linput" style="cursor:pointer"><option value="sedentary">Mostly Sedentary</option><option value="light" selected>Light (1–2 walks/wk)</option><option value="moderate">Moderate (daily walks)</option></select></div>
+    </div>
+    <button class="abtn" onclick="saveProfile()" style="margin-bottom:26px">Save Profile</button>
+
+    <div class="div" style="margin:0 0 24px"></div>
+    <span class="sec-label">Log Today's Reading</span>
+    <div class="g2c">
+      <div class="lwrap"><label class="llabel">Weight</label><input type="number" id="iw" class="linput" placeholder="72"><span class="lunit">kg</span></div>
+      <div class="lwrap"><label class="llabel">Blood Pressure</label><input type="text" id="ibp" class="linput" placeholder="120/80"><span class="lunit">mmHg</span></div>
+    </div>
+    <button class="abtn" onclick="logHealth()" style="margin-bottom:8px">+ Log Reading</button>
+    <p id="logsaved" style="color:var(--ok);font-size:.82rem;margin:6px 0 0;display:none">&#10003; Reading saved</p>
+
+    <!-- BMI DASHBOARD -->
+    <div id="bmidash" style="display:none">
+      <div class="div" style="margin:24px 0"></div>
+      <span class="sec-label">Current Status</span>
+      <div class="bmi-dash">
+        <div class="bmi-card">
+          <div class="bmi-val" id="d-bmi" style="color:var(--gold)">—</div>
+          <div class="bmi-lbl">Current BMI</div>
+          <div id="d-bmicat" style="font-size:.78rem;font-weight:600;margin-top:4px">—</div>
+          <div class="bmi-track"><div class="bmi-fill" id="d-bmibar" style="width:0"></div></div>
+          <div class="bmi-zones"><span>16</span><span>18.5</span><span>25</span><span>30</span><span>40</span></div>
         </div>
-
-        <h2 class="section-title t-arc-title">The Daily Arc</h2>
-
-        <div class="tulsi-container" id="tulsi-plant">🌿</div>
-        <p class="progress-hint" id="progress-hint">Complete habits to nourish the Tulsi</p>
-
-        <!-- DAWN -->
-        <div class="glass-card">
-            <div class="card-header">
-                <h3 class="card-title t-dawn">Dawn: Awakening</h3>
-                <span class="tag" id="sunrise-time">🌅 Sunrise...</span>
-            </div>
-            <div class="toggle-wrapper">
-                <div class="toggle-label">
-                    <strong class="t-habit-sun">Surya Darshan</strong>
-                    <p class="t-habit-sun-desc">5–10 mins of natural morning sunlight.</p>
-                </div>
-                <input type="checkbox" class="protocol-check" id="chk-sunlight">
-            </div>
-            <div class="toggle-wrapper">
-                <div class="toggle-label">
-                    <strong class="t-habit-water">Hydration</strong>
-                    <p class="t-habit-water-desc">2 glasses of warm water before tea.</p>
-                </div>
-                <input type="checkbox" class="protocol-check" id="chk-water">
-            </div>
+        <div class="bmi-card">
+          <div class="bmi-val" id="d-target" style="color:#66BB6A">—</div>
+          <div class="bmi-lbl">Target BMI (Asian)</div>
+          <div id="d-tw" style="font-size:.8rem;color:var(--soft);margin-top:8px">—</div>
+          <div id="d-togo" style="margin-top:12px;font-size:.78rem;color:var(--muted);line-height:1.65"></div>
         </div>
+      </div>
+      <div class="insight" id="d-insight"><strong>Insight</strong>Loading…</div>
 
-        <!-- NOON -->
-        <div class="glass-card">
-            <div class="card-header">
-                <h3 class="card-title t-noon">Noon: Sustenance</h3>
-                <span class="tag">12:00 – 14:00</span>
-            </div>
-            <div class="toggle-wrapper">
-                <div class="toggle-label">
-                    <strong class="t-habit-salad">Fibre First</strong>
-                    <p class="t-habit-salad-desc">Eat a raw salad before the main lunch.</p>
-                </div>
-                <input type="checkbox" class="protocol-check" id="chk-salad">
-            </div>
-            <div class="toggle-wrapper">
-                <div class="toggle-label">
-                    <strong class="t-habit-vajrasana">Vajrasana Rest</strong>
-                    <p class="t-habit-vajrasana-desc">Sit in Vajrasana for 10 mins post-lunch to aid digestion.</p>
-                </div>
-                <input type="checkbox" class="protocol-check" id="chk-vajrasana">
-            </div>
-        </div>
+      <div class="div" style="margin:18px 0"></div>
+      <span class="sec-label">Projected Progress</span>
+      <div id="d-proj" style="margin-bottom:10px"></div>
 
-        <!-- SUPPLEMENTS -->
-        <div class="glass-card">
-            <div class="card-header">
-                <h3 class="card-title t-supps">Supplements</h3>
-                <span class="tag">Daily</span>
-            </div>
-            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 18px;" class="t-supps-desc">Tap each to mark as taken today.</p>
-            <div class="supp-grid">
-                <div class="supp-card" id="supp-vitd" onclick="toggleSupp('vitd')">
-                    <div class="supp-icon">☀️</div>
-                    <div class="supp-name t-s-vitd">Vitamin D3</div>
-                    <div class="supp-time t-s-vitd-t">Morning</div>
-                </div>
-                <div class="supp-card" id="supp-omega" onclick="toggleSupp('omega')">
-                    <div class="supp-icon">🐟</div>
-                    <div class="supp-name t-s-omega">Omega-3</div>
-                    <div class="supp-time t-s-omega-t">With Lunch</div>
-                </div>
-                <div class="supp-card" id="supp-b12" onclick="toggleSupp('b12')">
-                    <div class="supp-icon">💊</div>
-                    <div class="supp-name t-s-b12">Vitamin B12</div>
-                    <div class="supp-time t-s-b12-t">Morning</div>
-                </div>
-                <div class="supp-card" id="supp-mag" onclick="toggleSupp('mag')">
-                    <div class="supp-icon">🌙</div>
-                    <div class="supp-name t-s-mag">Magnesium</div>
-                    <div class="supp-time t-s-mag-t">Night</div>
-                </div>
-                <div class="supp-card" id="supp-coq" onclick="toggleSupp('coq')">
-                    <div class="supp-icon">❤️</div>
-                    <div class="supp-name t-s-coq">CoQ10</div>
-                    <div class="supp-time t-s-coq-t">With Meal</div>
-                </div>
-                <div class="supp-card" id="supp-ash" onclick="toggleSupp('ash')">
-                    <div class="supp-icon">🌿</div>
-                    <div class="supp-name t-s-ash">Ashwagandha</div>
-                    <div class="supp-time t-s-ash-t">Night</div>
-                </div>
-            </div>
-        </div>
+      <div class="div" style="margin:18px 0"></div>
+      <span class="sec-label">Reading History</span>
+      <div id="d-hist"></div>
+    </div>
+  </div>
+</div>
 
-        <!-- DUSK -->
-        <div class="glass-card">
-            <div class="card-header">
-                <h3 class="card-title t-dusk">Dusk: Restoration</h3>
-                <span class="tag">19:00 – 22:00</span>
-            </div>
-            <div class="toggle-wrapper">
-                <div class="toggle-label">
-                    <strong class="t-habit-walk">Ghar Ki Sair</strong>
-                    <p class="t-habit-walk-desc">15-minute walk after dinner.</p>
-                </div>
-                <input type="checkbox" class="protocol-check" id="chk-walk">
-            </div>
-            <div class="toggle-wrapper">
-                <div class="toggle-label">
-                    <strong class="t-habit-prana">Evening Pranayama</strong>
-                    <p class="t-habit-prana-desc">10 mins of Anulom Vilom before sleep.</p>
-                </div>
-                <input type="checkbox" class="protocol-check" id="chk-prana">
-            </div>
-            <div class="toggle-wrapper">
-                <div class="toggle-label">
-                    <strong class="t-habit-screen">Digital Sunset</strong>
-                    <p class="t-habit-screen-desc">All screens off 1 hour before sleep.</p>
-                </div>
-                <input type="checkbox" class="protocol-check" id="chk-screens">
-            </div>
-        </div>
+<!-- ════════════════════════════════
+     TAB 4 — BREATHE
+════════════════════════════════ -->
+<div id="Breathe" class="tab">
+  <h2 class="stitle">Breathe</h2>
+  <div class="tsel">
+    <button class="ttech active" onclick="selectT('anulom',this)">Anulom Vilom</button>
+    <button class="ttech" onclick="selectT('box',this)">Box Breathing</button>
+    <button class="ttech" onclick="selectT('478',this)">4-7-8 Sleep</button>
+    <button class="ttech" onclick="selectT('bhramari',this)">Bhramari</button>
+  </div>
+  <div class="card" style="cursor:default;text-align:center;padding:36px 30px;margin-bottom:20px">
+    <p id="tdesc" class="cbody" style="margin-bottom:24px;max-width:420px;margin-left:auto;margin-right:auto">Alternate nostril breathing. Balances the nervous system, reduces anxiety, and improves focus.</p>
+    <div class="b-outer">
+      <div class="b-ring"></div>
+      <div class="b-circle" id="bcircle">
+        <div class="b-phase" id="bphase">Ready</div>
+        <div class="b-count" id="bcount">—</div>
+      </div>
+    </div>
+    <div class="sdots" id="sdots"></div>
+    <div class="bctrl">
+      <button class="abtn" id="bsbtn" onclick="toggleBreath()">&#9654; Begin Session</button>
+      <button class="abtn" onclick="resetBreath()">&#8635; Reset</button>
+    </div>
+  </div>
+  <div class="card" style="cursor:default">
+    <div class="ch"><h3 class="ctitle">Pranayama Guide</h3></div>
+    <div class="trow"><div class="tlabel"><strong>Anulom Vilom</strong><p>Alternate nostril. Best on an empty stomach, morning. 5–15 mins.</p></div></div>
+    <div class="trow"><div class="tlabel"><strong>Bhramari — Humming Bee</strong><p>Deep humming exhale. Clinical evidence for reducing BP and anxiety.</p></div></div>
+    <div class="trow"><div class="tlabel"><strong>4-7-8 Sleep Technique</strong><p>Inhale 4s, hold 7s, exhale 8s. Dr. Weil's sleep induction method.</p></div></div>
+    <div class="trow"><div class="tlabel"><strong>Box Breathing</strong><p>Navy SEAL technique — 4 equal counts. Instant stress and cortisol reset.</p></div></div>
+  </div>
+</div>
 
-        <!-- REFLECTION -->
-        <div class="glass-card" style="border-color: var(--gold-border); margin-top: 36px;">
-            <div class="card-header">
-                <h3 class="card-title t-reflect">End of Day Reflection</h3>
-            </div>
-            <p class="card-body t-reflect-desc" style="margin-bottom: 16px;">How did you feel today? Any improvements in energy, or just a good moment to share?</p>
-            <textarea id="daily-reflection" class="reflect-textarea" placeholder="Today I felt..."></textarea>
-            <button class="action-btn filled" onclick="submitReflection()" style="width: 100%; justify-content: center;">
-                <span class="t-reflect-btn">Send Note to Hemant</span>
-            </button>
-            <p id="reflect-msg" style="color: var(--success); font-size: 0.82rem; margin-top: 10px; text-align: center; display: none;">✓ Message sent to the tracker</p>
-        </div>
+<!-- ════════════════════════════════
+     TAB 5 — RECIPES
+════════════════════════════════ -->
+<div id="Recipes" class="tab">
+  <h2 class="stitle">Swasth Kitchen</h2>
+  <div class="rfilt">
+    <button class="fbtn active" onclick="filterMeal('all',this)">All Meals</button>
+    <button class="fbtn" onclick="filterMeal('breakfast',this)">&#127749; Breakfast</button>
+    <button class="fbtn" onclick="filterMeal('lunch',this)">&#9728;&#65039; Lunch</button>
+    <button class="fbtn" onclick="filterMeal('dinner',this)">&#127769; Dinner</button>
+    <button class="fbtn" onclick="filterMeal('bedtime',this)">&#127771; Before Bed</button>
+  </div>
+  <div id="recipes-wrap"></div>
+</div>
+
+<!-- ════════════════════════════════
+     TAB 6 — SUGGESTIONS
+════════════════════════════════ -->
+<div id="Suggest" class="tab">
+  <h2 class="stitle">Expand Your Protocol</h2>
+  <p class="cbody" style="text-align:center;margin-bottom:36px;max-width:620px;margin-left:auto;margin-right:auto">Once the Daily Arc is running consistently, these are the highest-leverage areas to add next. Each one compounds what the core protocol has already built.</p>
+  <div class="sgrid">
+
+    <div class="scard">
+      <div class="sicon">&#129754;</div>
+      <div class="stxt">Annual Blood Panel</div>
+      <div class="sbody">Go beyond BP and weight. A comprehensive panel every 6 months reveals what no scale can — the internal metabolic picture. Early detection changes outcomes entirely.</div>
+      <button class="xbtn" onclick="xp('x1')">Read more &#9662;</button>
+      <div class="xpanel" id="x1"><strong style="color:var(--gold)">Key tests to request:</strong> Fasting glucose, HbA1c (3-month sugar average), full lipid panel (LDL, HDL, Triglycerides), Vitamin D3, B12, TSH thyroid, serum creatinine kidney function, SGPT liver, CBC blood count. Available at any diagnostic lab for Rs. 1,500–2,500 total. Book early morning fasting. Doing this every 6 months lets you see the protocol working in actual numbers — the most motivating thing possible.</div>
     </div>
 
-    <!-- ═══════════════════════════════════════════
-         TAB 2: KITCHEN SWAPS
-    ═══════════════════════════════════════════ -->
-    <div id="Alchemy" class="tab-content">
-        <h2 class="section-title t-kitchen-title">Kitchen Swaps</h2>
-
-        <div class="glass-card" style="text-align: center; margin-bottom: 36px; cursor: default;">
-            <p class="t-pantry-desc card-body" style="margin-bottom: 18px;">Send the Swasth-approved grocery list to WhatsApp to ensure the pantry stays stocked.</p>
-            <button class="action-btn" onclick="sendWhatsAppList()">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-                <span class="t-pantry-btn">Send Pantry Matrix to WhatsApp</span>
-            </button>
-        </div>
-
-        <div class="grid-2">
-            <div class="glass-card interactive" onclick="openModal('lipid')">
-                <h3 class="card-title t-oil">Lipid Optimization</h3>
-                <p class="card-body t-oil-desc" style="margin-top: 10px;">Swap saturated fats for olive, peanut, or mustard oil. Strictly eliminate Vanaspati.</p>
-            </div>
-            <div class="glass-card interactive" onclick="openModal('grain')">
-                <h3 class="card-title t-grain">Grain Transition</h3>
-                <p class="card-body t-grain-desc" style="margin-top: 10px;">Transition to brown rice, millets, and buckwheat. Phase out refined biscuits.</p>
-            </div>
-            <div class="glass-card interactive" onclick="openModal('beverage')">
-                <h3 class="card-title t-bev">Beverage Audit</h3>
-                <p class="card-body t-bev-desc" style="margin-top: 10px;">Replace fruit juices and sweet lassi with whole fruits or unsweetened tea.</p>
-            </div>
-            <div class="glass-card interactive" onclick="openModal('snack')">
-                <h3 class="card-title t-snack">The Snack Swap</h3>
-                <p class="card-body t-snack-desc" style="margin-top: 10px;">Trade high-fat snacks for roasted chana, almonds, or fresh papaya.</p>
-            </div>
-        </div>
+    <div class="scard">
+      <div class="sicon">&#128170;</div>
+      <div class="stxt">Resistance Training</div>
+      <div class="sbody">After 50, muscle mass drops 1–2% per year (sarcopenia). Twice-weekly resistance work reverses this and directly improves insulin sensitivity — no gym required.</div>
+      <button class="xbtn" onclick="xp('x2')">Read more &#9662;</button>
+      <div class="xpanel" id="x2"><strong style="color:var(--gold)">Where to start:</strong> Chair squats 10 reps x 3 sets. Wall push-ups. Resistance band rows. These can be done in a bedroom in 20 minutes. Studies show measurable improvement in fasting glucose and blood pressure within 6–8 weeks. The walking habit in the Daily Arc is the ideal foundation — adding brief resistance work twice weekly is the logical next layer.</div>
     </div>
 
-    <!-- ═══════════════════════════════════════════
-         TAB 3: WEEKLY PROGRESS
-    ═══════════════════════════════════════════ -->
-    <div id="Progress" class="tab-content">
-        <h2 class="section-title t-progress-title">Weekly Tracker</h2>
-
-        <div class="week-summary">
-            <div class="stat-block">
-                <div class="stat-num" id="stat-streak">0</div>
-                <div class="stat-label t-stat-streak">Day Streak</div>
-            </div>
-            <div class="stat-block">
-                <div class="stat-num" id="stat-avg">0<span style="font-size:1.4rem">/7</span></div>
-                <div class="stat-label t-stat-avg">Avg Habits / Day</div>
-            </div>
-            <div class="stat-block">
-                <div class="stat-num" id="stat-best">0</div>
-                <div class="stat-label t-stat-best">Best Day</div>
-            </div>
-        </div>
-
-        <div class="glass-card" style="cursor:default;">
-            <div class="card-header">
-                <h3 class="card-title t-week-habits">Habit Completion</h3>
-                <span class="tag" id="week-range">This Week</span>
-            </div>
-            <div class="week-grid" id="week-chart">
-                <!-- filled by JS -->
-            </div>
-        </div>
-
-        <div class="divider"></div>
-
-        <!-- HEALTH LOG -->
-        <div class="glass-card" style="cursor:default;">
-            <div class="card-header">
-                <h3 class="card-title t-health-log">Health Log</h3>
-                <span class="tag t-log-tag">Weight · BP</span>
-            </div>
-            <p class="card-body t-log-desc" style="margin-bottom: 20px;">Track your weight and blood pressure weekly to see the protocol working.</p>
-            <div class="log-grid">
-                <div class="log-input-wrap">
-                    <label class="log-label t-log-weight">Weight</label>
-                    <input type="number" id="inp-weight" class="log-input" placeholder="68">
-                    <span class="log-unit">kg</span>
-                </div>
-                <div class="log-input-wrap">
-                    <label class="log-label t-log-bp">Blood Pressure</label>
-                    <input type="text" id="inp-bp" class="log-input" placeholder="120/80">
-                    <span class="log-unit">mmHg</span>
-                </div>
-            </div>
-            <button class="action-btn" onclick="logHealth()" style="margin-bottom: 16px;">
-                <span class="t-log-btn">+ Log Today's Reading</span>
-            </button>
-            <div class="log-history" id="log-history">
-                <!-- filled by JS -->
-            </div>
-        </div>
+    <div class="scard">
+      <div class="sicon">&#128564;</div>
+      <div class="stxt">Sleep Architecture</div>
+      <div class="sbody">Most Indians over 50 are chronically sleep-deprived without realising it. Poor sleep quality is among the top predictors of metabolic disease. Quality matters more than quantity.</div>
+      <button class="xbtn" onclick="xp('x3')">Read more &#9662;</button>
+      <div class="xpanel" id="x3"><strong style="color:var(--gold)">Optimise:</strong> Fixed wake time even on weekends — this is the single most powerful sleep intervention. Room temperature 18–20°C. No heavy meals after 8pm. The Digital Sunset habit already addresses the biggest disruption. Even small amounts of light during sleep suppress melatonin — blackout curtains make a measurable difference. The Before Bed recipes in the Recipe tab are specifically designed to support sleep chemistry naturally.</div>
     </div>
 
-    <!-- ═══════════════════════════════════════════
-         TAB 4: BREATHE
-    ═══════════════════════════════════════════ -->
-    <div id="Breathe" class="tab-content">
-        <h2 class="section-title t-breathe-title">Breathe</h2>
-
-        <div class="breath-technique-select">
-            <button class="technique-btn active" onclick="selectTechnique('anulom', this)">Anulom Vilom</button>
-            <button class="technique-btn" onclick="selectTechnique('box', this)">Box Breathing</button>
-            <button class="technique-btn" onclick="selectTechnique('478', this)">4-7-8 Sleep</button>
-            <button class="technique-btn" onclick="selectTechnique('bhramari', this)">Bhramari</button>
-        </div>
-
-        <div class="glass-card" style="cursor: default; text-align: center; padding: 36px 30px; margin-bottom: 20px;">
-            <p class="card-body" id="technique-desc" style="margin-bottom: 24px; max-width: 420px; margin-left: auto; margin-right: auto;">
-                Alternate nostril breathing. Balances the nervous system, reduces anxiety, and improves focus.
-            </p>
-
-            <div class="breath-outer">
-                <div class="breath-ring" id="breath-ring"></div>
-                <div class="breath-circle" id="breath-circle">
-                    <div class="breath-phase" id="breath-phase">Ready</div>
-                    <div class="breath-count" id="breath-count">—</div>
-                </div>
-            </div>
-
-            <div class="breath-sessions" id="session-dots">
-                <!-- filled by JS -->
-            </div>
-
-            <div class="breath-controls">
-                <button class="action-btn" id="breath-start-btn" onclick="toggleBreath()">
-                    <span class="t-breath-start">▶ Begin Session</span>
-                </button>
-                <button class="action-btn" onclick="resetBreath()">
-                    <span class="t-breath-reset">↺ Reset</span>
-                </button>
-            </div>
-        </div>
-
-        <div class="glass-card" style="cursor: default;">
-            <div class="card-header">
-                <h3 class="card-title t-prana-guide">Pranayama Guide</h3>
-            </div>
-            <div class="toggle-wrapper">
-                <div class="toggle-label">
-                    <strong>Anulom Vilom</strong>
-                    <p>Alternate nostril. Best time: morning on an empty stomach.</p>
-                </div>
-            </div>
-            <div class="toggle-wrapper">
-                <div class="toggle-label">
-                    <strong>Bhramari (Humming Bee)</strong>
-                    <p>Deep humming exhale. Excellent for blood pressure and sleep.</p>
-                </div>
-            </div>
-            <div class="toggle-wrapper">
-                <div class="toggle-label">
-                    <strong>4-7-8 Breathing</strong>
-                    <p>Inhale 4s, hold 7s, exhale 8s. A powerful sleep induction technique.</p>
-                </div>
-            </div>
-        </div>
+    <div class="scard">
+      <div class="sicon">&#129504;</div>
+      <div class="stxt">Cognitive Health</div>
+      <div class="sbody">Brain health in the 50s and 60s is shaped by choices made now. Social engagement, learning new things, and aerobic activity are the three strongest evidence-backed protectors against cognitive decline.</div>
+      <button class="xbtn" onclick="xp('x4')">Read more &#9662;</button>
+      <div class="xpanel" id="x4"><strong style="color:var(--gold)">Practical steps:</strong> Learn something genuinely new each week — a bhajan, a recipe, a word in a different language. The daily walking protocol directly increases hippocampal volume, the brain's memory centre. Omega-3 from ground flaxseed or fish protects the myelin sheath. Even 10 minutes of sudoku or crosswords daily shows measurable cognitive benefits in longitudinal studies spanning a decade or more.</div>
     </div>
 
-    <!-- ═══════════════════════════════════════════
-         TAB 5: RECIPES
-    ═══════════════════════════════════════════ -->
-    <div id="Recipes" class="tab-content">
-        <h2 class="section-title t-recipes-title">Swasth Kitchen</h2>
-
-        <div class="recipe-filter">
-            <button class="filter-btn active" onclick="filterRecipes('all', this)">All</button>
-            <button class="filter-btn" onclick="filterRecipes('heart', this)">Heart Health</button>
-            <button class="filter-btn" onclick="filterRecipes('diabetes', this)">Blood Sugar</button>
-            <button class="filter-btn" onclick="filterRecipes('digestion', this)">Digestion</button>
-            <button class="filter-btn" onclick="filterRecipes('immunity', this)">Immunity</button>
-        </div>
-
-        <div class="recipe-grid" id="recipe-grid">
-            <!-- filled by JS -->
-        </div>
+    <div class="scard">
+      <div class="sicon">&#127777;&#65039;</div>
+      <div class="stxt">Continuous Glucose Monitoring</div>
+      <div class="sbody">A 14-day CGM patch like FreeStyle Libre (around Rs. 2,000) reveals exactly how specific foods, sleep quality, and stress affect blood sugar in real time. Genuinely life-changing data.</div>
+      <button class="xbtn" onclick="xp('x5')">Read more &#9662;</button>
+      <div class="xpanel" id="x5"><strong style="color:var(--gold)">What you will discover:</strong> Precisely which foods spike glucose — is it white rice, mango, or fruit juice for this particular person? How a 10-minute walk immediately after eating flattens the spike by 30–40%. How poor sleep raises morning fasting glucose even without eating anything. This turns abstract nutritional advice into personal, actionable knowledge. Available via HealthifyMe, Apollo Pharmacy, or with a doctor's prescription.</div>
     </div>
+
+    <div class="scard">
+      <div class="sicon">&#129716;</div>
+      <div class="stxt">Stress and Cortisol</div>
+      <div class="sbody">Chronic stress raises cortisol, which directly raises blood sugar, increases visceral fat, and disrupts sleep. Managing stress is metabolic medicine — not a soft lifestyle choice.</div>
+      <button class="xbtn" onclick="xp('x6')">Read more &#9662;</button>
+      <div class="xpanel" id="x6"><strong style="color:var(--gold)">Protocol:</strong> The Pranayama habit is already the most powerful anti-cortisol tool in this protocol. Add 5 minutes of gratitude journaling using the Reflection card. Limit news consumption to one sitting per day. Social laughter — real shared meals, real conversations — is the single most underrated cortisol reducer in the clinical literature. A monthly half-day completely out of routine resets the nervous system in ways no supplement can replicate.</div>
+    </div>
+
+    <div class="scard">
+      <div class="sicon">&#128167;</div>
+      <div class="stxt">Hydration Protocol</div>
+      <div class="sbody">The thirst mechanism weakens significantly after 55. Most seniors are chronically mildly dehydrated — which concentrates blood, raises BP, and reduces cognitive function throughout the day.</div>
+      <button class="xbtn" onclick="xp('x7')">Read more &#9662;</button>
+      <div class="xpanel" id="x7"><strong style="color:var(--gold)">Target:</strong> 2–2.5 litres per day, spread through the day in small amounts rather than large quantities at once. A ceramic matka provides excellent quality and natural cooling. Coconut water 2–3 times weekly for electrolytes without added sugar. Monitor urine colour throughout the day — pale yellow indicates good hydration. Dark yellow means dehydrated even if you don't feel thirsty, which is common above 55.</div>
+    </div>
+
+    <div class="scard">
+      <div class="sicon">&#129463;</div>
+      <div class="stxt">Oral Health and Systemic Disease</div>
+      <div class="sbody">Research firmly links gum disease (periodontitis) to heart disease and diabetes. Oral health is a direct window into systemic inflammation — one of the most underrated connections in Indian health culture.</div>
+      <button class="xbtn" onclick="xp('x8')">Read more &#9662;</button>
+      <div class="xpanel" id="x8"><strong style="color:var(--gold)">Upgrade:</strong> Electric toothbrush where possible. Floss or interdental brush daily — bacteria between teeth bypass regular brushing entirely. Oil pulling with cold-pressed coconut oil 5–10 mins in the morning has clinical evidence for reducing gum inflammation markers. Biannual dental cleaning (scaling) — not only when there is pain. One dentist visit every 6 months costs far less than a single emergency cardiology visit.</div>
+    </div>
+
+    <div class="scard">
+      <div class="sicon">&#127807;</div>
+      <div class="stxt">Functional Spices</div>
+      <div class="sbody">Indian cooking already contains the world's most potent functional ingredients. The issue is dosage and preparation. Used correctly, turmeric, fenugreek, cinnamon, and ginger are clinical-grade metabolic tools.</div>
+      <button class="xbtn" onclick="xp('x9')">Read more &#9662;</button>
+      <div class="xpanel" id="x9"><strong style="color:var(--gold)">Daily use guide:</strong> Turmeric always with black pepper — piperine boosts curcumin absorption by 2,000%. Fenugreek seeds soaked overnight, drink the water on an empty stomach — reduces fasting glucose by 13% in trials. Ceylon cinnamon (not cassia) one-quarter teaspoon in morning chai directly lowers insulin resistance. Fresh ginger in every meal reduces systemic inflammation. Ajwain water post-meal for bloating and acid reflux. These are already in your kitchen — the upgrade is using them intentionally.</div>
+    </div>
+
+    <div class="scard">
+      <div class="sicon">&#127973;</div>
+      <div class="stxt">Preventive Screening Calendar</div>
+      <div class="sbody">After 55, several screenings become critically important and are routinely skipped in India. Early detection at this stage almost always means simpler, less invasive, and far cheaper treatment.</div>
+      <button class="xbtn" onclick="xp('x10')">Read more &#9662;</button>
+      <div class="xpanel" id="x10"><strong style="color:var(--gold)">Checklist by age:</strong> Annual ECG and echo after 55. Eye exam annually — diabetic retinopathy has no symptoms until advanced. Bone density DEXA scan — especially critical for women post-menopause. Annual skin check. PSA for men over 50. Colonoscopy every 5–10 years from age 50. Mammogram for women every 2 years. Most are available free or subsidised at government hospitals. CGHS and ESI cover the majority of these under preventive health packages. The blood panel in Suggestion 1 is the foundation for all of them.</div>
+    </div>
+
+  </div>
+</div>
 
 </main>
 
 <!-- MODAL -->
-<div class="modal-overlay" id="recipe-modal" onclick="if(event.target===this) closeModal()">
-    <div class="modal-content">
-        <button class="close-modal" onclick="closeModal()">×</button>
-        <h3 class="modal-title" id="modal-title">Protocol Deep Dive</h3>
-        <div id="modal-body" style="font-size: 0.95rem; color: var(--text-soft); line-height: 1.8;">Loading...</div>
-    </div>
+<div class="moverlay" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="mbox">
+    <button class="mclose" onclick="closeModal()">&#215;</button>
+    <h3 class="mtitle" id="mtitle">—</h3>
+    <div id="mbody" class="cbody" style="font-size:.92rem;color:var(--soft);line-height:1.88"></div>
+  </div>
 </div>
 
 <script>
-// ── TABS ───────────────────────────────────────────────
+// -- TABS -----------------------------------------------
 function openTab(e, id) {
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
   document.querySelectorAll('.tbtn').forEach(b=>b.classList.remove('active'));
@@ -960,72 +526,44 @@ function openTab(e, id) {
   if (id==='Breathe')  buildDots();
 }
 
-// ── AUDIO ──────────────────────────────────────────────
+// -- AUDIO ----------------------------------------------
 const aud = document.getElementById('waudio');
 function toggleAudio() {
   if (aud.paused) { aud.play().catch(()=>{}); document.getElementById('pbtn').innerHTML='&#9646;&#9646;'; }
   else { aud.pause(); document.getElementById('pbtn').innerHTML='&#9654;'; }
 }
 
-// ── SUNRISE (BUG 3 FIXED) ───────────────────────────────
+// -- SUNRISE ---------------------------------------------
 async function fetchSunrise() {
   try {
     const r = await fetch('https://api.sunrise-sunset.org/json?lat=28.6139&lng=77.2090&formatted=0');
     const d = await r.json();
     const t = new Date(d.results.sunrise).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-    document.getElementById('sunrise-tag').innerHTML = '&#127749; Sunrise: ' + t;
-  } catch(e) { document.getElementById('sunrise-tag').innerHTML = '&#127749; Sunrise: 6:15 AM'; }
+    document.getElementById('sunrise-tag').innerText = '&#127749; Sunrise: ' + t;
+  } catch(e) { document.getElementById('sunrise-tag').innerText = '&#127749; Sunrise: 6:15 AM'; }
 }
 
-// ── GAMIFICATION (BUG 1 & 2 FIXED) ──────────────────────
+// -- GAMIFICATION ----------------------------------------
 const MAX_H = 7;
-
-// Safely parse old data to prevent Script Crash
-let savedWeek = JSON.parse(localStorage.getItem('sw-week') || 'null');
-let weekData = (Array.isArray(savedWeek) && savedWeek.length === 7) ? savedWeek : Array(7).fill(0);
+let weekData = JSON.parse(localStorage.getItem('sw-week') || 'null') || Array(7).fill(0);
 
 function updateG() {
   const checks = document.querySelectorAll('.pchk');
   const done = document.querySelectorAll('.pchk:checked').length;
   const p = done / checks.length;
-  
   const t = document.getElementById('tulsi');
   t.style.transform = `scale(${.78 + p*.44})`;
   t.style.opacity = .25 + p*.75;
   t.style.filter = `drop-shadow(0 0 ${12+p*28}px rgba(46,125,50,${.2+p*.7}))`;
-  
-  const hints = ['Complete habits to nourish the Tulsi','Good start — keep going!','Halfway there — you\'re thriving!','Almost complete — incredible!','✨ Full protocol complete today!'];
+  const hints = ['Complete habits to nourish the Tulsi','Good start - keep going!','Halfway there - you\'re thriving!','Almost complete - incredible!','✨ Full protocol complete today!'];
   document.getElementById('phint').innerText = hints[Math.min(Math.floor(p*4.5),4)];
-  
   weekData[new Date().getDay()] = done;
   localStorage.setItem('sw-week', JSON.stringify(weekData));
-  
-  // Save specific checkbox states so they survive a page refresh
-  const states = Array.from(checks).map(c => c.checked);
-  localStorage.setItem('sw-checks', JSON.stringify(states));
-  
   syncDB();
 }
-
-// Restores checkboxes when the app is opened
-function restoreChecks() {
-  const savedStates = JSON.parse(localStorage.getItem('sw-checks') || '[]');
-  document.querySelectorAll('.pchk').forEach((c, i) => {
-    if (savedStates[i]) c.checked = true;
-  });
-  
-  // Update visual plant without triggering syncDB immediately
-  const done = document.querySelectorAll('.pchk:checked').length;
-  const p = done / 7;
-  const t = document.getElementById('tulsi');
-  t.style.transform = `scale(${.78 + p*.44})`;
-  t.style.opacity = .25 + p*.75;
-  t.style.filter = `drop-shadow(0 0 ${12+p*28}px rgba(46,125,50,${.2+p*.7}))`;
-}
-
 document.querySelectorAll('.pchk').forEach(c => c.addEventListener('change', updateG));
 
-// ── WEEK CHART ──────────────────────────────────────────
+// -- WEEK CHART ------------------------------------------
 const DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 
 function renderChart() {
@@ -1039,7 +577,7 @@ function renderChart() {
   document.getElementById('s-best').innerText = best;
   const now = new Date();
   const s = new Date(now); s.setDate(now.getDate()-today);
-  document.getElementById('wrange').innerText = s.toLocaleDateString('en-IN',{month:'short',day:'numeric'}) + ' – ' + now.toLocaleDateString('en-IN',{month:'short',day:'numeric'});
+  document.getElementById('wrange').innerText = s.toLocaleDateString('en-IN',{month:'short',day:'numeric'}) + ' - ' + now.toLocaleDateString('en-IN',{month:'short',day:'numeric'});
   document.getElementById('wchart').innerHTML = weekData.map((sc,i) => {
     const pct = Math.round((sc/MAX_H)*100);
     const tod = i===today;
@@ -1047,10 +585,9 @@ function renderChart() {
   }).join('');
 }
 
-// ── HEALTH / BMI ─────────────────────────────────────────
+// -- HEALTH / BMI -----------------------------------------
 let profile = JSON.parse(localStorage.getItem('sw-profile') || 'null');
-let savedHlog = JSON.parse(localStorage.getItem('sw-hlog') || '[]');
-let hlog = Array.isArray(savedHlog) ? savedHlog : []; // Safe parse
+let hlog    = JSON.parse(localStorage.getItem('sw-hlog') || '[]');
 
 function saveProfile() {
   const h = parseFloat(document.getElementById('ih').value);
@@ -1093,6 +630,7 @@ function weeklyRate(activity, habitAvg) {
 }
 
 function renderBMI() {
+  // pre-fill profile fields
   if (profile) {
     document.getElementById('ih').value  = profile.h;
     document.getElementById('ia').value  = profile.a;
@@ -1111,6 +649,7 @@ function renderBMI() {
   const cat  = bmiCat(bmi);
   const barPct = Math.min(100, Math.max(0, ((bmi-16)/24)*100));
 
+  // display
   document.getElementById('d-bmi').innerText = bmi.toFixed(1);
   document.getElementById('d-bmi').style.color = cat.color;
   document.getElementById('d-bmicat').innerText = cat.label;
@@ -1126,25 +665,28 @@ function renderBMI() {
   else if (d < -0.5) toGoEl.innerHTML = `<span style="color:#64B5F6">${Math.abs(diff)} kg to gain</span> to reach ideal range`;
   else               toGoEl.innerHTML = `<span style="color:#66BB6A">&#10003; Within target range</span>`;
 
+  // habit avg from this week
   const avgH = parseFloat((weekData.reduce((a,b)=>a+b,0)/7).toFixed(1));
   const wr   = weeklyRate(profile.ac, avgH);
   const wks  = d > 0.5 ? Math.ceil(d / wr) : 0;
   const mRate= (wr*4.33).toFixed(2);
 
+  // insight
   let ins = '';
   if (bmi >= 25) {
-    ins = `Your current BMI is <strong style="color:${cat.color}">${bmi.toFixed(1)}</strong> — <strong style="color:${cat.color}">${cat.label}</strong> on the Asian scale. With your habit score of ${avgH.toFixed(1)}/${MAX_H} and activity level, a sustainable pace is <strong style="color:var(--gold)">${mRate} kg/month</strong>. At this rate, you could reach your ideal BMI in approximately <strong style="color:var(--gold)">${wks} weeks (${Math.ceil(wks/4.3)} months)</strong>. Every additional habit you tick shortens this timeline — the tracker will update as your score improves.`;
+    ins = `Your current BMI is <strong style="color:${cat.color}">${bmi.toFixed(1)}</strong> - <strong style="color:${cat.color}">${cat.label}</strong> on the Asian scale. With your habit score of ${avgH.toFixed(1)}/${MAX_H} and activity level, a sustainable pace is <strong style="color:var(--gold)">${mRate} kg/month</strong>. At this rate, you could reach your ideal BMI in approximately <strong style="color:var(--gold)">${wks} weeks (${Math.ceil(wks/4.3)} months)</strong>. Every additional habit you tick shortens this timeline - the tracker will update as your score improves.`;
   } else if (bmi < 18.5) {
-    ins = `Your BMI of <strong style="color:#64B5F6">${bmi.toFixed(1)}</strong> suggests you may be underweight. The focus here is <strong style="color:var(--gold)">nutrient-dense calorie addition</strong> — protein from lentils, paneer, and eggs, plus healthy fats from ghee (in moderation) and nuts. The Breakfast and Lunch recipe categories have the most relevant options. Avoid processed calorie sources entirely.`;
+    ins = `Your BMI of <strong style="color:#64B5F6">${bmi.toFixed(1)}</strong> suggests you may be underweight. The focus here is <strong style="color:var(--gold)">nutrient-dense calorie addition</strong> - protein from lentils, paneer, and eggs, plus healthy fats from ghee (in moderation) and nuts. The Breakfast and Lunch recipe categories have the most relevant options. Avoid processed calorie sources entirely.`;
   } else {
-    ins = `Your BMI of <strong style="color:#66BB6A">${bmi.toFixed(1)}</strong> is in the <strong style="color:#66BB6A">healthy range</strong> for Asian adults. The goal now shifts from weight loss to <strong style="color:var(--gold)">metabolic maintenance</strong> — preserving muscle mass, keeping fasting glucose stable, and sustaining blood pressure. The protocol is working. The habit streak is what matters most from here.`;
+    ins = `Your BMI of <strong style="color:#66BB6A">${bmi.toFixed(1)}</strong> is in the <strong style="color:#66BB6A">healthy range</strong> for Asian adults. The goal now shifts from weight loss to <strong style="color:var(--gold)">metabolic maintenance</strong> - preserving muscle mass, keeping fasting glucose stable, and sustaining blood pressure. The protocol is working. The habit streak is what matters most from here.`;
   }
   document.getElementById('d-insight').innerHTML = `<strong>Insight</strong>${ins}`;
 
+  // projections
   const projEl = document.getElementById('d-proj');
   const now = new Date();
   const months = d > 0.5 ? [1,2,3,6,12] : [1,3,6];
-  let rows = `<div class="proj-row"><div class="pdot"></div><div class="pdate">Today</div><div class="pdet"><strong>${latest.w} kg</strong> · BMI ${bmi.toFixed(1)}</div></div>`;
+  let rows = `<div class="proj-row"><div class="pdot"></div><div class="pdate">Today</div><div class="pdet"><strong>${latest.w} kg</strong> - BMI ${bmi.toFixed(1)}</div></div>`;
   months.forEach(m => {
     const pd = new Date(now); pd.setMonth(pd.getMonth()+m);
     const pl = pd.toLocaleDateString('en-IN',{month:'short',year:'numeric'});
@@ -1154,14 +696,15 @@ function renderBMI() {
     const pb   = (pw / (hm*hm)).toFixed(1);
     const pc   = bmiCat(parseFloat(pb));
     const goal = d > 0.5 && pw <= parseFloat(tW);
-    rows += `<div class="proj-row"><div class="pdot f"></div><div class="pdate">${pl}</div><div class="pdet"><strong>${pw.toFixed(1)} kg</strong> · BMI <span style="color:${pc.color}">${pb}</span>${goal?' <span style="color:#66BB6A">&#10003; Goal</span>':''}</div></div>`;
+    rows += `<div class="proj-row"><div class="pdot f"></div><div class="pdate">${pl}</div><div class="pdet"><strong>${pw.toFixed(1)} kg</strong> - BMI <span style="color:${pc.color}">${pb}</span>${goal?' <span style="color:#66BB6A">&#10003; Goal</span>':''}</div></div>`;
   });
   projEl.innerHTML = rows;
 
+  // history
   const histEl = document.getElementById('d-hist');
   if (!hlog.length) { histEl.innerHTML='<p style="font-size:.8rem;color:var(--muted);padding:10px 0">No readings yet.</p>'; return; }
   histEl.innerHTML = hlog.slice(0,12).map((e,i) => {
-    let arrow='—', aCol='var(--muted)';
+    let arrow='-', aCol='var(--muted)';
     if (e.w) {
       const prev = hlog.slice(i+1).find(x=>x.w);
       if (prev) {
@@ -1171,11 +714,11 @@ function renderBMI() {
         else arrow='&#8594; No change';
       }
     }
-    return `<div class="trow2"><span style="color:var(--muted)">${e.date}</span><span style="color:var(--text);font-weight:500">${e.w ? e.w+' kg':''} ${e.w&&e.bp?' · ':''} ${e.bp ? e.bp+' mmHg':''}</span><span style="color:${aCol};font-size:.75rem">${arrow}</span></div>`;
+    return `<div class="trow2"><span style="color:var(--muted)">${e.date}</span><span style="color:var(--text);font-weight:500">${e.w ? e.w+' kg':''} ${e.w&&e.bp?' - ':''} ${e.bp ? e.bp+' mmHg':''}</span><span style="color:${aCol};font-size:.75rem">${arrow}</span></div>`;
   }).join('');
 }
 
-// ── BREATHING ────────────────────────────────────────────
+// -- BREATHING --------------------------------------------
 const TECHS = {
   anulom:  { desc:'Alternate nostril breathing. Balances the nervous system and reduces anxiety. Recommended before morning meditation.', phases:['Inhale (L)','Hold','Exhale (R)','Hold'], times:[4,2,4,2], sessions:7 },
   box:     { desc:'Used by Navy SEALs. Four equal counts per phase. Instantly calms the stress response and lowers cortisol.', phases:['Inhale','Hold','Exhale','Hold'], times:[4,4,4,4], sessions:5 },
@@ -1240,17 +783,18 @@ function runCount() {
 function resetBreath() {
   clearTimeout(bTimer); bRunning=false; bPhase=0; bCount=0; bSessions=0;
   document.getElementById('bphase').innerText = 'Ready';
-  document.getElementById('bcount').innerText = '—';
+  document.getElementById('bcount').innerText = '-';
   document.getElementById('bcircle').style.transform = 'scale(1)';
   document.getElementById('bsbtn').innerText = '▶ Begin Session';
   buildDots();
 }
 
-// ── RECIPES ──────────────────────────────────────────────
+// -- RECIPES ----------------------------------------------
 const RECIPES = [
+  // -- BREAKFAST (6) --
   { id:1, meal:'breakfast', icon:'🥣', name:'Ragi Porridge', tags:['Low GI','Calcium'], time:'15 min',
     desc:'Finger millet porridge. Calcium-rich, low glycemic index, keeps you full for hours with no crash.',
-    body:'<b style="color:var(--gold)">Ingredients:</b> ½ cup ragi flour, 2 cups water, cardamom, pinch of salt, small amount of jaggery (optional).<br><br><b style="color:var(--gold)">Method:</b> Whisk ragi flour into cold water to prevent lumps. Bring to a boil over medium heat, stirring continuously for 8–10 mins until thick and smooth. Add cardamom. Serve warm.<br><br><b style="color:var(--gold)">Why it works:</b> Ragi has a glycemic index of only 68 versus 73 for white rice. Its calcium content of 344 mg per 100 g directly supports bone density. The amino acid tryptophan reduces appetite naturally, preventing mid-morning snacking.' },
+    body:'<b style="color:var(--gold)">Ingredients:</b> ½ cup ragi flour, 2 cups water, cardamom, pinch of salt, small amount of jaggery (optional).<br><br><b style="color:var(--gold)">Method:</b> Whisk ragi flour into cold water to prevent lumps. Bring to a boil over medium heat, stirring continuously for 8-10 mins until thick and smooth. Add cardamom. Serve warm.<br><br><b style="color:var(--gold)">Why it works:</b> Ragi has a glycemic index of only 68 versus 73 for white rice. Its calcium content of 344 mg per 100 g directly supports bone density. The amino acid tryptophan reduces appetite naturally, preventing mid-morning snacking.' },
   { id:2, meal:'breakfast', icon:'🫓', name:'Moong Dal Chilla', tags:['High Protein','Low GI'], time:'20 min',
     desc:'Savoury green mung pancakes. Protein-dense, zero refined flour, crispy and deeply satisfying.',
     body:'<b style="color:var(--gold)">Ingredients:</b> 1 cup moong dal (soaked overnight), ginger, green chilli, cumin, salt, diced onion, tomato, coriander.<br><br><b style="color:var(--gold)">Method:</b> Blend soaked moong with ginger and chilli into a batter. Stir in onion, tomato, cumin. Pour onto a hot non-stick tawa with a few drops of mustard oil. Cook 3 mins per side until golden.<br><br><b style="color:var(--gold)">Why it works:</b> 24 g protein per cup of moong. Zero refined carbohydrates. Overnight soaking removes phytic acid (an anti-nutrient) and increases B-vitamin availability significantly.' },
@@ -1261,69 +805,75 @@ const RECIPES = [
     desc:'Whole wheat flatbread with fresh fenugreek leaves. A metabolic powerhouse from Gujarati tradition.',
     body:'<b style="color:var(--gold)">Ingredients:</b> 1 cup whole wheat flour, ½ cup chopped fresh methi leaves, ½ tsp turmeric, cumin, minimal salt, a little mustard oil for cooking.<br><br><b style="color:var(--gold)">Method:</b> Mix all ingredients, knead into a stiff dough. Roll thin and cook on a hot tawa with minimal oil until light brown on both sides.<br><br><b style="color:var(--gold)">Why it works:</b> Fenugreek contains 4-hydroxyisoleucine, a compound that directly improves insulin secretion. Clinical trials show regular methi consumption reduces fasting blood sugar by 13%.' },
   { id:5, meal:'breakfast', icon:'🥛', name:'Chaas with Jeera', tags:['Probiotic','Cooling'], time:'3 min',
-    desc:'Spiced buttermilk — a daily probiotic that supports gut flora and reduces inflammation.',
-    body:'<b style="color:var(--gold)">Ingredients:</b> 1 cup fresh low-fat curd, 1 glass water, roasted cumin powder, black salt, fresh coriander, small piece of ginger.<br><br><b style="color:var(--gold)">Method:</b> Blend curd with water until frothy. Add cumin, black salt, grated ginger. Serve at room temperature, not chilled. Drink with or just after breakfast.<br><br><b style="color:var(--gold)">Why it works:</b> Fresh Indian curd contains 10+ probiotic strains. Combined with jeera, it is one of the most effective natural remedies for IBS, bloating, and acid reflux — all very common after 55.' },
+    desc:'Spiced buttermilk - a daily probiotic that supports gut flora and reduces inflammation.',
+    body:'<b style="color:var(--gold)">Ingredients:</b> 1 cup fresh low-fat curd, 1 glass water, roasted cumin powder, black salt, fresh coriander, small piece of ginger.<br><br><b style="color:var(--gold)">Method:</b> Blend curd with water until frothy. Add cumin, black salt, grated ginger. Serve at room temperature, not chilled. Drink with or just after breakfast.<br><br><b style="color:var(--gold)">Why it works:</b> Fresh Indian curd contains 10+ probiotic strains. Combined with jeera, it is one of the most effective natural remedies for IBS, bloating, and acid reflux - all very common after 55.' },
   { id:6, meal:'breakfast', icon:'🍌', name:'Banana Walnut Smoothie', tags:['Heart','Omega-3'], time:'5 min',
     desc:'No-sugar smoothie with banana, walnut and flaxseed. Heart-protective and anti-inflammatory.',
-    body:'<b style="color:var(--gold)">Ingredients:</b> 1 ripe banana, 5–6 walnut halves, 1 tbsp ground flaxseed, 1 cup low-fat milk, pinch of cinnamon.<br><br><b style="color:var(--gold)">Method:</b> Blend all ingredients. No added sugar. Drink immediately for maximum omega-3 freshness from freshly ground flaxseed.<br><br><b style="color:var(--gold)">Why it works:</b> Walnuts are among the few nuts with significant plant-based omega-3 (ALA). Banana provides potassium which directly supports blood pressure. Flaxseed lignans reduce LDL by up to 8% in 3 months.' },
+    body:'<b style="color:var(--gold)">Ingredients:</b> 1 ripe banana, 5-6 walnut halves, 1 tbsp ground flaxseed, 1 cup low-fat milk, pinch of cinnamon.<br><br><b style="color:var(--gold)">Method:</b> Blend all ingredients. No added sugar. Drink immediately for maximum omega-3 freshness from freshly ground flaxseed.<br><br><b style="color:var(--gold)">Why it works:</b> Walnuts are among the few nuts with significant plant-based omega-3 (ALA). Banana provides potassium which directly supports blood pressure. Flaxseed lignans reduce LDL by up to 8% in 3 months.' },
+
+  // -- LUNCH (6) --
   { id:7, meal:'lunch', icon:'🫘', name:'Dal Palak', tags:['Iron','Complete Protein'], time:'25 min',
-    desc:'Toor dal with spinach — a complete protein and iron combination. Pairs perfectly with brown rice.',
-    body:'<b style="color:var(--gold)">Ingredients:</b> 1 cup toor dal, 2 cups chopped spinach, 1 tomato, cumin, mustard seeds, turmeric, asafoetida, 1 tsp mustard oil, garlic, minimal salt.<br><br><b style="color:var(--gold)">Method:</b> Pressure cook dal until soft. Heat mustard oil, temper with mustard seeds, cumin, asafoetida, garlic. Add tomato, cook until mushy. Add spinach 2 mins. Add dal, simmer 5 mins. Finish with lemon juice.<br><br><b style="color:var(--gold)">Why it works:</b> Toor dal provides 19 g protein per 100 g cooked. Spinach adds non-heme iron. The lemon squeeze is critical — vitamin C converts non-heme iron into its absorbable form, doubling effective iron intake.' },
+    desc:'Toor dal with spinach - a complete protein and iron combination. Pairs perfectly with brown rice.',
+    body:'<b style="color:var(--gold)">Ingredients:</b> 1 cup toor dal, 2 cups chopped spinach, 1 tomato, cumin, mustard seeds, turmeric, asafoetida, 1 tsp mustard oil, garlic, minimal salt.<br><br><b style="color:var(--gold)">Method:</b> Pressure cook dal until soft. Heat mustard oil, temper with mustard seeds, cumin, asafoetida, garlic. Add tomato, cook until mushy. Add spinach 2 mins. Add dal, simmer 5 mins. Finish with lemon juice.<br><br><b style="color:var(--gold)">Why it works:</b> Toor dal provides 19 g protein per 100 g cooked. Spinach adds non-heme iron. The lemon squeeze is critical - vitamin C converts non-heme iron into its absorbable form, doubling effective iron intake.' },
   { id:8, meal:'lunch', icon:'🌿', name:'Moong Sprout Bowl', tags:['Heart','Low GI'], time:'10 min',
     desc:'Sprouted moong with raw vegetables. High protein, zero fat, maximum micronutrients.',
-    body:'<b style="color:var(--gold)">Ingredients:</b> 1 cup sprouted moong, ½ cucumber, 1 tomato, 1 carrot, ¼ red onion, lemon juice, chaat masala, coriander, black salt.<br><br><b style="color:var(--gold)">Method:</b> Toss all ingredients. Eat 15–20 mins before the main lunch meal to prime digestion and reduce the glycemic impact of the meal that follows.<br><br><b style="color:var(--gold)">Why it works:</b> The fibre-first principle — eating raw vegetables before carbohydrates reduces the post-meal blood sugar spike by up to 30% according to multiple clinical studies.' },
+    body:'<b style="color:var(--gold)">Ingredients:</b> 1 cup sprouted moong, ½ cucumber, 1 tomato, 1 carrot, ¼ red onion, lemon juice, chaat masala, coriander, black salt.<br><br><b style="color:var(--gold)">Method:</b> Toss all ingredients. Eat 15-20 mins before the main lunch meal to prime digestion and reduce the glycemic impact of the meal that follows.<br><br><b style="color:var(--gold)">Why it works:</b> The fibre-first principle - eating raw vegetables before carbohydrates reduces the post-meal blood sugar spike by up to 30% according to multiple clinical studies.' },
   { id:9, meal:'lunch', icon:'🍛', name:'Brown Rice Rajma', tags:['Cholesterol','Protein'], time:'30 min',
     desc:'Kidney beans over brown rice. Soluble fibre binds to and removes cholesterol from circulation.',
-    body:'<b style="color:var(--gold)">Ingredients:</b> 1 cup boiled rajma, 1 onion, 2 tomatoes, 1 tsp mustard oil, cumin, coriander, turmeric, minimal garam masala, garlic, ginger.<br><br><b style="color:var(--gold)">Method:</b> Sauté onion in mustard oil until golden. Add ginger-garlic, tomatoes, spices. Cook until thick masala. Add boiled rajma, simmer 10 mins. Blend ¼ of the rajma back in for creaminess without using cream.<br><br><b style="color:var(--gold)">Why it works:</b> Rajma soluble fibre forms a gel in the gut that binds to bile acids (made from cholesterol), forcing the body to use blood cholesterol to produce more. LDL reduction of 5–10% shown consistently.' },
+    body:'<b style="color:var(--gold)">Ingredients:</b> 1 cup boiled rajma, 1 onion, 2 tomatoes, 1 tsp mustard oil, cumin, coriander, turmeric, minimal garam masala, garlic, ginger.<br><br><b style="color:var(--gold)">Method:</b> Sauté onion in mustard oil until golden. Add ginger-garlic, tomatoes, spices. Cook until thick masala. Add boiled rajma, simmer 10 mins. Blend ¼ of the rajma back in for creaminess without using cream.<br><br><b style="color:var(--gold)">Why it works:</b> Rajma soluble fibre forms a gel in the gut that binds to bile acids (made from cholesterol), forcing the body to use blood cholesterol to produce more. LDL reduction of 5-10% shown consistently.' },
   { id:10, meal:'lunch', icon:'✨', name:'Quinoa Khichdi', tags:['Complete Protein','Gluten Free'], time:'20 min',
-    desc:'Quinoa with moong dal — one of the few plant-based complete proteins. Light yet deeply nutritious.',
-    body:'<b style="color:var(--gold)">Ingredients:</b> ½ cup quinoa, ½ cup yellow moong dal, 1 carrot, ½ cup peas, cumin, turmeric, ginger, 1 tsp ghee, salt.<br><br><b style="color:var(--gold)">Method:</b> Rinse quinoa well (removes bitter saponins). Pressure cook with moong, carrot, peas, spices in 2.5 cups water for 2 whistles. Finish with a tiny tadka of ghee and cumin.<br><br><b style="color:var(--gold)">Why it works:</b> Quinoa contains all 9 essential amino acids — rare in plant foods. Glycemic index of 53 vs. rice at 73 or wheat at 71. Extremely easy to digest even for sensitive stomachs.' },
+    desc:'Quinoa with moong dal - one of the few plant-based complete proteins. Light yet deeply nutritious.',
+    body:'<b style="color:var(--gold)">Ingredients:</b> ½ cup quinoa, ½ cup yellow moong dal, 1 carrot, ½ cup peas, cumin, turmeric, ginger, 1 tsp ghee, salt.<br><br><b style="color:var(--gold)">Method:</b> Rinse quinoa well (removes bitter saponins). Pressure cook with moong, carrot, peas, spices in 2.5 cups water for 2 whistles. Finish with a tiny tadka of ghee and cumin.<br><br><b style="color:var(--gold)">Why it works:</b> Quinoa contains all 9 essential amino acids - rare in plant foods. Glycemic index of 53 vs. rice at 73 or wheat at 71. Extremely easy to digest even for sensitive stomachs.' },
   { id:11, meal:'lunch', icon:'🫕', name:'Palak Tofu Curry', tags:['Plant Protein','Iron'], time:'25 min',
     desc:'A protein-dense, iron-rich alternative to paneer. Lower in saturated fat, equally satisfying.',
     body:'<b style="color:var(--gold)">Ingredients:</b> 200 g firm tofu (cubed, lightly pan-fried), 3 cups spinach, 1 onion, 1 tomato, ginger, garlic, 1 tsp mustard oil, spices.<br><br><b style="color:var(--gold)">Method:</b> Blend cooked spinach into a smooth purée. Sauté onion, tomato, spices in mustard oil. Add spinach purée, simmer 5 mins. Add tofu cubes, cook 5 mins. Add lemon before serving.<br><br><b style="color:var(--gold)">Why it works:</b> Tofu provides 17 g protein per 200 g with minimal saturated fat compared to paneer. Isoflavones in tofu have shown cholesterol-lowering effects particularly in post-menopausal women.' },
   { id:12, meal:'lunch', icon:'🍲', name:'Vegetable Barley Soup', tags:['Cholesterol','High Fibre'], time:'35 min',
-    desc:'Warming soup with pearl barley — one of the highest beta-glucan sources in Indian markets.',
-    body:'<b style="color:var(--gold)">Ingredients:</b> ½ cup pearl barley (soaked 2 hrs), 1 carrot, 1 small potato, ½ cup green beans, 1 onion, garlic, black pepper, cumin, low-sodium stock or water.<br><br><b style="color:var(--gold)">Method:</b> Sauté onion and garlic. Add vegetables, barley, stock. Simmer 25–30 mins until barley is tender. Season with pepper. No cream needed — barley thickens naturally.<br><br><b style="color:var(--gold)">Why it works:</b> Pearl barley contains more beta-glucan than oats. Beta-glucan is the single most evidence-backed natural cholesterol reducer — LDL reduction of 5–15% with consistent consumption.' },
+    desc:'Warming soup with pearl barley - one of the highest beta-glucan sources in Indian markets.',
+    body:'<b style="color:var(--gold)">Ingredients:</b> ½ cup pearl barley (soaked 2 hrs), 1 carrot, 1 small potato, ½ cup green beans, 1 onion, garlic, black pepper, cumin, low-sodium stock or water.<br><br><b style="color:var(--gold)">Method:</b> Sauté onion and garlic. Add vegetables, barley, stock. Simmer 25-30 mins until barley is tender. Season with pepper. No cream needed - barley thickens naturally.<br><br><b style="color:var(--gold)">Why it works:</b> Pearl barley contains more beta-glucan than oats. Beta-glucan is the single most evidence-backed natural cholesterol reducer - LDL reduction of 5-15% with consistent consumption.' },
+
+  // -- DINNER (6) --
   { id:13, meal:'dinner', icon:'🥘', name:'Lauki Dal', tags:['Heart','Light','Digestive'], time:'25 min',
     desc:'The ideal Indian dinner. Extremely light on digestion, alkaline and heart-protective.',
-    body:'<b style="color:var(--gold)">Ingredients:</b> 1 cup moong or masoor dal, 2 cups chopped lauki (bottle gourd), 1 tomato, 1 tsp mustard oil, cumin, turmeric, asafoetida, ginger, coriander.<br><br><b style="color:var(--gold)">Method:</b> Pressure cook dal with lauki until very soft. Prepare a light tadka with cumin, ginger, tomato. Combine and simmer 5 mins. Serve with 1 whole wheat roti.<br><br><b style="color:var(--gold)">Why it works:</b> Lauki is 95% water, extremely low in calories, alkaline, and easy to digest. Ayurveda prescribes it specifically for high blood pressure and acid reflux — ideal for dinner when digestion is slowest.' },
+    body:'<b style="color:var(--gold)">Ingredients:</b> 1 cup moong or masoor dal, 2 cups chopped lauki (bottle gourd), 1 tomato, 1 tsp mustard oil, cumin, turmeric, asafoetida, ginger, coriander.<br><br><b style="color:var(--gold)">Method:</b> Pressure cook dal with lauki until very soft. Prepare a light tadka with cumin, ginger, tomato. Combine and simmer 5 mins. Serve with 1 whole wheat roti.<br><br><b style="color:var(--gold)">Why it works:</b> Lauki is 95% water, extremely low in calories, alkaline, and easy to digest. Ayurveda prescribes it specifically for high blood pressure and acid reflux - ideal for dinner when digestion is slowest.' },
   { id:14, meal:'dinner', icon:'🍵', name:'Masoor Shorba', tags:['Light Protein','Immunity'], time:'20 min',
     desc:'Thin spiced red lentil broth. Maximum nutrition with minimum digestive burden for evenings.',
     body:'<b style="color:var(--gold)">Ingredients:</b> ½ cup red masoor dal, 1 tomato, ½ onion, garlic, turmeric, black pepper, cumin, 1 tsp mustard oil, fresh lemon, coriander.<br><br><b style="color:var(--gold)">Method:</b> Boil masoor with tomato until completely dissolved. Blend smooth. Prepare tadka separately, add to blended dal. Thin with water to a soup consistency. Finish with lemon and coriander.<br><br><b style="color:var(--gold)">Why it works:</b> Red lentils are the fastest-digesting legume. Eating a light liquid dinner 3+ hours before sleep is one of the highest-impact changes for morning blood sugar and sleep quality simultaneously.' },
   { id:15, meal:'dinner', icon:'🫓', name:'Bajra Roti with Garlic Chutney', tags:['Heart','Low GI'], time:'15 min',
-    desc:'Pearl millet flatbread — a Rajasthani staple with extraordinary cardiovascular benefits.',
-    body:'<b style="color:var(--gold)">Ingredients:</b> 1 cup bajra flour, warm water, pinch of salt. Chutney: 10 roasted garlic cloves, 1 tbsp mustard oil, 2 dried red chillies, pinch of salt.<br><br><b style="color:var(--gold)">Method:</b> Knead bajra with warm water into a soft dough (keep it warm — bajra cracks when cool). Pat into rotis by hand. Cook on a hot tawa, finish 30 seconds directly on flame. Blend roasted garlic with oil and chillies for chutney.<br><br><b style="color:var(--gold)">Why it works:</b> Bajra glycemic index is only 54. Niacin (B3) in bajra raises HDL, the protective cholesterol. Allicin in garlic chutney is one of the most studied natural compounds for cardiovascular health.' },
+    desc:'Pearl millet flatbread - a Rajasthani staple with extraordinary cardiovascular benefits.',
+    body:'<b style="color:var(--gold)">Ingredients:</b> 1 cup bajra flour, warm water, pinch of salt. Chutney: 10 roasted garlic cloves, 1 tbsp mustard oil, 2 dried red chillies, pinch of salt.<br><br><b style="color:var(--gold)">Method:</b> Knead bajra with warm water into a soft dough (keep it warm - bajra cracks when cool). Pat into rotis by hand. Cook on a hot tawa, finish 30 seconds directly on flame. Blend roasted garlic with oil and chillies for chutney.<br><br><b style="color:var(--gold)">Why it works:</b> Bajra glycemic index is only 54. Niacin (B3) in bajra raises HDL, the protective cholesterol. Allicin in garlic chutney is one of the most studied natural compounds for cardiovascular health.' },
   { id:16, meal:'dinner', icon:'🥬', name:'Seasonal Sabzi Stir-Fry', tags:['Immunity','Anti-inflammatory'], time:'15 min',
     desc:'A flexible daily-rotation vegetable stir-fry using whatever is in season. The simplest anti-inflammatory meal.',
-    body:'<b style="color:var(--gold)">Best seasonal choices:</b> Karela (most potent for blood sugar), Tinda, Turai, Parwal, Bhindi, Cabbage, Cauliflower, Gawar.<br><br><b style="color:var(--gold)">Method:</b> Heat 1 tsp mustard oil in a kadai. Pop mustard seeds. Add finely chopped sabzi, turmeric, pinch of salt. Cook covered on low heat 8–10 mins without water. Finish with coriander and lemon.<br><br><b style="color:var(--gold)">Why it works:</b> Seasonal vegetables contain micronutrients the body needs at that time of year. Karela contains polypeptide-P, a plant insulin-like compound with documented blood sugar effects.' },
+    body:'<b style="color:var(--gold)">Best seasonal choices:</b> Karela (most potent for blood sugar), Tinda, Turai, Parwal, Bhindi, Cabbage, Cauliflower, Gawar.<br><br><b style="color:var(--gold)">Method:</b> Heat 1 tsp mustard oil in a kadai. Pop mustard seeds. Add finely chopped sabzi, turmeric, pinch of salt. Cook covered on low heat 8-10 mins without water. Finish with coriander and lemon.<br><br><b style="color:var(--gold)">Why it works:</b> Seasonal vegetables contain micronutrients the body needs at that time of year. Karela contains polypeptide-P, a plant insulin-like compound with documented blood sugar effects.' },
   { id:17, meal:'dinner', icon:'🍜', name:'Tomato Rasam', tags:['Immunity','Digestive'], time:'15 min',
     desc:'South Indian thin tamarind-tomato soup. A powerful digestive, immune booster and decongestant.',
     body:'<b style="color:var(--gold)">Ingredients:</b> 3 ripe tomatoes, small tamarind piece (soaked), 1 tsp black pepper, 1 tsp cumin, mustard seeds, curry leaves, dried red chillies, garlic, turmeric, 1 tsp coconut oil.<br><br><b style="color:var(--gold)">Method:</b> Blend tomatoes with tamarind water. Heat coconut oil, crackle mustard seeds, add curry leaves, garlic, chillies. Add tomato mixture, turmeric, pepper, cumin. Simmer 10 mins until fragrant.<br><br><b style="color:var(--gold)">Why it works:</b> Black pepper is a natural digestive enzyme stimulator and expectorant. Tamarind is prebiotic. Garlic and turmeric together have significant immune-modulating effects well documented in clinical literature.' },
   { id:18, meal:'dinner', icon:'🌙', name:'Satvik Khichdi', tags:['Complete Meal','Easiest Digest'], time:'20 min',
-    desc:'The original Ayurvedic complete meal. Brown rice and moong dal — perfect amino acid balance, lowest digestive burden.',
-    body:'<b style="color:var(--gold)">Ingredients:</b> ½ cup brown rice, ½ cup yellow moong dal, 1 tsp ghee (just one), cumin, turmeric, asafoetida, ginger, salt, optional seasonal vegetable.<br><br><b style="color:var(--gold)">Method:</b> Wash rice and dal together. Pressure cook with 3 cups water, turmeric, ginger, salt for 4 whistles until very soft — this is intentional. Heat ghee, crackle cumin and asafoetida, pour over khichdi.<br><br><b style="color:var(--gold)">Why it works:</b> Ayurveda considers khichdi the only tridoshic food — balanced for all constitutions. The very soft texture reduces intestinal stress significantly. Ghee\'s butyric acid directly feeds and heals the intestinal lining.' },
+    desc:'The original Ayurvedic complete meal. Brown rice and moong dal - perfect amino acid balance, lowest digestive burden.',
+    body:'<b style="color:var(--gold)">Ingredients:</b> ½ cup brown rice, ½ cup yellow moong dal, 1 tsp ghee (just one), cumin, turmeric, asafoetida, ginger, salt, optional seasonal vegetable.<br><br><b style="color:var(--gold)">Method:</b> Wash rice and dal together. Pressure cook with 3 cups water, turmeric, ginger, salt for 4 whistles until very soft - this is intentional. Heat ghee, crackle cumin and asafoetida, pour over khichdi.<br><br><b style="color:var(--gold)">Why it works:</b> Ayurveda considers khichdi the only tridoshic food - balanced for all constitutions. The very soft texture reduces intestinal stress significantly. Ghee&#39;s butyric acid directly feeds and heals the intestinal lining.' },
+
+  // -- BEFORE BED (5) --
   { id:19, meal:'bedtime', icon:'🥛', name:'Haldi Doodh', tags:['Anti-inflammatory','Sleep'], time:'5 min',
     desc:'Golden milk. The most evidence-backed bedtime drink in both Ayurveda and modern clinical research.',
-    body:'<b style="color:var(--gold)">Ingredients:</b> 1 cup warm low-fat milk, ½ tsp turmeric, generous pinch of black pepper, 1 tsp honey or none, pinch of cinnamon (optional).<br><br><b style="color:var(--gold)">Method:</b> Whisk turmeric and black pepper into warm — not boiling — milk. Do not boil after adding turmeric. Drink 30–45 mins before sleep.<br><br><b style="color:var(--gold)">Why it works:</b> Black pepper increases curcumin bioavailability by 2,000%. Milk tryptophan converts to serotonin then melatonin, promoting sleep. Shown to reduce inflammatory markers CRP and IL-6 in 4 weeks of consistent use.' },
+    body:'<b style="color:var(--gold)">Ingredients:</b> 1 cup warm low-fat milk, ½ tsp turmeric, generous pinch of black pepper, 1 tsp honey or none, pinch of cinnamon (optional).<br><br><b style="color:var(--gold)">Method:</b> Whisk turmeric and black pepper into warm - not boiling - milk. Do not boil after adding turmeric. Drink 30-45 mins before sleep.<br><br><b style="color:var(--gold)">Why it works:</b> Black pepper increases curcumin bioavailability by 2,000%. Milk tryptophan converts to serotonin then melatonin, promoting sleep. Shown to reduce inflammatory markers CRP and IL-6 in 4 weeks of consistent use.' },
   { id:20, meal:'bedtime', icon:'🌿', name:'Triphala Churna Water', tags:['Gut Health','Detox'], time:'2 min',
     desc:'A 3,000-year Ayurvedic formulation. Gently cleanses the bowel overnight and supports immunity.',
     body:'<b style="color:var(--gold)">Ingredients:</b> ½ tsp Triphala churna (available at Patanjali or Himalaya stores), 1 cup warm water.<br><br><b style="color:var(--gold)">Method:</b> Stir Triphala into warm water. Drink 30 mins before sleep. Start with ¼ tsp for the first week to let the gut adjust gradually.<br><br><b style="color:var(--gold)">Why it works:</b> Triphala (Amalaki, Bibhitaki, Haritaki) acts as a gentle prebiotic, not a laxative. It feeds beneficial gut bacteria and reduces intestinal inflammation. Clinical trials show reduced fasting blood sugar and total cholesterol over 12 weeks of consistent use.' },
   { id:21, meal:'bedtime', icon:'🌸', name:'Ashwagandha Milk', tags:['Stress Relief','Sleep'], time:'5 min',
     desc:'Adaptogen-based bedtime drink. Clinically shown to reduce cortisol by 27% and improve sleep depth.',
-    body:'<b style="color:var(--gold)">Ingredients:</b> 1 cup warm low-fat milk, ½ tsp ashwagandha powder, pinch of nutmeg, pinch of cardamom, ½ tsp honey (optional).<br><br><b style="color:var(--gold)">Method:</b> Whisk ashwagandha into warm milk. Nutmeg is a natural mild sedative — do not skip it. Drink 1 hour before sleep.<br><br><b style="color:var(--gold)">Why it works:</b> Multiple RCTs show ashwagandha root extract reduces cortisol by 27–30% in 8 weeks. It improves sleep onset time, sleep quality, and total sleep duration. Nutmeg contains myristicin, a documented mild sedative compound.' },
+    body:'<b style="color:var(--gold)">Ingredients:</b> 1 cup warm low-fat milk, ½ tsp ashwagandha powder, pinch of nutmeg, pinch of cardamom, ½ tsp honey (optional).<br><br><b style="color:var(--gold)">Method:</b> Whisk ashwagandha into warm milk. Nutmeg is a natural mild sedative - do not skip it. Drink 1 hour before sleep.<br><br><b style="color:var(--gold)">Why it works:</b> Multiple RCTs show ashwagandha root extract reduces cortisol by 27-30% in 8 weeks. It improves sleep onset time, sleep quality, and total sleep duration. Nutmeg contains myristicin, a documented mild sedative compound.' },
   { id:22, meal:'bedtime', icon:'🍵', name:'Chamomile Tulsi Tea', tags:['Sleep','Immunity'], time:'5 min',
     desc:'Zero-caffeine herbal blend. Powerful for sleep onset, stress reduction and immune regulation.',
-    body:'<b style="color:var(--gold)">Ingredients:</b> 1 tsp dried chamomile (or 1 tea bag), 4–5 fresh tulsi leaves, 1 cup boiling water, ½ tsp honey (optional).<br><br><b style="color:var(--gold)">Method:</b> Steep chamomile and tulsi in boiling water for 5 mins. Strain. Drink 30–45 mins before sleep.<br><br><b style="color:var(--gold)">Why it works:</b> Chamomile contains apigenin, which binds to GABA receptors in the brain — the same receptors targeted by sleep medications, but gently and naturally. Tulsi modulates the stress response. Together they reduce time to fall asleep by up to 20 mins consistently.' },
+    body:'<b style="color:var(--gold)">Ingredients:</b> 1 tsp dried chamomile (or 1 tea bag), 4-5 fresh tulsi leaves, 1 cup boiling water, ½ tsp honey (optional).<br><br><b style="color:var(--gold)">Method:</b> Steep chamomile and tulsi in boiling water for 5 mins. Strain. Drink 30-45 mins before sleep.<br><br><b style="color:var(--gold)">Why it works:</b> Chamomile contains apigenin, which binds to GABA receptors in the brain - the same receptors targeted by sleep medications, but gently and naturally. Tulsi modulates the stress response. Together they reduce time to fall asleep by up to 20 mins consistently.' },
   { id:23, meal:'bedtime', icon:'🥄', name:'Soaked Almonds and Figs', tags:['Magnesium','Deep Sleep'], time:'2 min (prep night before)',
     desc:'Overnight soaked almonds and dried figs. Magnesium-rich combination that promotes deep, restorative sleep.',
-    body:'<b style="color:var(--gold)">Ingredients:</b> 5–6 almonds soaked overnight, 1–2 dried figs soaked overnight.<br><br><b style="color:var(--gold)">Method:</b> Soak almonds and figs overnight separately. Soaking removes phytic acid (an anti-nutrient that blocks mineral absorption). Eat both 1 hour before bed — do not eat the soaking water.<br><br><b style="color:var(--gold)">Why it works:</b> Almonds contain 76 mg magnesium per 28 g serving. Magnesium regulates melatonin and GABA, both essential for sleep onset and depth. Soaking removes 25% of phytic acid, making soaked almonds dramatically more nutritious than raw ones. Figs add prebiotic fibre and natural tryptophan.' }
+    body:'<b style="color:var(--gold)">Ingredients:</b> 5-6 almonds soaked overnight, 1-2 dried figs soaked overnight.<br><br><b style="color:var(--gold)">Method:</b> Soak almonds and figs overnight separately. Soaking removes phytic acid (an anti-nutrient that blocks mineral absorption). Eat both 1 hour before bed - do not eat the soaking water.<br><br><b style="color:var(--gold)">Why it works:</b> Almonds contain 76 mg magnesium per 28 g serving. Magnesium regulates melatonin and GABA, both essential for sleep onset and depth. Soaking removes 25% of phytic acid, making soaked almonds dramatically more nutritious than raw ones. Figs add prebiotic fibre and natural tryptophan.' }
 ];
 
 const MEAL_META = {
-  breakfast: { oji:'🌅', title:'Breakfast',   sub:'6:30 – 9:00 AM  ·  Start Strong' },
-  lunch:     { oji:'☀️', title:'Lunch',       sub:'12:00 – 2:00 PM  ·  Your Largest Meal' },
-  dinner:    { oji:'🌙', title:'Dinner',      sub:'7:00 – 8:30 PM  ·  Light and Early' },
-  bedtime:   { oji:'🌛', title:'Before Bed',  sub:'9:00 – 10:00 PM  ·  Wind Down' }
+  breakfast: { oji:'🌅', title:'Breakfast',   sub:'6:30 - 9:00 AM  -  Start Strong' },
+  lunch:     { oji:'☀️', title:'Lunch',       sub:'12:00 - 2:00 PM  -  Your Largest Meal' },
+  dinner:    { oji:'🌙', title:'Dinner',      sub:'7:00 - 8:30 PM  -  Light and Early' },
+  bedtime:   { oji:'🌛', title:'Before Bed',  sub:'9:00 - 10:00 PM  -  Wind Down' }
 };
 
 function renderRecipes(filter) {
@@ -1360,13 +910,13 @@ function openRecipe(id) {
   document.getElementById('modal').classList.add('on');
 }
 
-// ── KITCHEN MODALS ────────────────────────────────────────
+// -- KITCHEN MODALS ----------------------------------------
 function openModal(type) {
   const M = {
-    lipid: { t:'Lipid Optimization', b:'<b style="color:var(--gold)">The Science:</b> Trans fats in Vanaspati raise LDL and lower HDL simultaneously — a double cardiovascular blow. Even occasional use accumulates damage over years.<br><br><b style="color:var(--gold)">Action:</b> Cold-pressed mustard oil for daily cooking. Olive oil for low-heat use. Ghee maximum 1 tsp per day. The flavour adapts within 2 weeks.<br><br><b style="color:var(--gold)">Eliminate immediately:</b> All hydrogenated oils, packaged fried snacks, and any product listing "partially hydrogenated" on the label.' },
-    grain: { t:'Grain Transition', b:'<b style="color:var(--gold)">The Science:</b> Refined grains are stripped of all fibre and cause rapid blood sugar spikes followed by crashes. They are effectively empty carbohydrates at that point.<br><br><b style="color:var(--gold)">Action:</b> Transition to millets (bajra, jowar, ragi), brown rice, and buckwheat over 4 weeks. These have 3× the fibre and a glycemic index 20–30 points lower than refined equivalents.<br><br><b style="color:var(--gold)">Start here:</b> Replace one meal per day with a millet-based dish this week. The Recipe tab has options for every meal time.' },
-    bev:   { t:'Beverage Audit', b:'<b style="color:var(--gold)">The Science:</b> Liquid calories bypass fullness signals entirely. A glass of orange juice contains the sugar of 4 oranges with none of the fibre — a concentrated glucose delivery system.<br><br><b style="color:var(--gold)">Action:</b> Hydrate with water, herbal tea, or coconut water. Always choose the whole fruit over any juice. The fibre is the medicine.<br><br><b style="color:var(--gold)">Chai rule:</b> Maximum 2 cups per day, low-fat milk, zero added sugar. Switching from whole milk to low-fat milk in chai alone reduces daily saturated fat intake significantly over a year.' },
-    snack: { t:'The Snack Swap', b:'<b style="color:var(--gold)">The Science:</b> Deep-fried snacks like bhujia and namkeen are calorically dense, highly inflammatory, and nutritionally empty. They are the single largest source of trans and oxidised fats in the typical Indian diet.<br><br><b style="color:var(--gold)">Action:</b> Pre-portion a small bowl of roasted chana (15 g) or 8–10 soaked almonds. Keep cut papaya or cucumber in the fridge for the 5 pm craving window.<br><br><b style="color:var(--gold)">The 5 pm rule:</b> Nothing fried after 5 pm. Digestion slows markedly in the evening — fried food at this time has a disproportionate impact on cholesterol and blood sugar overnight.' }
+    lipid: { t:'Lipid Optimization', b:'<b style="color:var(--gold)">The Science:</b> Trans fats in Vanaspati raise LDL and lower HDL simultaneously - a double cardiovascular blow. Even occasional use accumulates damage over years.<br><br><b style="color:var(--gold)">Action:</b> Cold-pressed mustard oil for daily cooking. Olive oil for low-heat use. Ghee maximum 1 tsp per day. The flavour adapts within 2 weeks.<br><br><b style="color:var(--gold)">Eliminate immediately:</b> All hydrogenated oils, packaged fried snacks, and any product listing "partially hydrogenated" on the label.' },
+    grain: { t:'Grain Transition', b:'<b style="color:var(--gold)">The Science:</b> Refined grains are stripped of all fibre and cause rapid blood sugar spikes followed by crashes. They are effectively empty carbohydrates at that point.<br><br><b style="color:var(--gold)">Action:</b> Transition to millets (bajra, jowar, ragi), brown rice, and buckwheat over 4 weeks. These have 3× the fibre and a glycemic index 20-30 points lower than refined equivalents.<br><br><b style="color:var(--gold)">Start here:</b> Replace one meal per day with a millet-based dish this week. The Recipe tab has options for every meal time.' },
+    bev:   { t:'Beverage Audit', b:'<b style="color:var(--gold)">The Science:</b> Liquid calories bypass fullness signals entirely. A glass of orange juice contains the sugar of 4 oranges with none of the fibre - a concentrated glucose delivery system.<br><br><b style="color:var(--gold)">Action:</b> Hydrate with water, herbal tea, or coconut water. Always choose the whole fruit over any juice. The fibre is the medicine.<br><br><b style="color:var(--gold)">Chai rule:</b> Maximum 2 cups per day, low-fat milk, zero added sugar. Switching from whole milk to low-fat milk in chai alone reduces daily saturated fat intake significantly over a year.' },
+    snack: { t:'The Snack Swap', b:'<b style="color:var(--gold)">The Science:</b> Deep-fried snacks like bhujia and namkeen are calorically dense, highly inflammatory, and nutritionally empty. They are the single largest source of trans and oxidised fats in the typical Indian diet.<br><br><b style="color:var(--gold)">Action:</b> Pre-portion a small bowl of roasted chana (15 g) or 8-10 soaked almonds. Keep cut papaya or cucumber in the fridge for the 5 pm craving window.<br><br><b style="color:var(--gold)">The 5 pm rule:</b> Nothing fried after 5 pm. Digestion slows markedly in the evening - fried food at this time has a disproportionate impact on cholesterol and blood sugar overnight.' }
   };
   document.getElementById('mtitle').innerText = M[type].t;
   document.getElementById('mbody').innerHTML = M[type].b;
@@ -1375,20 +925,20 @@ function openModal(type) {
 
 function closeModal() { document.getElementById('modal').classList.remove('on'); }
 
-// ── SUGGESTIONS EXPAND ─────────────────────────────────────
+// -- SUGGESTIONS EXPAND -------------------------------------
 function xp(id) {
   const el = document.getElementById(id);
   el.classList.toggle('on');
   el.previousElementSibling.innerText = el.classList.contains('on') ? 'Read less ▴' : 'Read more ▾';
 }
 
-// ── WHATSAPP ───────────────────────────────────────────────
+// -- WHATSAPP -----------------------------------------------
 function sendWA() {
-  const msg = `*Swasth OS — Weekly Pantry Matrix* 🛒\n\n✅ Cold-pressed Mustard / Olive Oil\n✅ Millets — Bajra, Jowar, Ragi flour\n✅ Brown Rice & Quinoa\n✅ Sprouted Moong & Rajma\n✅ Masoor Dal & Toor Dal\n✅ Ground Flaxseed & Chia Seeds\n✅ Rolled Oats & Pearl Barley\n✅ Spinach, Lauki & Seasonal Sabzi\n✅ Roasted Chana & Soaked Almonds\n✅ Whole Fruits — Papaya, Amla, Banana\n✅ Low-fat Milk & Fresh Curd\n✅ Triphala Churna & Ashwagandha Powder\n✅ Chamomile & Tulsi (dried)\n\n_This week: No Vanaspati. No packaged snacks. Light dinner before 8 pm._ 💪`;
+  const msg = `*Swasth OS - Weekly Pantry Matrix* 🛒\n\n✅ Cold-pressed Mustard / Olive Oil\n✅ Millets - Bajra, Jowar, Ragi flour\n✅ Brown Rice & Quinoa\n✅ Sprouted Moong & Rajma\n✅ Masoor Dal & Toor Dal\n✅ Ground Flaxseed & Chia Seeds\n✅ Rolled Oats & Pearl Barley\n✅ Spinach, Lauki & Seasonal Sabzi\n✅ Roasted Chana & Soaked Almonds\n✅ Whole Fruits - Papaya, Amla, Banana\n✅ Low-fat Milk & Fresh Curd\n✅ Triphala Churna & Ashwagandha Powder\n✅ Chamomile & Tulsi (dried)\n\n_This week: No Vanaspati. No packaged snacks. Light dinner before 8 pm._ 💪`;
   window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
 }
 
-// ── REFLECTION ─────────────────────────────────────────────
+// -- REFLECTION ---------------------------------------------
 const SHEETS = "https://script.google.com/macros/s/AKfycbwKfXl-7nWsukE2VoBfgKEYIlbduJHd6OW7qy2FAPbNSM8khBiNZfosS4hUowGR5rpt/exec";
 
 function submitReflection() {
@@ -1402,7 +952,7 @@ function submitReflection() {
   });
 }
 
-// ── SHEETS SYNC ────────────────────────────────────────────
+// -- SHEETS SYNC --------------------------------------------
 function syncDB() {
   const ids = ['c1','c2','c3','c4','c5','c6','c7'];
   const d = new Date().toLocaleDateString('en-IN',{weekday:'short',month:'short',day:'numeric'});
@@ -1413,7 +963,7 @@ function syncHealthDB(e) {
   fetch(SHEETS,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({...e,user:'Family',type:'HealthLog'})}).catch(()=>{});
 }
 
-// ── TRANSLATIONS ───────────────────────────────────────────
+// -- TRANSLATIONS -------------------------------------------
 function setLang(lang) {
   document.querySelectorAll('.lbtn').forEach(b=>b.classList.remove('active'));
   document.getElementById('btn-'+lang).classList.add('active');
@@ -1421,9 +971,8 @@ function setLang(lang) {
   for (let k in T[lang]) document.querySelectorAll('.'+k).forEach(el=>el.innerText=T[lang][k]);
 }
 
-// ── INIT ───────────────────────────────────────────────────
+// -- INIT ---------------------------------------------------
 window.onload = () => {
-  restoreChecks(); // Fixed Bug 2: Load the checkboxes FIRST
   fetchSunrise();
   renderChart();
   buildDots();
