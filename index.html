@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swasth OS | The Premium Protocol</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #050505;
+            --gold-primary: #D4AF37;
+            --gold-dim: rgba(212, 175, 55, 0.15);
+            --text-light: #FDFDFD;
+            --text-muted: #9E9E9E;
+            --glass-bg: rgba(25, 25, 25, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.05);
+            --success: #2E7D32;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-deep);
+            color: var(--text-light);
+            background-image: radial-gradient(circle at 50% 0%, #1a1a1a 0%, #050505 70%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Cinematic Hero */
+        .hero {
+            height: 50vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(to bottom, rgba(5,5,5,0.1), var(--bg-deep)), 
+                        url('https://images.unsplash.com/photo-1600508585915-0b01c3c52d00?q=80&w=2000&auto=format&fit=crop') center/cover;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 4.5rem;
+            font-weight: 600;
+            color: var(--gold-primary);
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        /* Tab Navigation */
+        .tab-nav {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 20px;
+            position: sticky;
+            top: 0;
+            background: rgba(5, 5, 5, 0.85);
+            backdrop-filter: blur(15px);
+            z-index: 100;
+            border-bottom: 1px solid var(--glass-border);
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid transparent;
+            padding: 12px 24px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+        }
+
+        .tab-btn:hover { color: var(--text-light); }
+        .tab-btn.active {
+            color: var(--gold-primary);
+            border: 1px solid var(--gold-dim);
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        /* Content Area */
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .tab-content.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Section Typography */
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.8rem;
+            color: var(--text-light);
+            margin-bottom: 30px;
+            font-weight: 400;
+            border-bottom: 1px solid var(--glass-border);
+            padding-bottom: 15px;
+        }
+
+        /* Glassmorphic Cards */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 25px;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+            border-color: var(--gold-dim);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .card-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            color: var(--gold-primary);
+        }
+
+        .tag {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: var(--gold-dim);
+            color: var(--gold-primary);
+            font-weight: 500;
+        }
+
+        .card-body { font-size: 0.95rem; color: var(--text-muted); line-height: 1.8; }
+        .card-body strong { color: var(--text-light); font-weight: 500; }
+
+        /* Sleek Toggles */
+        .toggle-wrapper { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--glass-border); margin-top: 20px; padding-top: 20px; }
+        .toggle-label { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
+        
+        input[type="checkbox"] {
+            appearance: none; width: 50px; height: 26px;
+            background: #222; border-radius: 30px;
+            position: relative; cursor: pointer; outline: none;
+            border: 1px solid var(--glass-border);
+            transition: background 0.4s;
+        }
+        input[type="checkbox"]::after {
+            content: ''; position: absolute;
+            top: 2px; left: 2px; width: 20px; height: 20px;
+            background: var(--text-muted); border-radius: 50%;
+            transition: transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1), background 0.4s;
+        }
+        input[type="checkbox"]:checked { background: var(--gold-dim); border-color: var(--gold-primary); }
+        input[type="checkbox"]:checked::after { transform: translateX(24px); background: var(--gold-primary); }
+
+        /* Grid Layouts */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } .hero h1 { font-size: 3rem; } }
+
+    </style>
+</head>
+<body>
+
+    <header class="hero">
+        <h1>Swasth OS</h1>
+        <p>The Longevity & Vitality Protocol</p>
+    </header>
+
+    <nav class="tab-nav">
+        <button class="tab-btn active" onclick="openTab(event, 'Arc')">The Daily Arc</button>
+        <button class="tab-btn" onclick="openTab(event, 'Alchemy')">Nutritional Alchemy</button>
+        <button class="tab-btn" onclick="openTab(event, 'Anchor')">Spiritual Anchor</button>
+        <button class="tab-btn" onclick="openTab(event, 'Metrics')">Vital Metrics</button>
+    </nav>
+
+    <main class="container">
+        
+        <div id="Arc" class="tab-content active">
+            <h2 class="section-title">The Daily Arc</h2>
+            
+            <div class="glass-card">
+                <div class="card-header">
+                    <h3 class="card-title">Dawn: Awakening</h3>
+                    <span class="tag">06:00 - 09:00</span>
+                </div>
+                <div class="card-body">
+                    <strong>Surya Darshan (Sunlight View):</strong> 5-10 minutes of direct outdoor light to trigger the cortisol awakening response and set the 12-hour melatonin timer.<br><br>
+                    <strong>Hydration Sequence:</strong> The natural thirst sensation decreases with age. Replenishing 900ml of fluids lost overnight is critical for metabolism before consuming any caffeine.<br><br>
+                    <strong>Adenosine Clearance:</strong> Delay tea/coffee by 90 minutes to allow sleep chemicals to naturally dissipate, preventing the afternoon energy crash.
+                </div>
+                <div class="toggle-wrapper">
+                    <span class="toggle-label">Dawn Sequence Complete</span>
+                    <input type="checkbox">
+                </div>
+            </div>
+
+            <div class="glass-card">
+                <div class="card-header">
+                    <h3 class="card-title">Noon: Sustenance</h3>
+                    <span class="tag">12:00 - 14:00</span>
+                </div>
+                <div class="card-body">
+                    <strong>The Fibre Matrix:</strong> Consume a raw salad prior to the main course. Dietary fibre physically slows gastric emptying, blunting the glucose spike and binding to cholesterol-rich bile.<br><br>
+                    <strong>Protein Synthesis:</strong> As stomach acid naturally decreases, absorbing B12 and processing heavy meats becomes difficult. Prioritize pulses, lentils, and tofu for high-quality, zero-cholesterol protein.
+                </div>
+                <div class="toggle-wrapper">
+                    <span class="toggle-label">Noon Sequence Complete</span>
+                    <input type="checkbox">
+                </div>
+            </div>
+
+            <div class="glass-card">
+                <div class="card-header">
+                    <h3 class="card-title">Dusk: Restoration</h3>
+                    <span class="tag">19:00 - 22:00</span>
+                </div>
+                <div class="card-body">
+                    <strong>Glucose Disposal Walk:</strong> A 15-minute gentle walk post-dinner utilizes leg musculature to clear blood glucose, protecting the pancreas and aiding evening digestion.<br><br>
+                    <strong>Digital Sunset:</strong> Cease screen exposure 60 minutes before sleep to allow the pineal gland to synthesize melatonin uninterrupted by artificial blue light.
+                </div>
+                <div class="toggle-wrapper">
+                    <span class="toggle-label">Dusk Sequence Complete</span>
+                    <input type="checkbox">
+                </div>
+            </div>
+        </div>
+
+        <div id="Alchemy" class="tab-content">
+            <h2 class="section-title">Nutritional Alchemy</h2>
+            <div class="grid-2">
+                <div class="glass-card">
+                    <h3 class="card-title" style="font-size: 1.4rem; margin-bottom: 10px;">Lipid Optimization</h3>
+                    <div class="card-body">
+                        Replace saturated animal fats (ghee, butter) with monounsaturated oils (olive, canola, peanut) for daily tadka. This preserves the HDL (good cholesterol) while actively lowering LDL markers.
+                    </div>
+                </div>
+                <div class="glass-card">
+                    <h3 class="card-title" style="font-size: 1.4rem; margin-bottom: 10px;">Omega Fortification</h3>
+                    <div class="card-body">
+                        Integrate 1 tablespoon of ground flaxseed into daily chapati dough. This introduces essential Omega-3 fatty acids for cardiovascular health and joint lubrication without altering traditional textures.
+                    </div>
+                </div>
+                <div class="glass-card">
+                    <h3 class="card-title" style="font-size: 1.4rem; margin-bottom: 10px;">Grain Transition</h3>
+                    <div class="card-body">
+                        Adults require 21 to 30 grams of fibre daily. Transition from refined white rice to brown rice (starting with a 50/50 mix) and incorporate oats upma to leverage soluble fibre for blood sugar stabilization.
+                    </div>
+                </div>
+                <div class="glass-card">
+                    <h3 class="card-title" style="font-size: 1.4rem; margin-bottom: 10px;">Fructose Sourcing</h3>
+                    <div class="card-body">
+                        Substitute processed sweets and fruit juices with whole fruits (baked apples, fresh orange segments). The intact cellular structure and pectin ensure natural sweetness without metabolic disruption.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="Anchor" class="tab-content">
+            <h2 class="section-title">Spiritual Anchor</h2>
+            
+            <div class="glass-card" style="text-align: center; padding: 50px 30px;">
+                <h3 class="card-title" style="font-size: 2.2rem; margin-bottom: 20px;">"He who is temperate in his habits of eating, sleeping, working and recreation can mitigate all material pains."</h3>
+                <div class="tag" style="background: transparent; border: 1px solid var(--gold-primary);">Bhagavad Gita — Chapter 6, Verse 17</div>
+            </div>
+
+            <div class="glass-card">
+                <div class="card-header">
+                    <h3 class="card-title">Somatic Regulation</h3>
+                    <span class="tag">Breathwork</span>
+                </div>
+                <div class="card-body">
+                    <strong>Nadi Shodhana (Alternate Nostril Breathing):</strong><br>
+                    Balances the autonomic nervous system. Inhale through the left nostril (parasympathetic activation), exhale through the right. Repeat for 5 minutes to drastically lower blood pressure and cortisol before sleep.
+                </div>
+            </div>
+        </div>
+
+        <div id="Metrics" class="tab-content">
+            <h2 class="section-title">Vital Metrics & Longevity</h2>
+            
+            <div class="glass-card">
+                <div class="card-header">
+                    <h3 class="card-title">Annual Clinical Biomarkers</h3>
+                    <span class="tag">Maintenance</span>
+                </div>
+                <div class="card-body">
+                    <ul style="list-style: none; margin-top: 10px;">
+                        <li style="margin-bottom: 20px; border-bottom: 1px solid var(--glass-border); padding-bottom: 15px;">
+                            <strong style="color: var(--gold-primary); font-size: 1.1rem;">Bone Density Scan (DEXA)</strong><br>
+                            Critical evaluation for osteopenia. Hormonal shifts post-50 accelerate bone mass loss up to 15%. Early detection prevents skeletal fragility.
+                        </li>
+                        <li style="margin-bottom: 20px; border-bottom: 1px solid var(--glass-border); padding-bottom: 15px;">
+                            <strong style="color: var(--gold-primary); font-size: 1.1rem;">Metabolic Circumference</strong><br>
+                            Visceral adiposity (abdominal fat) is a primary driver of metabolic syndrome. Thresholds must remain below 40 inches (men) and 35 inches (women) to mitigate diabetes risk.
+                        </li>
+                        <li style="margin-bottom: 20px; border-bottom: 1px solid var(--glass-border); padding-bottom: 15px;">
+                            <strong style="color: var(--gold-primary); font-size: 1.1rem;">Endothelial Health</strong><br>
+                            Consistent blood pressure monitoring. Hypertension operates asymptomatically and is the leading vector for cardiovascular events.
+                        </li>
+                        <li>
+                            <strong style="color: var(--gold-primary); font-size: 1.1rem;">Routine Oncology Screens</strong><br>
+                            Mandatory adherence to scheduled mammography, prostate, and colon screenings in the sixth decade of life.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        function openTab(evt, tabName) {
+            // Hide all tab content
+            const tabcontent = document.getElementsByClassName("tab-content");
+            for (let i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.remove("active");
+            }
+
+            // Remove active class from all buttons
+            const tablinks = document.getElementsByClassName("tab-btn");
+            for (let i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+
+            // Show current tab and add active class to button
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+    </script>
+</body>
+</html>
