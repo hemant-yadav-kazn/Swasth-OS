@@ -254,7 +254,147 @@ input[type=checkbox]:checked::after{transform:translateX(22px);background:var(--
   .wsummary{flex-wrap:wrap;}
 }
 
-/* ─── GITA MODULE ─── */
+/* ── GITA DAILY CARD ON ARC TAB ── */
+.arc-gita{position:relative;border-radius:20px;overflow:hidden;margin-bottom:24px;cursor:pointer;transition:transform .4s,box-shadow .4s;}
+.arc-gita:hover{transform:translateY(-4px);box-shadow:0 20px 60px rgba(0,0,0,.7);}
+.arc-gita-bg{position:absolute;inset:0;z-index:0;}
+.arc-gita-bg svg{width:100%;height:100%;}
+.arc-gita-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(6,6,6,.82) 0%,rgba(6,6,6,.55) 100%);z-index:1;}
+.arc-gita-body{position:relative;z-index:2;padding:28px 28px 24px;}
+.arc-gita-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;}
+.arc-gita-label{font-size:.62rem;letter-spacing:3.5px;text-transform:uppercase;color:var(--gold);opacity:.9;}
+.arc-gita-streak{display:flex;align-items:center;gap:6px;font-size:.7rem;color:var(--gold-lt);background:rgba(201,168,76,.12);border:1px solid var(--gold-b);padding:4px 10px;border-radius:20px;}
+.arc-gita-skt{font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:rgba(226,201,126,.65);font-style:italic;margin-bottom:10px;line-height:1.6;}
+.arc-gita-quote{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:400;color:var(--text);line-height:1.5;margin-bottom:12px;}
+.arc-gita-attr{font-size:.65rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);opacity:.75;margin-bottom:16px;}
+.arc-gita-actions{display:flex;gap:10px;flex-wrap:wrap;}
+.arc-gita-btn{background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);color:var(--gold-lt);padding:7px 16px;border-radius:20px;font-family:'Montserrat',sans-serif;font-size:.7rem;letter-spacing:1px;cursor:pointer;transition:all .3s;}
+.arc-gita-btn:hover{background:var(--gold);color:#060606;}
+
+/* ── STREAK CALENDAR ── */
+.streak-cal{display:flex;gap:4px;flex-wrap:wrap;margin:14px 0 4px;}
+.streak-dot{width:12px;height:12px;border-radius:3px;background:rgba(255,255,255,.06);border:1px solid var(--gb);transition:background .4s,transform .2s;}
+.streak-dot.read{background:var(--gold);border-color:var(--gold);}
+.streak-dot.today{transform:scale(1.3);box-shadow:0 0 8px var(--gold);}
+.streak-stats{display:flex;gap:16px;margin-top:8px;flex-wrap:wrap;}
+.streak-stat{text-align:center;}
+.streak-stat-val{font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--gold);line-height:1;}
+.streak-stat-lbl{font-size:.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:3px;}
+
+/* ── MYTHOLOGY ART BACKGROUNDS ── */
+@keyframes artFloat{0%,100%{opacity:.18;transform:scale(1)}50%{opacity:.28;transform:scale(1.03)}}
+
+.bmi-visual-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:0;height:8px;border-radius:8px;overflow:hidden;margin:16px 0 6px;}
+.bmi-zone{height:100%;transition:opacity .4s;}
+.bmi-zone.active{box-shadow:0 0 12px currentColor;}
+
+/* ═══ MOOD & ENERGY CHECK-IN ═══ */
+.mood-card{background:linear-gradient(135deg,rgba(201,168,76,.06),rgba(0,0,0,0));border:1px solid var(--gold-b);border-radius:18px;padding:22px 24px;margin-bottom:22px;}
+.mood-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.mood-header-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--gold-lt);}
+.mood-header-sub{font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.mood-row{display:flex;align-items:center;gap:14px;margin-bottom:12px;}
+.mood-icon{font-size:1.3rem;width:28px;flex-shrink:0;}
+.mood-label{font-size:.68rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);width:56px;flex-shrink:0;}
+.mood-slider{flex:1;-webkit-appearance:none;appearance:none;height:5px;border-radius:3px;background:rgba(255,255,255,.08);outline:none;cursor:pointer;}
+.mood-slider::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--gold);cursor:pointer;box-shadow:0 0 10px rgba(201,168,76,.6);}
+.mood-val{font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--gold);width:26px;text-align:center;flex-shrink:0;line-height:1;}
+.mood-save-row{display:flex;gap:10px;align-items:center;margin-top:14px;}
+.mood-saved-ok{font-size:.78rem;color:var(--ok);display:none;}
+.mood-correlation{background:rgba(0,0,0,.25);border-radius:12px;padding:14px 16px;margin-top:16px;}
+.mood-corr-title{font-size:.63rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+.mood-corr-row{display:flex;align-items:center;gap:10px;margin-bottom:7px;}
+.mood-corr-row:last-child{margin-bottom:0;}
+.mood-corr-name{font-size:.78rem;color:var(--soft);flex:1;}
+.mood-corr-bar{width:90px;height:5px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;}
+.mood-corr-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--gold),#66BB6A);transition:width .8s ease;}
+.mood-corr-num{font-size:.72rem;color:var(--gold);width:30px;text-align:right;}
+
+/* ═══ FAMILY MODE ═══ */
+.family-switcher{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.fam-btn{display:flex;flex-direction:column;align-items:center;gap:5px;background:rgba(0,0,0,.3);border:1px solid var(--gb);border-radius:16px;padding:12px 14px;cursor:pointer;transition:all .3s;min-width:76px;}
+.fam-btn:hover{border-color:var(--gold-b);}
+.fam-btn.active{border-color:var(--gold);background:var(--gold-dim);}
+.fam-avatar{width:40px;height:40px;border-radius:50%;background:var(--gold-dim);border:2px solid var(--gold-b);display:flex;align-items:center;justify-content:center;font-size:1.1rem;transition:border-color .3s;}
+.fam-btn.active .fam-avatar{border-color:var(--gold);}
+.fam-name{font-size:.66rem;letter-spacing:.5px;color:var(--soft);text-align:center;max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.fam-btn.active .fam-name{color:var(--gold);}
+.fam-banner{background:linear-gradient(90deg,rgba(201,168,76,.08),transparent);border:1px solid var(--gold-b);border-radius:12px;padding:12px 18px;margin-bottom:18px;display:flex;align-items:center;gap:12px;}
+.fam-banner-avatar{font-size:1.6rem;}
+.fam-banner-name{font-family:'Cormorant Garamond',serif;font-size:1.25rem;color:var(--gold-lt);}
+.fam-banner-sub{font-size:.68rem;color:var(--muted);}
+
+/* ═══ DOSHA QUIZ ═══ */
+.dosha-wrap{max-width:600px;margin:0 auto;}
+.dosha-intro{text-align:center;padding:24px 0 32px;}
+.dosha-symbol{font-size:4rem;margin-bottom:12px;line-height:1;}
+.dosha-progress{display:flex;gap:5px;justify-content:center;margin-bottom:24px;}
+.dosha-pip{width:24px;height:4px;border-radius:2px;background:rgba(255,255,255,.08);transition:background .3s;}
+.dosha-pip.done{background:var(--gold);}
+.dosha-pip.cur{background:var(--gold-lt);}
+.dosha-q-text{font-family:'Cormorant Garamond',serif;font-size:1.7rem;color:var(--text);margin-bottom:20px;line-height:1.45;text-align:center;}
+.dosha-opts{display:flex;flex-direction:column;gap:9px;margin-bottom:24px;}
+.dosha-opt{background:rgba(0,0,0,.3);border:1px solid var(--gb);border-radius:12px;padding:14px 18px;cursor:pointer;transition:all .3s;font-size:.86rem;color:var(--soft);text-align:left;line-height:1.5;}
+.dosha-opt:hover{border-color:var(--gold-b);color:var(--text);}
+.dosha-opt.sel{border-color:var(--gold);background:var(--gold-dim);color:var(--gold-lt);}
+.dosha-opt-tag{font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:3px;}
+.dosha-opt.sel .dosha-opt-tag{color:var(--gold);}
+.dosha-result{text-align:center;animation:fu .5s ease;}
+.dosha-result-symbol{font-size:4.5rem;margin-bottom:8px;line-height:1;}
+.dosha-result-name{font-family:'Cormorant Garamond',serif;font-size:3.2rem;color:var(--gold);margin-bottom:6px;line-height:1;}
+.dosha-result-sub{font-size:.7rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:24px;}
+.dosha-bars{display:flex;gap:14px;justify-content:center;margin-bottom:28px;}
+.dosha-bar-col{text-align:center;flex:1;max-width:90px;}
+.dosha-bar-track{height:90px;background:rgba(255,255,255,.05);border-radius:8px;overflow:hidden;display:flex;align-items:flex-end;margin-bottom:6px;}
+.dosha-bar-fill{width:100%;border-radius:8px;transition:height 1.2s cubic-bezier(.4,0,.2,1);}
+.dosha-bar-lbl{font-size:.64rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.dosha-rec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:20px;}
+.dosha-rec{background:rgba(0,0,0,.3);border:1px solid var(--gb);border-radius:12px;padding:14px;text-align:center;}
+.dosha-rec-icon{font-size:1.4rem;margin-bottom:6px;}
+.dosha-rec-title{font-size:.64rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:5px;}
+.dosha-rec-body{font-size:.74rem;color:var(--muted);line-height:1.55;}
+@media(max-width:680px){.dosha-rec-grid{grid-template-columns:1fr 1fr;}}
+
+/* ═══ AYURVEDIC SEASON CARD ═══ */
+.season-card{border-radius:18px;overflow:hidden;position:relative;margin-bottom:20px;min-height:180px;}
+.season-bg{position:absolute;inset:0;z-index:0;}
+.season-bg svg{width:100%;height:100%;}
+.season-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(6,6,6,.85),rgba(6,6,6,.5));z-index:1;}
+.season-body{position:relative;z-index:2;padding:26px;}
+.season-tag{font-size:.6rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;display:block;}
+.season-name{font-family:'Cormorant Garamond',serif;font-size:2.2rem;color:var(--text);line-height:1;margin-bottom:4px;}
+.season-sub{font-size:.78rem;color:var(--soft);margin-bottom:16px;}
+.season-recs{display:flex;flex-direction:column;gap:7px;}
+.season-rec-row{display:flex;align-items:flex-start;gap:10px;font-size:.81rem;color:var(--soft);line-height:1.5;}
+.season-rec-ico{font-size:.95rem;flex-shrink:0;margin-top:1px;}
+
+/* ═══ PROGRESS JOURNAL ═══ */
+.journal-checkin{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;}
+.jci{background:rgba(0,0,0,.3);border:1px solid var(--gb);border-radius:12px;padding:12px;text-align:center;cursor:pointer;transition:all .25s;user-select:none;}
+.jci:hover{border-color:var(--gold-b);}
+.jci.sel{border-color:var(--gold);background:var(--gold-dim);}
+.jci-icon{font-size:1.3rem;margin-bottom:4px;}
+.jci-label{font-size:.65rem;letter-spacing:1px;color:var(--muted);}
+.jci.sel .jci-label{color:var(--gold);}
+.journal-entry{background:rgba(0,0,0,.25);border:1px solid var(--gb);border-radius:14px;padding:18px 20px;margin-bottom:12px;position:relative;}
+.journal-date{font-size:.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.journal-text{font-size:.84rem;color:var(--soft);line-height:1.8;}
+.journal-chips{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+.journal-chip{font-size:.65rem;color:var(--muted);background:rgba(255,255,255,.04);padding:3px 9px;border-radius:8px;border:1px solid var(--gb);}
+.journal-del{position:absolute;top:12px;right:12px;background:none;border:none;color:var(--muted);cursor:pointer;font-size:.9rem;opacity:.4;transition:opacity .2s;}
+.journal-del:hover{opacity:1;color:#EF5350;}
+@media(max-width:680px){.journal-checkin{grid-template-columns:1fr 1fr;}}
+
+/* ═══ SMART HABIT SUGGESTION ═══ */
+.habit-nudge{background:linear-gradient(135deg,rgba(201,168,76,.07),rgba(91,76,204,.05));border:1px solid rgba(201,168,76,.25);border-radius:14px;padding:16px 18px;margin-bottom:16px;display:flex;gap:12px;}
+.nudge-icon{font-size:1.4rem;flex-shrink:0;}
+.nudge-body{flex:1;}
+.nudge-title{font-size:.64rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:4px;}
+.nudge-text{font-size:.82rem;color:var(--soft);line-height:1.7;}
+.nudge-verse{font-family:'Cormorant Garamond',serif;font-size:1rem;color:rgba(226,201,126,.65);font-style:italic;margin-top:6px;}
+
+/* ═══ WA PREVIEW ═══ */
+.wa-preview{background:rgba(37,211,102,.05);border:1px solid rgba(37,211,102,.2);border-radius:14px;padding:16px 18px;font-size:.8rem;color:var(--soft);line-height:1.9;white-space:pre-wrap;max-height:280px;overflow-y:auto;margin:14px 0;}
 .gita-daily{background:linear-gradient(135deg,rgba(201,168,76,.07) 0%,rgba(0,0,0,.0) 100%);border:1px solid var(--gold-b);border-radius:18px;padding:36px 32px;margin-bottom:28px;position:relative;overflow:hidden;text-align:center;}
 .gita-daily::before{content:'॥ श्रीमद्भगवद्गीता ॥';position:absolute;top:14px;left:50%;transform:translateX(-50%);font-size:.65rem;letter-spacing:3px;color:rgba(201,168,76,.4);white-space:nowrap;}
 .gita-daily::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 40% at 50% 0%,rgba(201,168,76,.05),transparent);pointer-events:none;}
@@ -383,6 +523,10 @@ input[type=checkbox]:checked::after{transform:translateX(22px);background:var(--
   <button class="tbtn" onclick="openTab(event,'Recipes')">Recipes</button>
   <button class="tbtn" onclick="openTab(event,'Suggest')">Suggestions</button>
   <button class="tbtn" onclick="openTab(event,'Gita')">🕉 Gita</button>
+  <button class="tbtn" onclick="openTab(event,'Ayurveda')">🌿 Ayurveda</button>
+  <button class="tbtn" onclick="openTab(event,'Journal')">📓 Journal</button>
+  <button class="tbtn" onclick="openTab(event,'Dosha')">☯ Dosha</button>
+  <button class="tbtn" onclick="openTab(event,'Family')">👨‍👩‍👧 Family</button>
 </nav>
 
 <main class="wrap">
@@ -392,8 +536,70 @@ input[type=checkbox]:checked::after{transform:translateX(22px);background:var(--
 ════════════════════════════════ -->
 <div id="Arc" class="tab on">
   <h2 class="stitle">The Daily Arc</h2>
+
+  <!-- FAMILY SWITCHER -->
+  <div id="family-switcher-bar"></div>
+  <div class="arc-gita" id="arc-gita-card" onclick="openTab({currentTarget:document.querySelector('[onclick*=Gita]')},'Gita')">
+    <div class="arc-gita-bg" id="arc-gita-bg"><!-- SVG art injected by JS --></div>
+    <div class="arc-gita-overlay"></div>
+    <div class="arc-gita-body">
+      <div class="arc-gita-top">
+        <span class="arc-gita-label">🕉 Today's Shloka</span>
+        <span class="arc-gita-streak" id="arc-gita-streak-badge">🔥 0 day streak</span>
+      </div>
+      <div class="arc-gita-skt" id="arc-gita-skt"></div>
+      <div class="arc-gita-quote" id="arc-gita-q">Loading today's wisdom…</div>
+      <div class="arc-gita-attr" id="arc-gita-attr"></div>
+      <div class="arc-gita-actions">
+        <button class="arc-gita-btn" onclick="event.stopPropagation();arcGitaMarkRead()">✓ Read Today</button>
+        <button class="arc-gita-btn" onclick="event.stopPropagation();arcGitaNext()">Next Shloka →</button>
+        <button class="arc-gita-btn" onclick="event.stopPropagation();arcGitaReadChapter()">Read Full Chapter</button>
+      </div>
+    </div>
+  </div>
+
   <div class="tulsi" id="tulsi">&#127807;</div>
   <p class="phint" id="phint">Complete habits to nourish the Tulsi</p>
+
+  <!-- MOOD & ENERGY CHECK-IN -->
+  <div class="mood-card" id="mood-card">
+    <div class="mood-header">
+      <div>
+        <div class="mood-header-title">How are you today?</div>
+        <div class="mood-header-sub">Energy · Mood · Stress</div>
+      </div>
+      <span id="mood-saved-badge" style="display:none;font-size:.7rem;color:var(--ok);letter-spacing:1px;">✓ Logged</span>
+    </div>
+    <div class="mood-row">
+      <span class="mood-icon">⚡</span>
+      <span class="mood-label">Energy</span>
+      <input type="range" class="mood-slider" id="mood-energy" min="1" max="5" value="3" oninput="document.getElementById('mood-e-val').innerText=this.value;updateMoodGradient('energy',this.value)">
+      <span class="mood-val" id="mood-e-val">3</span>
+    </div>
+    <div class="mood-row">
+      <span class="mood-icon">😊</span>
+      <span class="mood-label">Mood</span>
+      <input type="range" class="mood-slider" id="mood-mood" min="1" max="5" value="3" oninput="document.getElementById('mood-m-val').innerText=this.value;updateMoodGradient('mood',this.value)">
+      <span class="mood-val" id="mood-m-val">3</span>
+    </div>
+    <div class="mood-row" style="margin-bottom:0">
+      <span class="mood-icon">🌬️</span>
+      <span class="mood-label">Stress</span>
+      <input type="range" class="mood-slider" id="mood-stress" min="1" max="5" value="3" oninput="document.getElementById('mood-s-val').innerText=this.value">
+      <span class="mood-val" id="mood-s-val">3</span>
+    </div>
+    <div class="mood-save-row">
+      <button class="abtn" style="padding:9px 20px;font-size:.75rem" onclick="saveMoodLog()">Log Today's Mood</button>
+      <span class="mood-saved-ok" id="mood-ok">✓ Saved</span>
+    </div>
+    <div class="mood-correlation" id="mood-correlation" style="display:none">
+      <div class="mood-corr-title">Habit impact on your energy (30-day pattern)</div>
+      <div id="mood-corr-body"></div>
+    </div>
+  </div>
+
+  <!-- SMART HABIT SUGGESTION -->
+  <div id="habit-nudge-area"></div>
 
   <div class="card">
     <div class="ch"><h3 class="ctitle">Dawn: Awakening</h3><span class="tag" id="sunrise-tag">&#127749; Sunrise…</span></div>
@@ -957,6 +1163,25 @@ input[type=checkbox]:checked::after{transform:translateX(22px);background:var(--
   <h2 class="stitle">Bhagavad Gita</h2>
   <p class="cbody" style="text-align:center;margin-bottom:32px;max-width:620px;margin-left:auto;margin-right:auto">Ancient wisdom for daily living. A new shloka greets you each day. Read the complete text whenever you seek deeper understanding.</p>
 
+  <!-- READING STREAK -->
+  <div class="card" style="cursor:default;margin-bottom:28px">
+    <div class="ch">
+      <h3 class="ctitle">Reading Streak</h3>
+      <span class="tag" id="gita-streak-tag">0 days</span>
+    </div>
+    <div class="streak-stats" id="gita-streak-stats">
+      <div class="streak-stat"><div class="streak-stat-val" id="gs-current">0</div><div class="streak-stat-lbl">Current Streak</div></div>
+      <div class="streak-stat"><div class="streak-stat-val" id="gs-longest">0</div><div class="streak-stat-lbl">Longest Streak</div></div>
+      <div class="streak-stat"><div class="streak-stat-val" id="gs-total">0</div><div class="streak-stat-lbl">Total Days Read</div></div>
+      <div class="streak-stat"><div class="streak-stat-val" id="gs-chapters">0</div><div class="streak-stat-lbl">Chapters Explored</div></div>
+    </div>
+    <div style="margin-top:18px">
+      <div style="font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px">Last 30 days</div>
+      <div class="streak-cal" id="gita-streak-cal"></div>
+    </div>
+    <div style="margin-top:16px;font-size:.8rem;color:var(--muted)" id="gita-streak-msg">Mark today's shloka as read to start your streak.</div>
+  </div>
+
   <!-- DAILY QUOTE CARD -->
   <div class="gita-daily" id="gita-daily-card">
     <div class="gita-om">🕉</div>
@@ -996,6 +1221,112 @@ input[type=checkbox]:checked::after{transform:translateX(22px);background:var(--
       </div>
     </div>
     <div id="gita-reader-verses"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     TAB: AYURVEDA SEASON
+════════════════════════════════ -->
+<div id="Ayurveda" class="tab">
+  <h2 class="stitle">Ayurvedic Calendar</h2>
+  <p class="cbody" style="text-align:center;margin-bottom:28px;max-width:580px;margin-left:auto;margin-right:auto">Ayurveda aligns health practice with nature's rhythms. Each season activates a different dosha. Eating and living in tune with the season is the oldest preventive medicine.</p>
+  <div id="ayur-season-card"></div>
+  <div id="ayur-protocol"></div>
+</div>
+
+<!-- ════════════════════════════════
+     TAB: PROGRESS JOURNAL
+════════════════════════════════ -->
+<div id="Journal" class="tab">
+  <h2 class="stitle">Progress Journal</h2>
+  <p class="cbody" style="text-align:center;margin-bottom:28px;max-width:580px;margin-left:auto;margin-right:auto">Monthly check-ins track what numbers cannot. Note three changes you observe in your body, mind, and energy — the real story of your transformation.</p>
+
+  <div class="card" style="cursor:default">
+    <div class="ch"><h3 class="ctitle">New Entry</h3><span class="tag" id="journal-date-tag">Today</span></div>
+    <span class="sec-label">How are you feeling overall?</span>
+    <div class="journal-checkin" id="journal-checkin">
+      <div class="jci" onclick="journalSelectFeeling('🌟 Thriving')"><div class="jci-icon">🌟</div><div class="jci-label">Thriving</div></div>
+      <div class="jci" onclick="journalSelectFeeling('💪 Strong')"><div class="jci-icon">💪</div><div class="jci-label">Strong</div></div>
+      <div class="jci" onclick="journalSelectFeeling('😌 Steady')"><div class="jci-icon">😌</div><div class="jci-label">Steady</div></div>
+      <div class="jci" onclick="journalSelectFeeling('😴 Tired')"><div class="jci-icon">😴</div><div class="jci-label">Tired</div></div>
+      <div class="jci" onclick="journalSelectFeeling('😰 Stressed')"><div class="jci-icon">😰</div><div class="jci-label">Stressed</div></div>
+      <div class="jci" onclick="journalSelectFeeling('🤒 Unwell')"><div class="jci-icon">🤒</div><div class="jci-label">Unwell</div></div>
+    </div>
+    <span class="sec-label" style="margin-top:4px">Three things you notice</span>
+    <p class="cbody" style="font-size:.78rem;margin-bottom:12px">Physical changes · Energy levels · Mental clarity · Mood · Sleep quality · Digestion · Any wins</p>
+    <textarea class="reflect-ta" id="journal-ta" placeholder="1. My energy in the mornings has been noticeably better…&#10;2. The evening walk is starting to feel natural rather than effortful…&#10;3. I noticed my blood pressure reading was the lowest it's been in months…" style="height:130px"></textarea>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <button class="abtn fill" onclick="saveJournalEntry()">Save Entry</button>
+      <button class="abtn" onclick="generateWAReport()" style="gap:8px">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.894 0C5.343 0 .006 5.337.006 11.889c0 2.096.547 4.142 1.588 5.945L.057 24l6.304-1.654a11.882 11.882 0 005.533 1.371c6.551 0 11.887-5.336 11.887-11.888C23.781 5.337 18.445 0 11.894 0zm0 21.762a9.864 9.864 0 01-5.031-1.378l-.361-.214-3.741.981.998-3.648-.235-.374a9.861 9.861 0 01-1.51-5.26c0-5.445 4.425-9.87 9.87-9.87 5.445 0 9.87 4.425 9.87 9.87s-4.425 9.893-9.86 9.893z"/></svg>
+        Share on WhatsApp
+      </button>
+    </div>
+  </div>
+
+  <!-- WA PREVIEW -->
+  <div id="wa-preview-section" style="display:none">
+    <div class="card" style="cursor:default">
+      <div class="ch"><h3 class="ctitle">Weekly Summary Preview</h3><span class="tag">WhatsApp Ready</span></div>
+      <div class="wa-preview" id="wa-preview-text"></div>
+      <button class="abtn fill" onclick="sendWASummary()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg>
+        Send Now via WhatsApp
+      </button>
+    </div>
+  </div>
+
+  <!-- PAST ENTRIES -->
+  <div class="card" style="cursor:default">
+    <div class="ch"><h3 class="ctitle">Your Journal</h3><span class="tag" id="journal-count-tag">0 entries</span></div>
+    <div id="journal-entries"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     TAB: DOSHA QUIZ
+════════════════════════════════ -->
+<div id="Dosha" class="tab">
+  <h2 class="stitle">Know Your Dosha</h2>
+  <div class="dosha-wrap">
+    <div id="dosha-content"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     TAB: FAMILY MODE
+════════════════════════════════ -->
+<div id="Family" class="tab">
+  <h2 class="stitle">Family Mode</h2>
+  <p class="cbody" style="text-align:center;margin-bottom:28px;max-width:580px;margin-left:auto;margin-right:auto">One device, multiple journeys. Each family member has their own habit log, BMI tracking, and progress. Switch profiles in one tap.</p>
+  <div class="card" style="cursor:default" id="family-management">
+    <div class="ch"><h3 class="ctitle">Profiles</h3><span class="tag" id="fam-count-tag">0 members</span></div>
+    <div id="family-profiles-list"></div>
+    <div class="div" style="margin:20px 0"></div>
+    <span class="sec-label">Add a Family Member</span>
+    <div class="g2c" style="margin-top:14px">
+      <div class="lwrap" style="grid-column:1/-1"><label class="llabel">Name</label><input type="text" id="fam-new-name" class="linput" placeholder="e.g. Papa, Maa, Didi"></div>
+      <div class="lwrap"><label class="llabel">Age</label><input type="number" id="fam-new-age" class="linput" placeholder="58"><span class="lunit">yrs</span></div>
+      <div class="lwrap"><label class="llabel">Gender</label><select id="fam-new-gender" class="linput" style="cursor:pointer"><option value="male">Male</option><option value="female">Female</option></select></div>
+      <div class="lwrap"><label class="llabel">Height</label><input type="number" id="fam-new-height" class="linput" placeholder="165"><span class="lunit">cm</span></div>
+      <div class="lwrap"><label class="llabel">Avatar</label>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px" id="fam-avatar-picker">
+          <span style="font-size:1.5rem;cursor:pointer;padding:4px;border-radius:8px;border:2px solid transparent;transition:all .2s" onclick="selectFamAvatar(this,'👨')">👨</span>
+          <span style="font-size:1.5rem;cursor:pointer;padding:4px;border-radius:8px;border:2px solid transparent;transition:all .2s" onclick="selectFamAvatar(this,'👩')">👩</span>
+          <span style="font-size:1.5rem;cursor:pointer;padding:4px;border-radius:8px;border:2px solid transparent;transition:all .2s" onclick="selectFamAvatar(this,'👴')">👴</span>
+          <span style="font-size:1.5rem;cursor:pointer;padding:4px;border-radius:8px;border:2px solid transparent;transition:all .2s" onclick="selectFamAvatar(this,'👵')">👵</span>
+          <span style="font-size:1.5rem;cursor:pointer;padding:4px;border-radius:8px;border:2px solid transparent;transition:all .2s" onclick="selectFamAvatar(this,'🧑')">🧑</span>
+          <span style="font-size:1.5rem;cursor:pointer;padding:4px;border-radius:8px;border:2px solid transparent;transition:all .2s" onclick="selectFamAvatar(this,'👧')">👧</span>
+        </div>
+      </div>
+    </div>
+    <button class="abtn fill" onclick="addFamilyMember()">+ Add Member</button>
+    <p id="fam-saved-msg" style="color:var(--ok);font-size:.82rem;margin-top:10px;display:none">✓ Member added</p>
+  </div>
+  <div class="card" style="cursor:default" id="fam-switch-card" style="display:none">
+    <div class="ch"><h3 class="ctitle">Switch Active Profile</h3></div>
+    <p class="cbody" style="font-size:.82rem;margin-bottom:18px">The Daily Arc habits, BMI data, and streak will switch to the selected member's data.</p>
+    <div id="fam-switch-list"></div>
   </div>
 </div>
 
@@ -1062,7 +1393,11 @@ function openTab(e, id) {
   if (id === 'Recipes')     { renderRecipes('all'); }
   if (id === 'Breathe')     { buildDots(); }
   if (id === 'Kitchen')     { renderGroceryList(); }
-  if (id === 'Gita')        { if (!gitaIndex && gitaIndex !== 0) gitaInit(); }
+  if (id === 'Gita')        { if (!gitaIndex && gitaIndex !== 0) gitaInit(); gitaRenderStreak(); }
+  if (id === 'Ayurveda')    { renderAyurveda(); }
+  if (id === 'Journal')     { renderJournal(); }
+  if (id === 'Dosha')       { renderDosha(); }
+  if (id === 'Family')      { renderFamilyTab(); }
 }
 
 
@@ -1513,6 +1848,7 @@ function toggleHabit(id) {
     HABIT_STATE[id] = isDone ? 1 : 0;
     if (isDone) showCheer('habit');
     updateG();
+    if (typeof renderHabitNudge === 'function') renderHabitNudge();
 }
 
 function showCheer(type) {
@@ -1544,9 +1880,11 @@ function updateG() {
     const done  = Object.values(HABIT_STATE).filter(v => v === 1).length;
     const p     = done / 7;
     const t     = document.getElementById('tulsi');
-    t.style.transform = 'scale(' + (.78 + p*.44) + ')';
-    t.style.opacity   = .25 + p*.75;
-    t.style.filter    = 'drop-shadow(0 0 ' + (12+p*28) + 'px rgba(46,125,50,' + (.2+p*.7) + '))';
+    if (t) {
+      t.style.transform = 'scale(' + (.78 + p*.44) + ')';
+      t.style.opacity   = .25 + p*.75;
+      t.style.filter    = 'drop-shadow(0 0 ' + (12+p*28) + 'px rgba(46,125,50,' + (.2+p*.7) + '))';
+    }
     const hints = [
         'Complete habits to nourish the Tulsi',
         'Good start — keep going!',
@@ -1554,9 +1892,19 @@ function updateG() {
         'Almost complete — incredible!',
         'Full protocol complete today!'
     ];
-    document.getElementById('phint').innerText = hints[Math.min(Math.floor(p*4.5), 4)];
+    const phint = document.getElementById('phint');
+    if (phint) phint.innerText = hints[Math.min(Math.floor(p*4.5), 4)];
     weekData[new Date().getDay()] = done;
     localStorage.setItem('sw-week', JSON.stringify(weekData));
+    // Save habit state into today mood log for correlation
+    if (typeof moodLog !== 'undefined' && moodLog) {
+      const today = new Date().toISOString().split('T')[0];
+      const moodIdx = moodLog.findIndex(e => e.date === today);
+      if (moodIdx >= 0) {
+        Object.keys(HABIT_STATE).forEach(k => moodLog[moodIdx][k] = HABIT_STATE[k]);
+        localStorage.setItem('sw-mood-log', JSON.stringify(moodLog));
+      }
+    }
     syncDB();
 }
 
@@ -2335,8 +2683,12 @@ function logHealthTab() {
 function renderBMITab() {
   prefillBMITab();
   const latest = hlog.find(e => e.w);
-  if (!latest || !profile) { document.getElementById('bmidash-tab').style.display = 'none'; return; }
-  document.getElementById('bmidash-tab').style.display = 'block';
+  const dash = document.getElementById('bmidash-tab');
+  if (!latest || !profile) {
+    if (dash) dash.style.display = 'none';
+    return;
+  }
+  if (dash) dash.style.display = 'block';
   const hm  = profile.h / 100;
   const bmi = latest.w / (hm * hm);
   const tBMI = profile.g === 'female' ? 21.5 : 22.0;
@@ -2344,47 +2696,59 @@ function renderBMITab() {
   const diff = (latest.w - parseFloat(tW)).toFixed(1);
   const cat  = bmiCat(bmi);
   const barPct = Math.min(100, Math.max(0, ((bmi-16)/24)*100));
-  document.getElementById('dt-bmi').innerText     = bmi.toFixed(1);
-  document.getElementById('dt-bmi').style.color   = cat.color;
-  document.getElementById('dt-bmicat').innerText  = cat.label;
-  document.getElementById('dt-bmicat').style.color= cat.color;
-  document.getElementById('dt-bmibar').style.width= barPct + '%';
-  document.getElementById('dt-bmibar').style.background = cat.color;
-  document.getElementById('dt-target').innerText  = tBMI.toFixed(1);
-  document.getElementById('dt-tw').innerText      = 'Ideal weight: ' + tW + ' kg';
-  const toGoEl = document.getElementById('dt-togo');
+  // Zone color map
+  const zoneColors = ['#64B5F6','#66BB6A','#FFB74D','#FF8A65','#EF5350'];
+  const bmiZones = [18.5,23,27.5,32,40];
+  let zoneIdx = 0;
+  if (bmi >= 18.5) zoneIdx=1; if (bmi >= 23) zoneIdx=2; if (bmi >= 27.5) zoneIdx=3; if (bmi >= 32) zoneIdx=4;
+
+  const bmiEl = document.getElementById('dt-bmi');
+  const catEl = document.getElementById('dt-bmicat');
+  const barEl = document.getElementById('dt-bmibar');
+  const tgEl  = document.getElementById('dt-target');
+  const twEl  = document.getElementById('dt-tw');
+  const toEl  = document.getElementById('dt-togo');
+  const inEl  = document.getElementById('dt-insight');
+  if (bmiEl) { bmiEl.innerText = bmi.toFixed(1); bmiEl.style.color = cat.color; }
+  if (catEl) { catEl.innerText = cat.label; catEl.style.color = cat.color; }
+  if (barEl) { barEl.style.width = barPct + '%'; barEl.style.background = cat.color; }
+  if (tgEl)  tgEl.innerText = tBMI.toFixed(1);
+  if (twEl)  twEl.innerText = 'Ideal weight: ' + tW + ' kg';
   const d = parseFloat(diff);
-  if (d > 0.5)       toGoEl.innerHTML = `<span style="color:#FFB74D">${diff} kg to lose</span> to reach ideal BMI`;
-  else if (d < -0.5) toGoEl.innerHTML = `<span style="color:#64B5F6">${Math.abs(diff)} kg to gain</span> to reach ideal range`;
-  else               toGoEl.innerHTML = `<span style="color:#66BB6A">✓ Within target range</span>`;
-  // insight
+  if (toEl) {
+    if (d > 0.5)       toEl.innerHTML = `<span style="color:#FFB74D">${diff} kg to lose</span> to reach ideal BMI`;
+    else if (d < -0.5) toEl.innerHTML = `<span style="color:#64B5F6">${Math.abs(diff)} kg to gain</span> to reach ideal range`;
+    else               toEl.innerHTML = `<span style="color:#66BB6A">✓ Within target range</span>`;
+  }
   const avgH = parseFloat((weekData.reduce((a,b)=>a+b,0)/7).toFixed(1));
   const wr   = weeklyRate(profile.ac, avgH);
   const wks  = d > 0.5 ? Math.ceil(d / wr) : 0;
   const mRate= (wr*4.33).toFixed(2);
   let ins = '';
-  if (bmi >= 25)      ins = `Your BMI is <strong style="color:${cat.color}">${bmi.toFixed(1)}</strong> — <strong style="color:${cat.color}">${cat.label}</strong> on the Asian scale. At your current habit score and activity level, a sustainable pace is <strong style="color:var(--gold)">${mRate} kg/month</strong>. Estimated time to target: <strong style="color:var(--gold)">${wks} weeks</strong>.`;
+  if (bmi >= 25)       ins = `Your BMI is <strong style="color:${cat.color}">${bmi.toFixed(1)}</strong> — <strong style="color:${cat.color}">${cat.label}</strong> on the Asian scale. At your current habit score and activity level, a sustainable pace is <strong style="color:var(--gold)">${mRate} kg/month</strong>. Estimated time to target: <strong style="color:var(--gold)">${wks} weeks</strong>.`;
   else if (bmi < 18.5) ins = `Your BMI of <strong style="color:#64B5F6">${bmi.toFixed(1)}</strong> suggests underweight. Focus on nutrient-dense additions: protein from dal, paneer, eggs; healthy fats from ghee and nuts. The Breakfast recipes have the most relevant options.`;
-  else                ins = `Your BMI of <strong style="color:#66BB6A">${bmi.toFixed(1)}</strong> is in the <strong style="color:#66BB6A">healthy range</strong>. Focus shifts to metabolic maintenance — preserving muscle, keeping glucose stable, and sustaining the habit streak.`;
-  document.getElementById('dt-insight').innerHTML = `<strong>Insight</strong>${ins}`;
+  else                 ins = `Your BMI of <strong style="color:#66BB6A">${bmi.toFixed(1)}</strong> is in the <strong style="color:#66BB6A">healthy range</strong>. Focus shifts to metabolic maintenance — preserving muscle, keeping glucose stable, and sustaining the habit streak.`;
+  if (inEl) inEl.innerHTML = `<strong>Insight</strong>${ins}`;
   // projections
   const now = new Date();
   const months = d > 0.5 ? [1,2,3,6,12] : [1,3,6];
   let rows = `<div class="proj-row"><div class="pdot"></div><div class="pdate">Today</div><div class="pdet"><strong>${latest.w} kg</strong> · BMI ${bmi.toFixed(1)}</div></div>`;
-  months.forEach(m => {
-    const pd = new Date(now); pd.setMonth(pd.getMonth()+m);
+  months.forEach(mo => {
+    const pd = new Date(now); pd.setMonth(pd.getMonth()+mo);
     const pl = pd.toLocaleDateString('en-IN',{month:'short',year:'numeric'});
-    let pw = d > 0.5 ? Math.max(parseFloat(tW), latest.w - wr*4.33*m) : Math.min(parseFloat(tW), latest.w + 0.4*m);
-    const pb   = (pw/(hm*hm)).toFixed(1);
-    const pc   = bmiCat(parseFloat(pb));
+    let pw = d > 0.5 ? Math.max(parseFloat(tW), latest.w - wr*4.33*mo) : Math.min(parseFloat(tW), latest.w + 0.4*mo);
+    const pb = (pw/(hm*hm)).toFixed(1);
+    const pc = bmiCat(parseFloat(pb));
     const goal = d > 0.5 && pw <= parseFloat(tW);
     rows += `<div class="proj-row"><div class="pdot f"></div><div class="pdate">${pl}</div><div class="pdet"><strong>${pw.toFixed(1)} kg</strong> · BMI <span style="color:${pc.color}">${pb}</span>${goal?' <span style="color:#66BB6A">✓ Goal</span>':''}</div></div>`;
   });
-  document.getElementById('dt-proj').innerHTML = rows;
+  const projEl = document.getElementById('dt-proj');
+  if (projEl) projEl.innerHTML = rows;
   // history
   const histEl = document.getElementById('dt-hist');
+  if (!histEl) return;
   if (!hlog.length) { histEl.innerHTML = '<p style="font-size:.8rem;color:var(--muted)">No readings yet.</p>'; return; }
-  histEl.innerHTML = hlog.slice(0,12).map((e,i) => {
+  histEl.innerHTML = hlog.slice(0,14).map((e,i) => {
     let arrow='-', aCol='var(--muted)';
     if (e.w) {
       const prev = hlog.slice(i+1).find(x=>x.w);
@@ -2392,7 +2756,7 @@ function renderBMITab() {
         const delta=(e.w-prev.w).toFixed(1);
         if (parseFloat(delta)<0){arrow=`▼ ${Math.abs(delta)} kg`;aCol='#66BB6A';}
         else if (parseFloat(delta)>0){arrow=`▲ ${delta} kg`;aCol='#EF5350';}
-        else arrow='→ No change';
+        else arrow='→ Steady';
       }
     }
     return `<div class="trow2"><span style="color:var(--muted)">${e.date}</span><span style="color:var(--text);font-weight:500">${e.w?e.w+' kg':''}${e.w&&e.bp?' · ':''}${e.bp?e.bp+' mmHg':''}</span><span style="color:${aCol};font-size:.75rem">${arrow}</span></div>`;
@@ -2598,6 +2962,12 @@ function gitaRenderChapters() {
 }
 
 function gitaOpenChapter(num) {
+  // Track chapter reads
+  if (!gitaChaptersRead.includes(num)) {
+    gitaChaptersRead.push(num);
+    localStorage.setItem('sw-gita-chaps', JSON.stringify(gitaChaptersRead));
+    gitaRenderStreak();
+  }
   const ch = GITA_CHAPTERS.find(c => c.num === num);
   document.getElementById('gita-chapters-view').style.display = 'none';
   document.getElementById('gita-daily-card').style.display = 'none';
@@ -2640,17 +3010,748 @@ function gitaCloseReader() {
 // ── END GITA MODULE ───────────────────────────────────────────
 
 // -- INIT ---------------------------------------------------
+// ── ARC GITA CARD + STREAK + MYTHOLOGY ART ──────────────────
+
+// Mythology SVG art patterns — purely CSS/SVG, no external images
+const MYTH_ARTS = [
+  // Lotus / Padma
+  `<svg viewBox="0 0 800 320" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+    <defs><radialGradient id="lg1" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#C9A84C" stop-opacity=".18"/><stop offset="100%" stop-color="#060606" stop-opacity="0"/></radialGradient></defs>
+    <rect width="800" height="320" fill="#0a0806"/>
+    <ellipse cx="400" cy="200" rx="320" ry="160" fill="url(#lg1)"/>
+    ${Array.from({length:12},(_,i)=>{const a=i*30*Math.PI/180,r1=80,r2=160,cx=400,cy=180;return `<ellipse cx="${cx+Math.cos(a-Math.PI/2)*(r1+r2)/2}" cy="${cy+Math.sin(a-Math.PI/2)*(r1+r2)/2}" rx="22" ry="52" transform="rotate(${i*30} ${cx+Math.cos(a-Math.PI/2)*(r1+r2)/2} ${cy+Math.sin(a-Math.PI/2)*(r1+r2)/2})" fill="none" stroke="#C9A84C" stroke-opacity=".22" stroke-width="1"/>`}).join('')}
+    ${Array.from({length:8},(_,i)=>{const a=i*45*Math.PI/180,r=60;return `<ellipse cx="${400+Math.cos(a-Math.PI/2)*r}" cy="${180+Math.sin(a-Math.PI/2)*r}" rx="14" ry="34" transform="rotate(${i*45} ${400+Math.cos(a-Math.PI/2)*r} ${180+Math.sin(a-Math.PI/2)*r})" fill="#C9A84C" fill-opacity=".12" stroke="#C9A84C" stroke-opacity=".3" stroke-width="1"/>`}).join('')}
+    <circle cx="400" cy="180" r="18" fill="#C9A84C" fill-opacity=".15" stroke="#C9A84C" stroke-opacity=".4" stroke-width="1.5"/>
+    <text x="400" y="185" text-anchor="middle" font-size="16" fill="#C9A84C" fill-opacity=".35" font-family="serif">🕉</text>
+    <line x1="0" y1="310" x2="800" y2="310" stroke="#C9A84C" stroke-opacity=".08" stroke-width="1"/>
+  </svg>`,
+  // Chakra / Wheel of Dharma
+  `<svg viewBox="0 0 800 320" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+    <rect width="800" height="320" fill="#060808"/>
+    <defs><radialGradient id="lg2" cx="50%" cy="45%" r="50%"><stop offset="0%" stop-color="#4CADE2" stop-opacity=".1"/><stop offset="100%" stop-color="#060808" stop-opacity="0"/></radialGradient></defs>
+    <ellipse cx="400" cy="170" rx="280" ry="150" fill="url(#lg2)"/>
+    ${Array.from({length:8},(_,i)=>{const a=i*45*Math.PI/180;return `<line x1="400" y1="170" x2="${400+Math.cos(a)*130}" y2="${170+Math.sin(a)*130}" stroke="#C9A84C" stroke-opacity=".2" stroke-width="1.5"/>`}).join('')}
+    <circle cx="400" cy="170" r="130" fill="none" stroke="#C9A84C" stroke-opacity=".18" stroke-width="1"/>
+    <circle cx="400" cy="170" r="90" fill="none" stroke="#C9A84C" stroke-opacity=".12" stroke-width="1"/>
+    <circle cx="400" cy="170" r="45" fill="none" stroke="#C9A84C" stroke-opacity=".22" stroke-width="1.5"/>
+    <circle cx="400" cy="170" r="18" fill="#C9A84C" fill-opacity=".12"/>
+    ${Array.from({length:8},(_,i)=>{const a=i*45*Math.PI/180;return `<circle cx="${400+Math.cos(a)*90}" cy="${170+Math.sin(a)*90}" r="7" fill="#C9A84C" fill-opacity=".18" stroke="#C9A84C" stroke-opacity=".3" stroke-width="1"/>`}).join('')}
+    <line x1="100" y1="305" x2="700" y2="305" stroke="#C9A84C" stroke-opacity=".07" stroke-width="1"/>
+  </svg>`,
+  // Shri Yantra inspired
+  `<svg viewBox="0 0 800 320" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+    <rect width="800" height="320" fill="#07060a"/>
+    <defs><radialGradient id="lg3" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#C9A84C" stop-opacity=".15"/><stop offset="100%" stop-color="#07060a" stop-opacity="0"/></radialGradient></defs>
+    <ellipse cx="400" cy="165" rx="260" ry="140" fill="url(#lg3)"/>
+    <polygon points="400,40 540,220 260,220" fill="none" stroke="#C9A84C" stroke-opacity=".25" stroke-width="1"/>
+    <polygon points="400,290 540,110 260,110" fill="none" stroke="#C9A84C" stroke-opacity=".2" stroke-width="1"/>
+    <polygon points="400,65 510,210 290,210" fill="none" stroke="#C9A84C" stroke-opacity=".15" stroke-width="1"/>
+    <polygon points="400,265 510,125 290,125" fill="none" stroke="#C9A84C" stroke-opacity=".12" stroke-width="1"/>
+    <circle cx="400" cy="165" r="120" fill="none" stroke="#C9A84C" stroke-opacity=".12" stroke-width="1"/>
+    <circle cx="400" cy="165" r="75" fill="none" stroke="#C9A84C" stroke-opacity=".1" stroke-width="1"/>
+    <circle cx="400" cy="165" r="20" fill="#C9A84C" fill-opacity=".1" stroke="#C9A84C" stroke-opacity=".3" stroke-width="1"/>
+  </svg>`,
+  // Cosmic mandala rings
+  `<svg viewBox="0 0 800 320" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+    <rect width="800" height="320" fill="#050908"/>
+    <defs><radialGradient id="lg4" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#4CAF50" stop-opacity=".08"/><stop offset="60%" stop-color="#C9A84C" stop-opacity=".06"/><stop offset="100%" stop-color="#050908" stop-opacity="0"/></radialGradient></defs>
+    <circle cx="400" cy="160" r="220" fill="url(#lg4)"/>
+    ${[150,115,82,52,28].map((r,i)=>`<circle cx="400" cy="160" r="${r}" fill="none" stroke="#C9A84C" stroke-opacity="${.07+i*.04}" stroke-width="1"/>`).join('')}
+    ${Array.from({length:16},(_,i)=>{const a=i*22.5*Math.PI/180;return `<line x1="${400+Math.cos(a)*28}" y1="${160+Math.sin(a)*28}" x2="${400+Math.cos(a)*150}" y2="${160+Math.sin(a)*150}" stroke="#C9A84C" stroke-opacity=".07" stroke-width="1"/>`}).join('')}
+    ${Array.from({length:8},(_,i)=>{const a=i*45*Math.PI/180;return `<circle cx="${400+Math.cos(a)*115}" cy="${160+Math.sin(a)*115}" r="5" fill="#C9A84C" fill-opacity=".2"/>`}).join('')}
+  </svg>`,
+  // Peacock feather (Mayura — Krishna symbol)
+  `<svg viewBox="0 0 800 320" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+    <rect width="800" height="320" fill="#060709"/>
+    <defs><radialGradient id="lg5" cx="50%" cy="60%" r="50%"><stop offset="0%" stop-color="#5B4CCC" stop-opacity=".12"/><stop offset="50%" stop-color="#C9A84C" stop-opacity=".08"/><stop offset="100%" stop-color="#060709" stop-opacity="0"/></radialGradient></defs>
+    <ellipse cx="400" cy="200" rx="300" ry="160" fill="url(#lg5)"/>
+    ${Array.from({length:7},(_,i)=>{const spread=(i-3)*28,x=400+spread*2;return `<path d="M${x},300 Q${x-20+Math.random()*10},${180+i*5} ${400+spread*0.3},${80+i*8}" fill="none" stroke="#C9A84C" stroke-opacity="${.1+i*.03}" stroke-width="1.2"/>`}).join('')}
+    <ellipse cx="400" cy="80" rx="18" ry="26" fill="#C9A84C" fill-opacity=".1" stroke="#C9A84C" stroke-opacity=".28" stroke-width="1"/>
+    <ellipse cx="400" cy="80" rx="10" ry="15" fill="#5B4CCC" fill-opacity=".15"/>
+    <circle cx="400" cy="80" r="5" fill="#C9A84C" fill-opacity=".3"/>
+  </svg>`,
+];
+
+let arcGitaIdx = null;
+let gitaReadDates = JSON.parse(localStorage.getItem('sw-gita-reads') || '[]'); // array of ISO date strings
+let gitaChaptersRead = JSON.parse(localStorage.getItem('sw-gita-chaps') || '[]');
+
+function arcGitaInit() {
+  const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(),0,0)) / 86400000);
+  arcGitaIdx = dayOfYear % GITA_QUOTES.length;
+  arcGitaRender();
+}
+
+function arcGitaRender() {
+  const q = GITA_QUOTES[arcGitaIdx];
+  // Pick art based on chapter
+  const artIdx = (q.ch - 1) % MYTH_ARTS.length;
+  const bgEl = document.getElementById('arc-gita-bg');
+  if (bgEl) bgEl.innerHTML = MYTH_ARTS[artIdx];
+  if (document.getElementById('arc-gita-skt'))  document.getElementById('arc-gita-skt').innerText = q.sanskrit.split('\n')[0] + '…';
+  if (document.getElementById('arc-gita-q'))    document.getElementById('arc-gita-q').innerText = '"' + q.quote.substring(0,140) + (q.quote.length>140?'…':'"');
+  if (document.getElementById('arc-gita-attr')) document.getElementById('arc-gita-attr').innerText = q.attr;
+  // Streak badge
+  const streak = calcGitaStreak();
+  const badge = document.getElementById('arc-gita-streak-badge');
+  if (badge) badge.innerText = streak > 0 ? `🔥 ${streak} day streak` : '📖 Start streak';
+}
+
+function arcGitaNext() {
+  arcGitaIdx = (arcGitaIdx + 1) % GITA_QUOTES.length;
+  arcGitaRender();
+}
+
+function arcGitaMarkRead() {
+  const today = new Date().toISOString().split('T')[0];
+  if (!gitaReadDates.includes(today)) {
+    gitaReadDates.push(today);
+    localStorage.setItem('sw-gita-reads', JSON.stringify(gitaReadDates));
+  }
+  arcGitaRender();
+  gitaRenderStreak();
+  showCheer('habit');
+}
+
+function arcGitaReadChapter() {
+  const q = GITA_QUOTES[arcGitaIdx];
+  // Navigate to Gita tab and open that chapter
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
+  document.querySelectorAll('.tbtn').forEach(b => b.classList.remove('active'));
+  document.getElementById('Gita').classList.add('on');
+  document.querySelector('[onclick*="Gita"]').classList.add('active');
+  if (!gitaIndex && gitaIndex !== 0) gitaInit();
+  setTimeout(() => gitaOpenChapter(q.ch), 100);
+}
+
+function calcGitaStreak() {
+  if (!gitaReadDates.length) return 0;
+  const sorted = [...new Set(gitaReadDates)].sort().reverse();
+  const today = new Date().toISOString().split('T')[0];
+  const yesterday = new Date(Date.now()-86400000).toISOString().split('T')[0];
+  if (sorted[0] !== today && sorted[0] !== yesterday) return 0;
+  let streak = 0, checkDate = new Date(sorted[0]);
+  for (let i = 0; i < sorted.length; i++) {
+    const d = new Date(checkDate); d.setDate(d.getDate()-i);
+    const ds = d.toISOString().split('T')[0];
+    if (sorted.includes(ds)) streak++;
+    else break;
+  }
+  return streak;
+}
+
+function gitaRenderStreak() {
+  const streak = calcGitaStreak();
+  const total  = gitaReadDates.length;
+  const longest = calcGitaLongest();
+
+  const cur = document.getElementById('gs-current');
+  const lon = document.getElementById('gs-longest');
+  const tot = document.getElementById('gs-total');
+  const chp = document.getElementById('gs-chapters');
+  const tag = document.getElementById('gita-streak-tag');
+  const msg = document.getElementById('gita-streak-msg');
+
+  if (cur) cur.innerText = streak;
+  if (lon) lon.innerText = longest;
+  if (tot) tot.innerText = total;
+  if (chp) chp.innerText = gitaChaptersRead.length;
+  if (tag) tag.innerText = streak + ' day' + (streak!==1?'s':'') + ' 🔥';
+
+  // Streak messages
+  const msgs = [
+    'Mark today\'s shloka as read to start your streak.',
+    'One day done. The journey of a thousand miles begins beneath your feet.',
+    'Two days! "Continuous practice is the secret." — Gita 6.35',
+    'Three days of wisdom. A habit is forming.',
+    'Four days! Your mind is becoming a friend.',
+    'Five days — halfway to a week of daily Gita.',
+    'Six days! Tomorrow completes your first full week.',
+    'One full week! This is abhyasa in action. 🙏',
+  ];
+  if (msg) msg.innerText = msgs[Math.min(streak, msgs.length-1)];
+
+  // Calendar dots
+  const calEl = document.getElementById('gita-streak-cal');
+  if (calEl) {
+    const today = new Date();
+    const dots = Array.from({length:30}, (_,i) => {
+      const d = new Date(today); d.setDate(d.getDate()-(29-i));
+      const ds = d.toISOString().split('T')[0];
+      const isToday = i===29;
+      const read = gitaReadDates.includes(ds);
+      return `<div class="streak-dot${read?' read':''}${isToday?' today':''}" title="${ds}"></div>`;
+    });
+    calEl.innerHTML = dots.join('');
+  }
+
+  // Update arc badge too
+  const badge = document.getElementById('arc-gita-streak-badge');
+  if (badge) badge.innerText = streak > 0 ? `🔥 ${streak} day streak` : '📖 Start streak';
+}
+
+function calcGitaLongest() {
+  if (!gitaReadDates.length) return 0;
+  const sorted = [...new Set(gitaReadDates)].sort();
+  let longest = 1, cur = 1;
+  for (let i = 1; i < sorted.length; i++) {
+    const prev = new Date(sorted[i-1]), curr = new Date(sorted[i]);
+    const diff = (curr - prev) / 86400000;
+    if (diff === 1) { cur++; longest = Math.max(longest, cur); }
+    else cur = 1;
+  }
+  return longest;
+}
+
+// Track chapter reads
+const _origGitaOpen = typeof gitaOpenChapter !== 'undefined' ? gitaOpenChapter : null;
+
+// ══════════════════════════════════════════════════════════════
+// FEATURE MODULES
+// ══════════════════════════════════════════════════════════════
+
+// ── 1. MOOD & ENERGY CHECK-IN ────────────────────────────────
+let moodLog = JSON.parse(localStorage.getItem('sw-mood-log') || '[]');
+
+function updateMoodGradient(type, val) {
+  const colors = ['','#EF5350','#FFB74D','#FFF176','#AED581','#66BB6A'];
+  const el = document.getElementById('mood-' + (type==='energy'?'e':'m') + '-val');
+  if(el) el.style.color = colors[val] || 'var(--gold)';
+}
+
+function saveMoodLog() {
+  const today = new Date().toISOString().split('T')[0];
+  const entry = {
+    date: today,
+    energy: parseInt(document.getElementById('mood-energy').value),
+    mood:   parseInt(document.getElementById('mood-mood').value),
+    stress: parseInt(document.getElementById('mood-stress').value),
+    habits: Object.values(HABIT_STATE).filter(v=>v===1).length
+  };
+  const idx = moodLog.findIndex(e=>e.date===today);
+  if(idx>=0) moodLog[idx]=entry; else moodLog.unshift(entry);
+  if(moodLog.length>90) moodLog.pop();
+  localStorage.setItem('sw-mood-log', JSON.stringify(moodLog));
+  const ok = document.getElementById('mood-ok');
+  if(ok){ ok.style.display='inline'; setTimeout(()=>ok.style.display='none',2000); }
+  const badge = document.getElementById('mood-saved-badge');
+  if(badge) badge.style.display='inline';
+  renderMoodCorrelation();
+}
+
+function renderMoodCorrelation() {
+  const corEl = document.getElementById('mood-correlation');
+  const body  = document.getElementById('mood-corr-body');
+  if(!corEl||!body||moodLog.length<7) return;
+  corEl.style.display='block';
+  // Calculate correlation: days each habit was done vs avg energy
+  const HABITS = ['Surya Darshan','Hydration','Fibre First','Vajrasana','Evening Walk','Pranayama','Digital Sunset'];
+  const HKEYS  = ['c1','c2','c3','c4','c5','c6','c7'];
+  // Simple: when habit done vs not done energy difference
+  // Using moodLog entries that have habit data saved alongside
+  const recent = moodLog.slice(0,30);
+  const avgE = recent.reduce((s,e)=>s+e.energy,0)/recent.length;
+  const scores = HABITS.map((h,i) => {
+    const withHabit    = recent.filter(e=>e[HKEYS[i]]===1);
+    const withoutHabit = recent.filter(e=>e[HKEYS[i]]===0);
+    if(withHabit.length<2) return { name:h, score:50 };
+    const avgWith    = withHabit.reduce((s,e)=>s+e.energy,0)/withHabit.length;
+    const avgWithout = withoutHabit.length ? withoutHabit.reduce((s,e)=>s+e.energy,0)/withoutHabit.length : avgE;
+    const diff = ((avgWith - avgWithout)/4)*100;
+    return { name:h, score:Math.max(10, Math.min(100, 50+diff)) };
+  }).sort((a,b)=>b.score-a.score).slice(0,4);
+  body.innerHTML = scores.map(s=>
+    `<div class="mood-corr-row">
+      <span class="mood-corr-name">${s.name}</span>
+      <div class="mood-corr-bar"><div class="mood-corr-fill" style="width:${s.score}%"></div></div>
+      <span class="mood-corr-num">${Math.round(s.score)}%</span>
+    </div>`
+  ).join('');
+}
+
+function initMoodCard() {
+  renderMoodCorrelation();
+  // Mark logged today
+  const today = new Date().toISOString().split('T')[0];
+  if(moodLog.find(e=>e.date===today)) {
+    const badge = document.getElementById('mood-saved-badge');
+    if(badge) badge.style.display='inline';
+  }
+}
+
+// ── 2. SMART HABIT SUGGESTION ────────────────────────────────
+const HABIT_NUDGES = {
+  c5: { name:'Evening Walk', icon:'🚶', title:'3 days without your walk', text:'The post-dinner walk is one of the most powerful metabolic tools in this protocol — it flattens the glucose spike from dinner by up to 40%.', verse:'"He who is regulated in his habits of eating, sleeping, recreation, and work can mitigate all material pains." — Gita 6.17' },
+  c6: { name:'Pranayama', icon:'🌬️', title:'Pranayama missed recently', text:'Just 10 minutes of Anulom Vilom before sleep lowers cortisol, slows heart rate, and prepares the nervous system for deep rest.', verse:'"Conquer the restless mind through practice and non-attachment." — Gita 6.35' },
+  c1: { name:'Surya Darshan', icon:'☀️', title:'Start your day with sunlight', text:'Morning sunlight sets your circadian clock, suppresses cortisol, and boosts serotonin. The 5-minute habit with the highest ROI.', verse:'"Perform your prescribed duty, for action is better than inaction." — Gita 3.8' },
+  c7: { name:'Digital Sunset', icon:'📵', title:'Screens before bed affect sleep', text:'Blue light after 9pm suppresses melatonin by up to 50%. Turning screens off 1 hour before bed is the single best sleep intervention.', verse:'"From attachment comes desire, and from desire arises anger." — Gita 2.62' },
+  c2: { name:'Hydration', icon:'💧', title:'Start the day hydrated', text:'Two glasses of warm water before chai clears overnight metabolic waste, stimulates digestion, and reduces the morning hunger hormone spike.', verse:'"Action is better than inaction. Even the maintenance of your body requires action." — Gita 3.8' },
+};
+
+function renderHabitNudge() {
+  const area = document.getElementById('habit-nudge-area');
+  if(!area) return;
+  // Find habit missed most in last 3 days (using weekData as proxy)
+  const missed = ['c5','c6','c1','c7','c2'].find(k => !HABIT_STATE[k]);
+  if(!missed) { area.innerHTML=''; return; }
+  const n = HABIT_NUDGES[missed];
+  area.innerHTML = `<div class="habit-nudge">
+    <span class="nudge-icon">${n.icon}</span>
+    <div class="nudge-body">
+      <div class="nudge-title">${n.title}</div>
+      <div class="nudge-text">${n.text}</div>
+      <div class="nudge-verse">${n.verse}</div>
+    </div>
+  </div>`;
+}
+
+// ── 3. WHATSAPP WEEKLY SUMMARY ───────────────────────────────
+function generateWAReport() {
+  const name = currentUser ? currentUser.name : 'Friend';
+  const today = new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long'});
+  const done  = Object.values(HABIT_STATE).filter(v=>v===1).length;
+  const streak = calcGitaStreak();
+  const avgHabits = (weekData.reduce((a,b)=>a+b,0)/7).toFixed(1);
+  const latest = hlog && hlog.find(e=>e.w);
+  let bmiLine = '';
+  if(latest && profile) {
+    const hm = profile.h/100;
+    const bmi = (latest.w/(hm*hm)).toFixed(1);
+    bmiLine = `\n⚖️ *Latest BMI:* ${bmi} (${latest.w} kg)\n`;
+  }
+  const gitaQ = GITA_QUOTES[arcGitaIdx||0];
+  const msg = `🌿 *Swasth OS — Weekly Report*\n_${name} · ${today}_\n\n` +
+    `📊 *This Week's Habits*\n` +
+    `Today: ${done}/7 habits complete\nWeek average: ${avgHabits}/7\n` + bmiLine +
+    `\n🔥 *Gita Streak:* ${streak} day${streak!==1?'s':''}\n` +
+    `\n🕉 *Today's Shloka*\n"${gitaQ.quote.substring(0,120)}..."\n— ${gitaQ.attr}\n\n` +
+    `_Keep going. Consistency is the protocol. 💛_\n_Swasth OS_`;
+
+  document.getElementById('wa-preview-section').style.display='block';
+  document.getElementById('wa-preview-text').innerText = msg;
+  document.getElementById('wa-preview-section').scrollIntoView({behavior:'smooth'});
+}
+
+function sendWASummary() {
+  const text = document.getElementById('wa-preview-text').innerText;
+  window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+}
+
+// ── 4. AYURVEDIC SEASONAL CALENDAR ───────────────────────────
+const SEASONS = [
+  { months:[12,1,2], name:'Shishira', sub:'Late Winter', dosha:'Kapha & Vata', color1:'#1a3a4a', color2:'#0d1f2b',
+    icon:'❄️', recs:[
+      {icon:'🍲', text:'Warm, nourishing foods: khichdi, soup, ghee-laden sabzis. Avoid cold and raw foods.'},
+      {icon:'🫚', text:'Sesame oil self-massage (abhyanga) daily to combat Vata dryness and cold.'},
+      {icon:'☕', text:'Spiced herbal teas: ginger, tulsi, cinnamon. Avoid cold water entirely.'},
+      {icon:'🛌', text:'Sleep earlier — Kapha season supports deeper, longer rest. 9 hours if possible.'},
+      {icon:'🔥', text:'Keep the digestive fire (agni) strong: light exercise, warm meals, no skipping.'},
+    ]},
+  { months:[3,4], name:'Vasanta', sub:'Spring', dosha:'Kapha Reducing', color1:'#1a3d1a', color2:'#0d200d',
+    icon:'🌸', recs:[
+      {icon:'🥗', text:'Light, dry, bitter foods: salads, leafy greens, sprouts. Reduce sweets and dairy.'},
+      {icon:'🏃', text:'Increase physical activity — spring is the ideal season to build the exercise habit.'},
+      {icon:'🌿', text:'Triphala or neem supports natural spring detox. Avoid heavy, oily foods.'},
+      {icon:'☀️', text:'Longer morning walks as days get warmer — align with the rising energy of spring.'},
+      {icon:'💧', text:'Drink warm water with honey and lemon on an empty stomach each morning.'},
+    ]},
+  { months:[5,6], name:'Grishma', sub:'Summer', dosha:'Pitta Rising', color1:'#3d2a0a', color2:'#1f1505',
+    icon:'☀️', recs:[
+      {icon:'🍉', text:'Cooling, sweet, water-rich foods: cucumber, coconut water, watermelon, lassi.'},
+      {icon:'🌅', text:'Exercise only in the cooler morning hours. Avoid activity 11am–4pm.'},
+      {icon:'🥛', text:'Rose water, amla juice, coconut water — natural Pitta cooling agents.'},
+      {icon:'😌', text:'Reduce intensity and competitiveness. Summer aggravates Pitta — be gentle.'},
+      {icon:'🧊', text:'Cool showers, light cotton clothing, and evening breezes support Pitta balance.'},
+    ]},
+  { months:[7,8,9], name:'Varsha', sub:'Monsoon', dosha:'Vata & Pitta', color1:'#1a2a3d', color2:'#0d1520',
+    icon:'🌧️', recs:[
+      {icon:'🍛', text:'Easily digestible meals — dal, khichdi, soups. Digestion weakens in monsoon.'},
+      {icon:'🚫', text:'Avoid street food, leafy vegetables (contamination risk), and stale food.'},
+      {icon:'🌿', text:'Tulsi, ginger, turmeric daily — immune-protective during monsoon infections.'},
+      {icon:'🏠', text:'Minimize vigorous outdoor exercise. Yoga and pranayama are ideal indoors.'},
+      {icon:'💊', text:'Probiotics (chaas, curd) are especially valuable — gut health weakens in humidity.'},
+    ]},
+  { months:[10,11], name:'Sharada', sub:'Autumn', dosha:'Pitta Calming', color1:'#3d2010', color2:'#1f1008',
+    icon:'🍂', recs:[
+      {icon:'🥙', text:'Transition to lighter foods. Reduce the heavy summer-cool diet gradually.'},
+      {icon:'🕯️', text:'Establish consistent sleep and wake times — Vata increases with the changing season.'},
+      {icon:'🧘', text:'Meditation and pranayama are especially potent in autumn. Mind can wander more.'},
+      {icon:'🫚', text:'Warm oil massage with sesame oil begins again as Vata season approaches.'},
+      {icon:'🌾', text:'Seasonal festivals align with food transitions — use them as calendar markers.'},
+    ]},
+];
+
+function renderAyurveda() {
+  const month = new Date().getMonth() + 1;
+  const season = SEASONS.find(s => s.months.includes(month)) || SEASONS[0];
+  const nextSeason = SEASONS[(SEASONS.indexOf(season)+1)%SEASONS.length];
+
+  const svgBg = `<svg viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+    <rect width="800" height="280" fill="${season.color1}"/>
+    <defs><radialGradient id="sg" cx="30%" cy="50%" r="60%"><stop offset="0%" stop-color="${season.color2}" stop-opacity=".8"/><stop offset="100%" stop-color="${season.color1}" stop-opacity="0"/></radialGradient></defs>
+    <circle cx="650" cy="80" r="120" fill="rgba(201,168,76,.06)"/>
+    <circle cx="650" cy="80" r="80" fill="rgba(201,168,76,.06)"/>
+    ${Array.from({length:6},(_,i)=>`<circle cx="${650+Math.cos(i*60*Math.PI/180)*80}" cy="${80+Math.sin(i*60*Math.PI/180)*80}" r="4" fill="rgba(201,168,76,.15)"/>`).join('')}
+  </svg>`;
+
+  document.getElementById('ayur-season-card').innerHTML = `
+    <div class="season-card">
+      <div class="season-bg">${svgBg}</div>
+      <div class="season-overlay"></div>
+      <div class="season-body">
+        <span class="season-tag">${season.icon} Current Season</span>
+        <div class="season-name">${season.name}</div>
+        <div class="season-sub">${season.sub} · ${season.dosha} Dominant</div>
+        <div class="season-recs">
+          ${season.recs.slice(0,3).map(r=>`<div class="season-rec-row"><span class="season-rec-ico">${r.icon}</span><span>${r.text}</span></div>`).join('')}
+        </div>
+      </div>
+    </div>`;
+
+  document.getElementById('ayur-protocol').innerHTML = `
+    <div class="card" style="cursor:default">
+      <div class="ch"><h3 class="ctitle">Full ${season.name} Protocol</h3><span class="tag">${season.sub}</span></div>
+      <p class="cbody" style="margin-bottom:20px;font-size:.84rem">Ayurvedic season <em>${season.name}</em> brings <strong style="color:var(--gold)">${season.dosha}</strong> dominance. Align food, movement, and sleep accordingly.</p>
+      ${season.recs.map(r=>`<div class="trow"><div class="tlabel"><strong style="color:var(--text)">${r.icon} Protocol</strong><p>${r.text}</p></div></div>`).join('')}
+    </div>
+    <div class="card" style="cursor:default">
+      <div class="ch"><h3 class="ctitle">Coming Next: ${nextSeason.name}</h3><span class="tag">${nextSeason.sub}</span></div>
+      <p class="cbody" style="font-size:.84rem">${nextSeason.icon} Prepare for <strong style="color:var(--gold)">${nextSeason.sub}</strong> with ${nextSeason.dosha} dominance. ${nextSeason.recs[0].text}</p>
+    </div>`;
+}
+
+// ── 5. PROGRESS JOURNAL ──────────────────────────────────────
+let journalData = JSON.parse(localStorage.getItem('sw-journal') || '[]');
+let selectedFeeling = '';
+
+function journalSelectFeeling(f) {
+  selectedFeeling = f;
+  document.querySelectorAll('.jci').forEach(el => el.classList.remove('sel'));
+  event.currentTarget.classList.add('sel');
+}
+
+function saveJournalEntry() {
+  const text = document.getElementById('journal-ta').value.trim();
+  if(!text) { alert('Please write something in the journal first.'); return; }
+  const today = new Date().toISOString().split('T')[0];
+  const label = new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  const latest = hlog && hlog.find(e=>e.w);
+  let bmi = null;
+  if(latest && profile){ const hm=profile.h/100; bmi=(latest.w/(hm*hm)).toFixed(1); }
+  const entry = {
+    id: Date.now(), date:today, label, text,
+    feeling: selectedFeeling,
+    habits: Object.values(HABIT_STATE).filter(v=>v===1).length,
+    bmi, weight: latest ? latest.w : null
+  };
+  journalData.unshift(entry);
+  localStorage.setItem('sw-journal', JSON.stringify(journalData));
+  document.getElementById('journal-ta').value = '';
+  selectedFeeling = '';
+  document.querySelectorAll('.jci').forEach(el => el.classList.remove('sel'));
+  renderJournal();
+  showCheer('save');
+}
+
+function deleteJournalEntry(id) {
+  journalData = journalData.filter(e=>e.id!==id);
+  localStorage.setItem('sw-journal', JSON.stringify(journalData));
+  renderJournal();
+}
+
+function renderJournal() {
+  const today = new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long'});
+  const dtag = document.getElementById('journal-date-tag');
+  if(dtag) dtag.innerText = today;
+  const ctag = document.getElementById('journal-count-tag');
+  if(ctag) ctag.innerText = journalData.length + ' entries';
+  const list = document.getElementById('journal-entries');
+  if(!list) return;
+  if(!journalData.length) {
+    list.innerHTML = '<p style="font-size:.83rem;color:var(--muted);text-align:center;padding:24px">Your journal is empty. Write your first entry above — even two sentences counts.</p>';
+    return;
+  }
+  list.innerHTML = journalData.slice(0,20).map(e => `
+    <div class="journal-entry">
+      <div class="journal-date">${e.label}</div>
+      <div class="journal-text">${e.text.replace(/\n/g,'<br>')}</div>
+      <div class="journal-chips">
+        ${e.feeling ? `<span class="journal-chip">${e.feeling}</span>` : ''}
+        ${e.habits!=null ? `<span class="journal-chip">⬛ ${e.habits}/7 habits</span>` : ''}
+        ${e.bmi ? `<span class="journal-chip">BMI ${e.bmi}</span>` : ''}
+        ${e.weight ? `<span class="journal-chip">⚖️ ${e.weight} kg</span>` : ''}
+      </div>
+      <button class="journal-del" onclick="deleteJournalEntry(${e.id})">✕</button>
+    </div>`).join('');
+}
+
+// ── 6. DOSHA QUIZ ────────────────────────────────────────────
+const DOSHA_QS = [
+  { q:'How would you describe your natural body frame?',
+    opts:[{t:'V',l:'Slim, thin, light — I find it hard to gain weight'},
+          {t:'P',l:'Medium, athletic, muscular — I build strength easily'},
+          {t:'K',l:'Broad, sturdy, strong — I tend to gain weight easily'}]},
+  { q:'How is your energy through the day?',
+    opts:[{t:'V',l:'Variable — bursts of energy then sudden fatigue'},
+          {t:'P',l:'Intense and consistent — I can push hard but burn out'},
+          {t:'K',l:'Steady and slow to start — I get going gradually but endure'}]},
+  { q:'How do you respond to stress?',
+    opts:[{t:'V',l:'Anxious, worried, overthinking — mind races'},
+          {t:'P',l:'Irritable, frustrated, critical — I want to fix it immediately'},
+          {t:'K',l:'Withdrawn, quiet, avoidant — I take time to process'}]},
+  { q:'How is your digestion and appetite?',
+    opts:[{t:'V',l:'Irregular — sometimes hungry, sometimes not at all'},
+          {t:'P',l:'Strong — I get very hungry if I miss a meal'},
+          {t:'K',l:'Slow but steady — I can skip meals easily'}]},
+  { q:'What describes your sleep patterns?',
+    opts:[{t:'V',l:'Light sleeper, wake easily, vivid dreams'},
+          {t:'P',l:'Moderate sleeper, sometimes wake with a busy mind'},
+          {t:'K',l:'Deep, long sleeper — hard to wake, feel sluggish in the morning'}]},
+  { q:'How is your skin naturally?',
+    opts:[{t:'V',l:'Dry, rough, thin — chaps easily in winter'},
+          {t:'P',l:'Oily in places, sensitive, prone to redness or acne'},
+          {t:'K',l:'Thick, smooth, oily — rarely dry, good complexion'}]},
+  { q:'How do you make decisions?',
+    opts:[{t:'V',l:'Quickly — but I often change my mind and second-guess'},
+          {t:'P',l:'Decisively — I make up my mind and commit fully'},
+          {t:'K',l:'Slowly — I take time, prefer consensus and stability'}]},
+  { q:'What are your biggest health tendencies?',
+    opts:[{t:'V',l:'Joint pain, dryness, constipation, anxiety, cold hands'},
+          {t:'P',l:'Acidity, inflammation, fever, skin issues, impatience'},
+          {t:'K',l:'Weight gain, congestion, sluggishness, attachment, lethargy'}]},
+];
+
+const DOSHA_RESULTS = {
+  V: { name:'Vata', symbol:'🌬️', color:'#82B1FF', sub:'Air & Space · Movement & Change',
+    desc:'Vata types are creative, quick-thinking, and enthusiastic. When balanced: vibrant and inspired. When out of balance: anxious, scattered, dry, and fatigued.',
+    food:'Warm, moist, grounding foods. Ghee, sesame, sweet fruits, warm milk, cooked vegetables. Avoid raw, cold, dry foods.',
+    breath:'Nadi Shodhana (Anulom Vilom) and Bhramari — slow, warming, grounding. 15 mins morning.',
+    exercise:'Gentle yoga, tai chi, walking. Avoid intense cardio when Vata is high. Consistency over intensity.',
+    herbs:'Ashwagandha, Shatavari, Triphala. Warm turmeric milk (golden milk) at night.',
+    sleep:'Establish strict sleep-wake times. Oil the feet before bed with warm sesame oil.' },
+  P: { name:'Pitta', symbol:'🔥', color:'#FF8A65', sub:'Fire & Water · Transformation & Intensity',
+    desc:'Pitta types are driven, sharp-minded, and warm-hearted. When balanced: focused and courageous. When out of balance: irritable, critical, inflammatory, and overheated.',
+    food:'Cooling, sweet, bitter foods. Coconut, cucumber, coriander, coconut water, amla. Avoid spicy, sour, fermented foods.',
+    breath:'Sheetali (cooling breath), Chandra Bhedana. Focus on long, cooling exhales. Avoid Kapalabhati.',
+    exercise:'Swimming, cycling, hiking in cool weather. Avoid midday sun and intense competition.',
+    herbs:'Amla (highest vitamin C), Brahmi, Shatavari. Rose water and coconut oil topically.',
+    sleep:'Cool sleeping environment. Light cotton, avoid hot baths before bed.' },
+  K: { name:'Kapha', symbol:'🌿', color:'#80CBC4', sub:'Earth & Water · Stability & Nourishment',
+    desc:'Kapha types are calm, loyal, and nurturing. When balanced: steady and compassionate. When out of balance: lethargic, weight-gaining, congested, and emotionally attached.',
+    food:'Light, dry, spicy, warm foods. Millets, legumes, ginger, black pepper, bitter greens. Reduce dairy, sweets, oils.',
+    breath:'Kapalabhati (skull-shining breath) — vigorous, stimulating. 5 mins every morning.',
+    exercise:'Vigorous daily movement is essential. Running, brisk walking, dancing. Break a sweat.',
+    herbs:'Trikatu (ginger, pepper, pippali), Guggulu, Triphala. Honey in warm water morning.',
+    sleep:'Rise early (before 6am) — sleeping late increases Kapha. Avoid daytime naps.' },
+};
+
+let doshaCurrent = 0;
+let doshaAnswers = [];
+let doshaResult  = null;
+let savedDosha   = JSON.parse(localStorage.getItem('sw-dosha') || 'null');
+
+function renderDosha() {
+  const content = document.getElementById('dosha-content');
+  if(!content) return;
+  if(savedDosha && doshaResult===null) {
+    doshaResult = savedDosha;
+    showDoshaResult();
+    return;
+  }
+  if(doshaResult) { showDoshaResult(); return; }
+  if(doshaCurrent >= DOSHA_QS.length) { calcDosha(); return; }
+  const q = DOSHA_QS[doshaCurrent];
+  content.innerHTML = `
+    <div style="text-align:center;padding-bottom:8px">
+      <div style="font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:16px">Question ${doshaCurrent+1} of ${DOSHA_QS.length}</div>
+      <div class="dosha-progress">${DOSHA_QS.map((_,i)=>`<div class="dosha-pip ${i<doshaCurrent?'done':i===doshaCurrent?'cur':''}"></div>`).join('')}</div>
+    </div>
+    <div class="dosha-q-text">${q.q}</div>
+    <div class="dosha-opts">
+      ${q.opts.map((o,i)=>`<div class="dosha-opt" onclick="doshaAnswer('${o.t}',this)">${o.l}</div>`).join('')}
+    </div>
+    ${doshaCurrent>0?`<div style="text-align:center"><button class="abtn" style="padding:8px 20px;font-size:.75rem" onclick="doshaCurrent--;doshaAnswers.pop();renderDosha()">← Back</button></div>`:''}`;
+}
+
+function doshaAnswer(type, el) {
+  el.classList.add('sel');
+  setTimeout(() => {
+    doshaAnswers.push(type);
+    doshaCurrent++;
+    renderDosha();
+  }, 350);
+}
+
+function calcDosha() {
+  const counts = {V:0,P:0,K:0};
+  doshaAnswers.forEach(a => counts[a]++);
+  const primary = Object.entries(counts).sort((a,b)=>b[1]-a[1])[0][0];
+  doshaResult = { primary, counts };
+  savedDosha  = doshaResult;
+  localStorage.setItem('sw-dosha', JSON.stringify(doshaResult));
+  showDoshaResult();
+}
+
+function showDoshaResult() {
+  const content = document.getElementById('dosha-content');
+  if(!content) return;
+  const r = doshaResult;
+  const d = DOSHA_RESULTS[r.primary];
+  const total = Object.values(r.counts).reduce((a,b)=>a+b,0);
+  const barColors = {V:'#82B1FF',P:'#FF8A65',K:'#80CBC4'};
+  content.innerHTML = `
+    <div class="dosha-result">
+      <div class="dosha-result-symbol">${d.symbol}</div>
+      <div class="dosha-result-name">${d.name}</div>
+      <div class="dosha-result-sub">${d.sub}</div>
+      <div class="dosha-bars">
+        ${['V','P','K'].map(k=>`<div class="dosha-bar-col">
+          <div class="dosha-bar-track"><div class="dosha-bar-fill" id="db-${k}" style="height:0%;background:${barColors[k]}"></div></div>
+          <div class="dosha-bar-lbl">${DOSHA_RESULTS[k].name}</div>
+        </div>`).join('')}
+      </div>
+      <p class="cbody" style="margin-bottom:28px;max-width:500px;margin-left:auto;margin-right:auto">${d.desc}</p>
+      <div class="dosha-rec-grid">
+        <div class="dosha-rec"><div class="dosha-rec-icon">🥣</div><div class="dosha-rec-title">Food</div><div class="dosha-rec-body">${d.food}</div></div>
+        <div class="dosha-rec"><div class="dosha-rec-icon">🌬️</div><div class="dosha-rec-title">Breath</div><div class="dosha-rec-body">${d.breath}</div></div>
+        <div class="dosha-rec"><div class="dosha-rec-icon">🏃</div><div class="dosha-rec-title">Exercise</div><div class="dosha-rec-body">${d.exercise}</div></div>
+        <div class="dosha-rec"><div class="dosha-rec-icon">🌿</div><div class="dosha-rec-title">Herbs</div><div class="dosha-rec-body">${d.herbs}</div></div>
+        <div class="dosha-rec"><div class="dosha-rec-icon">🌙</div><div class="dosha-rec-title">Sleep</div><div class="dosha-rec-body">${d.sleep}</div></div>
+        <div class="dosha-rec"><div class="dosha-rec-icon">🔄</div><div class="dosha-rec-title">Retake</div><div class="dosha-rec-body"><button class="abtn" style="padding:8px 14px;font-size:.72rem;margin-top:4px" onclick="doshaCurrent=0;doshaAnswers=[];doshaResult=null;savedDosha=null;localStorage.removeItem('sw-dosha');renderDosha()">Retake Quiz</button></div></div>
+      </div>
+    </div>`;
+  // Animate bars
+  setTimeout(() => {
+    ['V','P','K'].forEach(k => {
+      const el = document.getElementById('db-'+k);
+      if(el) el.style.height = ((r.counts[k]||0)/total*100)+'%';
+    });
+  }, 100);
+}
+
+// ── 7. FAMILY MODE ───────────────────────────────────────────
+let familyMembers = JSON.parse(localStorage.getItem('sw-family') || '[]');
+let activeFamMember = JSON.parse(localStorage.getItem('sw-active-fam') || 'null');
+let selectedFamAvatar = '👤';
+
+function selectFamAvatar(el, emoji) {
+  document.querySelectorAll('#fam-avatar-picker span').forEach(s => s.style.borderColor='transparent');
+  el.style.borderColor = 'var(--gold)';
+  selectedFamAvatar = emoji;
+}
+
+function addFamilyMember() {
+  const name   = document.getElementById('fam-new-name').value.trim();
+  const age    = document.getElementById('fam-new-age').value;
+  const gender = document.getElementById('fam-new-gender').value;
+  const height = document.getElementById('fam-new-height').value;
+  if(!name) { alert('Please enter a name.'); return; }
+  const member = { id: Date.now(), name, age, gender, height, avatar: selectedFamAvatar,
+    habits:{}, weekData:Array(7).fill(0), hlog:[] };
+  familyMembers.push(member);
+  localStorage.setItem('sw-family', JSON.stringify(familyMembers));
+  document.getElementById('fam-new-name').value = '';
+  document.getElementById('fam-new-age').value = '';
+  document.getElementById('fam-new-height').value = '';
+  const msg = document.getElementById('fam-saved-msg');
+  msg.style.display='block'; setTimeout(()=>msg.style.display='none',2000);
+  renderFamilyTab();
+  renderFamilySwitcher();
+  showCheer('save');
+}
+
+function switchFamilyMember(id) {
+  activeFamMember = familyMembers.find(m=>m.id===id) || null;
+  localStorage.setItem('sw-active-fam', JSON.stringify(activeFamMember));
+  renderFamilySwitcher();
+  renderFamilyTab();
+  showCheer('save');
+}
+
+function deleteFamilyMember(id) {
+  if(!confirm('Remove this family member?')) return;
+  familyMembers = familyMembers.filter(m=>m.id!==id);
+  localStorage.setItem('sw-family', JSON.stringify(familyMembers));
+  if(activeFamMember && activeFamMember.id===id) {
+    activeFamMember=null;
+    localStorage.removeItem('sw-active-fam');
+  }
+  renderFamilyTab();
+  renderFamilySwitcher();
+}
+
+function renderFamilySwitcher() {
+  const bar = document.getElementById('family-switcher-bar');
+  if(!bar || !familyMembers.length) return;
+  const mainName = currentUser ? currentUser.name : 'Me';
+  bar.innerHTML = `<div class="family-switcher">
+    <div class="fam-btn ${!activeFamMember?'active':''}" onclick="activeFamMember=null;localStorage.removeItem('sw-active-fam');renderFamilySwitcher()">
+      <div class="fam-avatar">🧑</div>
+      <div class="fam-name">${mainName}</div>
+    </div>
+    ${familyMembers.map(m=>`
+      <div class="fam-btn ${activeFamMember&&activeFamMember.id===m.id?'active':''}" onclick="switchFamilyMember(${m.id})">
+        <div class="fam-avatar">${m.avatar}</div>
+        <div class="fam-name">${m.name}</div>
+      </div>`).join('')}
+  </div>
+  ${activeFamMember?`<div class="fam-banner">
+    <span class="fam-banner-avatar">${activeFamMember.avatar}</span>
+    <div><div class="fam-banner-name">Viewing: ${activeFamMember.name}'s Profile</div>
+    <div class="fam-banner-sub">${activeFamMember.age?activeFamMember.age+' yrs · ':''} ${activeFamMember.gender||''}</div></div>
+  </div>`:''}`;
+}
+
+function renderFamilyTab() {
+  const ctag = document.getElementById('fam-count-tag');
+  if(ctag) ctag.innerText = familyMembers.length + ' member' + (familyMembers.length!==1?'s':'');
+  const list = document.getElementById('family-profiles-list');
+  if(list) {
+    if(!familyMembers.length) {
+      list.innerHTML = '<p style="font-size:.83rem;color:var(--muted);padding:12px 0">No family members added yet. Use the form below.</p>';
+    } else {
+      list.innerHTML = familyMembers.map(m=>`
+        <div class="trow2">
+          <span style="font-size:1.3rem">${m.avatar}</span>
+          <span style="font-weight:500;color:var(--text)">${m.name}</span>
+          <span style="color:var(--muted);font-size:.78rem">${m.age?m.age+' yrs':''} ${m.gender?'· '+m.gender:''} ${m.height?'· '+m.height+' cm':''}</span>
+          <div style="display:flex;gap:8px">
+            <button class="abtn" style="padding:6px 14px;font-size:.72rem" onclick="switchFamilyMember(${m.id})">Switch</button>
+            <button onclick="deleteFamilyMember(${m.id})" style="background:none;border:1px solid rgba(239,83,80,.3);color:#EF5350;padding:6px 10px;border-radius:20px;font-size:.72rem;cursor:pointer">✕</button>
+          </div>
+        </div>`).join('');
+    }
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+// END FEATURE MODULES
+// ══════════════════════════════════════════════════════════════
+
 window.onload = () => {
   fetchSunrise();
   initUser();
   renderChart();
   buildDots();
   renderRecipes('all');
+  arcGitaInit();
+  gitaRenderStreak();
+  initMoodCard();
+  renderHabitNudge();
+  renderFamilySwitcher();
+  renderJournal();
+  // Auto-render BMI if data exists
+  prefillBMITab();
+  if (profile && hlog && hlog.length) renderBMITab();
   if (profile) {
-    document.getElementById('ih').value  = profile.h;
-    document.getElementById('ia').value  = profile.a;
-    document.getElementById('ig').value  = profile.g;
-    document.getElementById('iac').value = profile.ac;
+    const ih = document.getElementById('ih');
+    const ia = document.getElementById('ia');
+    const ig = document.getElementById('ig');
+    const iac = document.getElementById('iac');
+    if (ih) ih.value  = profile.h;
+    if (ia) ia.value  = profile.a;
+    if (ig) ig.value  = profile.g;
+    if (iac) iac.value = profile.ac;
   }
 };
 </script>
