@@ -26,7 +26,8 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
-body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 50% at 50% -10%,rgba(201,168,76,.06) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 80% 80%,rgba(46,125,50,.04) 0%,transparent 50%);pointer-events:none;z-index:0;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 50% at 50% -10%,rgba(201,168,76,.07) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 80% 80%,rgba(46,125,50,.04) 0%,transparent 50%);pointer-events:none;z-index:0;}
+body::after{content:'';position:fixed;inset:0;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");pointer-events:none;z-index:0;}
 
 /* TOP BAR */
 .top-bar{position:absolute;top:20px;right:24px;z-index:1000;display:flex;gap:8px;}
@@ -34,17 +35,19 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .lbtn.active{color:var(--gold);border-color:var(--gold-b);}
 
 /* HERO */
-.hero{height:52vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;background:linear-gradient(to bottom,rgba(6,6,6,.2) 0%,rgba(6,6,6,.72) 70%,var(--bg) 100%),url('images/parents-hero-image.jpg') center/cover no-repeat;position:relative;}
+.hero{height:56vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;background:linear-gradient(to bottom,rgba(6,6,6,.1) 0%,rgba(6,6,6,.78) 65%,var(--bg) 100%),url('images/parents-hero-image.jpg') center/cover no-repeat;position:relative;}
 .hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold-b),transparent);}
-.eyebrow{font-size:.7rem;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;opacity:.8;}
-.hero h1{font-family:'Cormorant Garamond',serif;font-size:5.5rem;font-weight:600;color:var(--text);line-height:1;letter-spacing:-1px;text-shadow:0 4px 40px rgba(0,0,0,.9);}
-.hero h1 span{color:var(--gold);}
-.hero-sub{font-size:.75rem;letter-spacing:6px;text-transform:uppercase;color:var(--muted);margin-top:16px;}
+.eyebrow{font-size:.65rem;letter-spacing:6px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;opacity:.9;animation:fadeUp .8s ease forwards;}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:6rem;font-weight:300;color:var(--text);line-height:1;letter-spacing:-2px;text-shadow:0 4px 60px rgba(0,0,0,.95);animation:fadeUp .9s .1s ease both;}
+.hero h1 span{color:var(--gold);font-weight:600;}
+.hero-sub{font-size:.7rem;letter-spacing:7px;text-transform:uppercase;color:var(--muted);margin-top:18px;animation:fadeUp .9s .2s ease both;}
+.hero-divider{width:40px;height:1px;background:var(--gold-b);margin:16px auto 0;animation:fadeUp .9s .25s ease both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 
 /* NAV */
-.tab-nav{display:flex;justify-content:center;gap:6px;padding:13px 20px;position:sticky;top:0;background:rgba(8,8,8,.97);z-index:100;border-bottom:1px solid var(--gb);flex-wrap:wrap;}
-.tbtn{background:transparent;color:var(--muted);border:1px solid transparent;padding:9px 18px;font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:500;text-transform:uppercase;letter-spacing:2px;border-radius:30px;cursor:pointer;transition:all .35s;white-space:nowrap;}
-.tbtn:hover{color:var(--soft);}
+.tab-nav{display:flex;justify-content:center;gap:5px;padding:12px 20px;position:sticky;top:0;background:rgba(6,6,6,.98);z-index:100;border-bottom:1px solid var(--gb);flex-wrap:wrap;backdrop-filter:blur(20px);}
+.tbtn{background:transparent;color:var(--muted);border:1px solid transparent;padding:8px 16px;font-family:'Montserrat',sans-serif;font-size:.68rem;font-weight:500;text-transform:uppercase;letter-spacing:1.8px;border-radius:30px;cursor:pointer;transition:all .3s;white-space:nowrap;}
+.tbtn:hover{color:var(--soft);background:rgba(255,255,255,.03);}
 .tbtn.active{color:var(--gold);border-color:var(--gold-b);background:var(--gold-dim);}
 
 /* LAYOUT */
@@ -251,6 +254,43 @@ input[type=checkbox]:checked::after{transform:translateX(22px);background:var(--
   .wsummary{flex-wrap:wrap;}
 }
 
+/* ─── GITA MODULE ─── */
+.gita-daily{background:linear-gradient(135deg,rgba(201,168,76,.07) 0%,rgba(0,0,0,.0) 100%);border:1px solid var(--gold-b);border-radius:18px;padding:36px 32px;margin-bottom:28px;position:relative;overflow:hidden;text-align:center;}
+.gita-daily::before{content:'॥ श्रीमद्भगवद्गीता ॥';position:absolute;top:14px;left:50%;transform:translateX(-50%);font-size:.65rem;letter-spacing:3px;color:rgba(201,168,76,.4);white-space:nowrap;}
+.gita-daily::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 40% at 50% 0%,rgba(201,168,76,.05),transparent);pointer-events:none;}
+.gita-om{font-size:2.6rem;margin-bottom:12px;opacity:.7;animation:om-pulse 3s ease-in-out infinite;}
+@keyframes om-pulse{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:.9;transform:scale(1.05)}}
+.gita-chapter-tag{font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:20px;display:block;}
+.gita-sanskrit{font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:rgba(201,168,76,.7);line-height:1.7;margin-bottom:16px;font-style:italic;}
+.gita-quote{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:400;color:var(--text);line-height:1.5;margin-bottom:20px;}
+.gita-meaning{font-size:.88rem;color:var(--soft);line-height:1.9;margin-bottom:24px;max-width:600px;margin-left:auto;margin-right:auto;}
+.gita-attr{font-size:.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);opacity:.8;}
+.gita-nav{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:24px;}
+
+.gita-chapters-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px;}
+@media(max-width:680px){.gita-chapters-grid{grid-template-columns:repeat(2,1fr);}}
+.gita-ch-card{background:rgba(0,0,0,.3);border:1px solid var(--gb);border-radius:12px;padding:18px 16px;cursor:pointer;transition:all .3s;text-align:center;}
+.gita-ch-card:hover{border-color:var(--gold-b);background:var(--gold-dim);transform:translateY(-3px);}
+.gita-ch-num{font-family:'Cormorant Garamond',serif;font-size:2rem;color:var(--gold);line-height:1;}
+.gita-ch-name{font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--soft);margin-top:4px;}
+.gita-ch-sub{font-size:.68rem;color:var(--muted);margin-top:3px;}
+
+/* Chapter reader */
+.gita-reader{display:none;}
+.gita-reader.on{display:block;}
+.gita-reader-hdr{display:flex;align-items:center;gap:14px;margin-bottom:28px;}
+.gita-reader-back{background:transparent;border:1px solid var(--gb);color:var(--muted);padding:8px 16px;border-radius:20px;font-family:'Montserrat',sans-serif;font-size:.72rem;cursor:pointer;transition:all .3s;letter-spacing:1px;}
+.gita-reader-back:hover{border-color:var(--gold-b);color:var(--gold);}
+.gita-verse{border-left:2px solid var(--gold-b);padding:20px 24px;margin-bottom:16px;background:rgba(201,168,76,.02);border-radius:0 10px 10px 0;transition:background .3s;}
+.gita-verse:hover{background:rgba(201,168,76,.05);}
+.gita-verse-num{font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.gita-verse-skt{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:rgba(201,168,76,.65);font-style:italic;margin-bottom:8px;line-height:1.65;}
+.gita-verse-eng{font-size:.88rem;color:var(--soft);line-height:1.85;}
+.gita-verse-meaning{font-size:.82rem;color:var(--muted);margin-top:10px;line-height:1.7;border-top:1px solid var(--gb);padding-top:10px;}
+
+/* Progress ring on daily quote */
+.gita-date-ring{font-size:.72rem;color:var(--muted);letter-spacing:2px;}
+
 .bmi-formula-box{background:var(--gold-dim);border:1px solid var(--gold-b);border-radius:12px;padding:14px 18px;margin-bottom:4px;}
 .bmi-formula-title{font-size:.7rem;text-transform:uppercase;letter-spacing:2px;color:var(--gold);margin-bottom:6px;}
 .bmi-formula-eq{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--gold-lt);margin-bottom:4px;}
@@ -329,6 +369,7 @@ input[type=checkbox]:checked::after{transform:translateX(22px);background:var(--
   <div class="eyebrow">Premium Wellness Protocol</div>
   <h1>Swasth <span>OS</span></h1>
   <p class="hero-sub t-sub">The Longevity Protocol</p>
+  <div class="hero-divider"></div>
 </header>
 
 <nav class="tab-nav">
@@ -341,6 +382,7 @@ input[type=checkbox]:checked::after{transform:translateX(22px);background:var(--
   <button class="tbtn" onclick="openTab(event,'Kitchen')">Kitchen Swaps</button>
   <button class="tbtn" onclick="openTab(event,'Recipes')">Recipes</button>
   <button class="tbtn" onclick="openTab(event,'Suggest')">Suggestions</button>
+  <button class="tbtn" onclick="openTab(event,'Gita')">🕉 Gita</button>
 </nav>
 
 <main class="wrap">
@@ -791,6 +833,172 @@ input[type=checkbox]:checked::after{transform:translateX(22px);background:var(--
 </div>
 
 
+<!-- ════════════════════════════════
+     TAB: BMI INTELLIGENCE
+════════════════════════════════ -->
+<div id="BMITab" class="tab">
+  <h2 class="stitle">BMI Intelligence</h2>
+
+  <div class="card" style="cursor:default">
+    <div class="ch"><h3 class="ctitle">Your Body Profile</h3><span class="tag">Asian BMI Scale</span></div>
+    <p class="cbody" style="margin-bottom:20px;font-size:.82rem">Asian populations have higher metabolic risk at lower BMI values. This tracker uses the WHO Asian cut-offs: Normal 18.5–22.9, Overweight 23–27.4, Obese ≥27.5.</p>
+
+    <div class="bmi-formula-box" id="bmi-formula-preview-tab">
+      <div class="bmi-formula-title">BMI Formula</div>
+      <div class="bmi-formula-eq">BMI = Weight (kg) ÷ Height (m)²</div>
+      <div class="bmi-formula-example" id="bmi-formula-example-tab">Enter your weight below to preview your BMI</div>
+    </div>
+
+    <div class="div" style="margin:20px 0"></div>
+    <span class="sec-label">Your Profile</span>
+    <div class="g2c">
+      <div class="lwrap"><label class="llabel">Height</label><input type="number" id="bmi-ih" class="linput" placeholder="165"><span class="lunit">cm</span></div>
+      <div class="lwrap"><label class="llabel">Age</label><input type="number" id="bmi-ia" class="linput" placeholder="58"><span class="lunit">yrs</span></div>
+      <div class="lwrap"><label class="llabel">Gender</label><select id="bmi-ig" class="linput" style="cursor:pointer"><option value="male">Male</option><option value="female">Female</option></select></div>
+      <div class="lwrap"><label class="llabel">Activity Level</label><select id="bmi-iac" class="linput" style="cursor:pointer"><option value="sedentary">Sedentary</option><option value="basic">Basic</option><option value="light" selected>Light (2–3x/wk)</option><option value="moderate">Moderate (4–5x/wk)</option><option value="active">Active (daily)</option></select></div>
+    </div>
+    <button class="abtn" onclick="saveBMIProfile()" style="margin-bottom:24px">Save Profile</button>
+
+    <div class="div" style="margin:0 0 20px"></div>
+    <span class="sec-label">Log a Reading</span>
+    <div class="g2c" style="margin-top:14px">
+      <div class="lwrap"><label class="llabel">Weight</label><input type="number" id="bmi-iw" class="linput" placeholder="72" oninput="previewBMITab(this.value)"><span class="lunit">kg</span></div>
+      <div class="lwrap"><label class="llabel">Blood Pressure <span style="font-size:.65rem;color:var(--muted)">(optional)</span></label><input type="text" id="bmi-ibp" class="linput" placeholder="120/80"><span class="lunit">mmHg</span></div>
+    </div>
+    <button class="abtn fill" onclick="logHealthTab()" style="margin-bottom:6px">+ Save Reading</button>
+    <p id="bmi-logsaved" style="color:var(--ok);font-size:.82rem;margin:6px 0 0;display:none">✓ Reading saved</p>
+  </div>
+
+  <div id="bmidash-tab" style="display:none">
+    <div class="div" style="margin:8px 0 24px"></div>
+    <span class="sec-label">Current Status</span>
+    <div class="bmi-dash">
+      <div class="bmi-card">
+        <div class="bmi-val" id="dt-bmi" style="color:var(--gold)">—</div>
+        <div class="bmi-lbl">Current BMI</div>
+        <div id="dt-bmicat" style="font-size:.78rem;font-weight:600;margin-top:4px">—</div>
+        <div class="bmi-track"><div class="bmi-fill" id="dt-bmibar" style="width:0"></div></div>
+        <div class="bmi-zones"><span>16</span><span>18.5</span><span>23</span><span>27.5</span><span>40</span></div>
+      </div>
+      <div class="bmi-card">
+        <div class="bmi-val" id="dt-target" style="color:#66BB6A">—</div>
+        <div class="bmi-lbl">Target BMI (Asian)</div>
+        <div id="dt-tw" style="font-size:.8rem;color:var(--soft);margin-top:8px">—</div>
+        <div id="dt-togo" style="margin-top:12px;font-size:.78rem;color:var(--muted);line-height:1.65"></div>
+      </div>
+    </div>
+    <div class="insight" id="dt-insight"><strong>Insight</strong>Loading…</div>
+    <div class="div" style="margin:18px 0"></div>
+    <span class="sec-label">Projected Progress</span>
+    <div class="card" style="cursor:default;padding:20px 24px"><div id="dt-proj"></div></div>
+    <div class="div" style="margin:18px 0"></div>
+    <span class="sec-label">Reading History</span>
+    <div class="card" style="cursor:default;padding:20px 24px"><div id="dt-hist"></div></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     TAB: HEALTH TREND
+════════════════════════════════ -->
+<div id="HealthTrend" class="tab">
+  <h2 class="stitle">Health Trend</h2>
+  <div class="card" style="cursor:default">
+    <div class="ch"><h3 class="ctitle">Weight Over Time</h3><span class="tag">Last 30 days</span></div>
+    <canvas id="weight-chart" height="200"></canvas>
+    <div style="margin-top:16px" id="weight-trend-summary"></div>
+  </div>
+  <div class="card" style="cursor:default;margin-top:0">
+    <div class="ch"><h3 class="ctitle">Blood Pressure Log</h3><span class="tag">Systolic / Diastolic</span></div>
+    <canvas id="bp-chart" height="160"></canvas>
+    <div id="bp-trend-summary" style="margin-top:12px;font-size:.82rem;color:var(--soft)"></div>
+  </div>
+  <div class="card" style="cursor:default;margin-top:0">
+    <div class="ch"><h3 class="ctitle">Workout History</h3><span class="tag">Distance · Pace · Calories</span></div>
+    <div id="workout-history-list"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     TAB: HABIT TREND
+════════════════════════════════ -->
+<div id="HabitTrend" class="tab">
+  <h2 class="stitle">Habit Trend</h2>
+  <div class="card" style="cursor:default">
+    <div class="ch"><h3 class="ctitle">28-Day Habit Heatmap</h3><span class="tag">4 weeks</span></div>
+    <div id="habit-heatmap"></div>
+    <div id="habit-heatmap-legend" style="display:flex;gap:8px;align-items:center;margin-top:14px;font-size:.75rem;color:var(--muted)">
+      <span>Less</span>
+      <div style="width:14px;height:14px;border-radius:3px;background:rgba(255,255,255,.06);border:1px solid var(--gb)"></div>
+      <div style="width:14px;height:14px;border-radius:3px;background:rgba(201,168,76,.25)"></div>
+      <div style="width:14px;height:14px;border-radius:3px;background:rgba(201,168,76,.55)"></div>
+      <div style="width:14px;height:14px;border-radius:3px;background:var(--gold)"></div>
+      <span>More</span>
+    </div>
+  </div>
+  <div class="card" style="cursor:default;margin-top:0">
+    <div class="ch"><h3 class="ctitle">Per-Habit Completion Rate</h3><span class="tag">All time</span></div>
+    <div id="habit-bars"></div>
+  </div>
+  <div class="card" style="cursor:default;margin-top:0">
+    <div class="ch"><h3 class="ctitle">Download Your Progress</h3><span class="tag">Export</span></div>
+    <p class="cbody" style="margin-bottom:18px;font-size:.82rem">Download a full summary of your habits, health logs, and BMI progress as a CSV file.</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <button class="abtn" onclick="downloadCSV('habits')">&#11015; Habit Log CSV</button>
+      <button class="abtn" onclick="downloadCSV('health')">&#11015; Health Log CSV</button>
+      <button class="abtn" onclick="downloadCSV('workouts')">&#11015; Workout Log CSV</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     TAB: GITA
+════════════════════════════════ -->
+<div id="Gita" class="tab">
+  <h2 class="stitle">Bhagavad Gita</h2>
+  <p class="cbody" style="text-align:center;margin-bottom:32px;max-width:620px;margin-left:auto;margin-right:auto">Ancient wisdom for daily living. A new shloka greets you each day. Read the complete text whenever you seek deeper understanding.</p>
+
+  <!-- DAILY QUOTE CARD -->
+  <div class="gita-daily" id="gita-daily-card">
+    <div class="gita-om">🕉</div>
+    <span class="gita-chapter-tag" id="gita-chapter-tag">Chapter · Verse</span>
+    <div class="gita-sanskrit" id="gita-sanskrit"></div>
+    <div class="gita-quote" id="gita-quote">"Loading today's shloka…"</div>
+    <div class="gita-meaning" id="gita-meaning"></div>
+    <div class="gita-attr" id="gita-attr"></div>
+    <div class="gita-nav">
+      <button class="abtn" onclick="gitaPrevQuote()">← Previous</button>
+      <button class="abtn" onclick="gitaRandomQuote()">🎲 Random</button>
+      <button class="abtn" id="gita-bookmark-btn" onclick="gitaToggleBookmark()">🔖 Save Shloka</button>
+      <button class="abtn" onclick="gitaNextQuote()">Next →</button>
+    </div>
+    <div class="gita-date-ring" id="gita-date-ring" style="margin-top:18px"></div>
+  </div>
+
+  <!-- SAVED SHLOKAS -->
+  <div id="gita-saved-section" style="display:none;margin-top:28px">
+    <h3 class="stitle" style="font-size:1.8rem;margin-bottom:20px">Your Saved Shlokas</h3>
+    <div id="gita-saved-list"></div>
+  </div>
+
+  <!-- CHAPTER BROWSER -->
+  <div id="gita-chapters-view">
+    <h3 class="stitle" style="font-size:1.8rem;margin-bottom:20px">All 18 Chapters</h3>
+    <div class="gita-chapters-grid" id="gita-chapters-grid"></div>
+  </div>
+
+  <!-- CHAPTER READER -->
+  <div id="gita-reader" class="gita-reader">
+    <div class="gita-reader-hdr">
+      <button class="gita-reader-back" onclick="gitaCloseReader()">← Back to Chapters</button>
+      <div>
+        <div class="ctitle" id="gita-reader-title" style="font-size:1.4rem"></div>
+        <div style="font-size:.72rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:3px" id="gita-reader-sub"></div>
+      </div>
+    </div>
+    <div id="gita-reader-verses"></div>
+  </div>
+</div>
+
 </main>
 
 <!-- PROFILE MODAL -->
@@ -848,12 +1056,13 @@ function openTab(e, id) {
   document.getElementById(id).classList.add('on');
   e.currentTarget.classList.add('active');
   if (id === 'Progress')    { renderChart(); }
-  if (id === 'BMITab')      { prefillHealthFields(); renderBMI(); }
+  if (id === 'BMITab')      { prefillBMITab(); renderBMITab(); }
   if (id === 'HealthTrend') { renderHealthTrend(); }
   if (id === 'HabitTrend')  { renderHabitTrend(); }
   if (id === 'Recipes')     { renderRecipes('all'); }
   if (id === 'Breathe')     { buildDots(); }
   if (id === 'Kitchen')     { renderGroceryList(); }
+  if (id === 'Gita')        { if (!gitaIndex && gitaIndex !== 0) gitaInit(); }
 }
 
 
@@ -2065,6 +2274,371 @@ function sendGroceryWA() {
 
 // Init grocery list when Kitchen tab opens
 
+// ── BMI TAB (dedicated, fully functional) ─────────────────────
+function prefillBMITab() {
+  if (profile) {
+    document.getElementById('bmi-ih').value  = profile.h || '';
+    document.getElementById('bmi-ia').value  = profile.a || '';
+    document.getElementById('bmi-ig').value  = profile.g || 'male';
+    document.getElementById('bmi-iac').value = profile.ac || 'light';
+  }
+  if (currentUser) {
+    if (!document.getElementById('bmi-ih').value && currentUser.height) document.getElementById('bmi-ih').value = currentUser.height;
+    if (!document.getElementById('bmi-ia').value && currentUser.age)    document.getElementById('bmi-ia').value = currentUser.age;
+  }
+}
+
+function saveBMIProfile() {
+  const h  = parseFloat(document.getElementById('bmi-ih').value);
+  const a  = parseInt(document.getElementById('bmi-ia').value);
+  const g  = document.getElementById('bmi-ig').value;
+  const ac = document.getElementById('bmi-iac').value;
+  if (!h || !a) { alert('Please enter height and age.'); return; }
+  profile = { h, a, g, ac };
+  localStorage.setItem('sw-profile', JSON.stringify(profile));
+  renderBMITab();
+  showCheer('save');
+}
+
+function previewBMITab(val) {
+  const el = document.getElementById('bmi-formula-example-tab');
+  if (!el) return;
+  const w = parseFloat(val);
+  const h = parseFloat(document.getElementById('bmi-ih').value) || (profile && profile.h);
+  if (!w || !h) { el.innerText = 'Enter your weight to preview BMI'; return; }
+  const hm  = h / 100;
+  const bmi = (w / (hm * hm)).toFixed(1);
+  const cat = bmiCat(parseFloat(bmi));
+  el.innerHTML = 'At ' + w + ' kg, height ' + h + ' cm → BMI = <strong style="color:' + cat.color + '">' + bmi + '</strong> (' + cat.label + ')';
+}
+
+function logHealthTab() {
+  const w  = document.getElementById('bmi-iw').value;
+  const bp = document.getElementById('bmi-ibp').value;
+  if (!w && !bp) return;
+  const iso   = new Date().toISOString().split('T')[0];
+  const label = new Date().toLocaleDateString('en-IN',{weekday:'short',month:'short',day:'numeric'});
+  const entry = { date:label, iso, w: w ? parseFloat(w) : null, bp: bp||null };
+  const idx   = hlog.findIndex(e => e.iso===iso);
+  if (idx >= 0) hlog[idx] = entry; else hlog.unshift(entry);
+  if (hlog.length > 30) hlog.pop();
+  localStorage.setItem('sw-hlog', JSON.stringify(hlog));
+  document.getElementById('bmi-iw').value  = '';
+  document.getElementById('bmi-ibp').value = '';
+  const m = document.getElementById('bmi-logsaved');
+  m.style.display = 'block'; setTimeout(() => m.style.display = 'none', 2500);
+  if (profile) renderBMITab();
+  syncHealthDB(entry);
+  showCheer('save');
+}
+
+function renderBMITab() {
+  prefillBMITab();
+  const latest = hlog.find(e => e.w);
+  if (!latest || !profile) { document.getElementById('bmidash-tab').style.display = 'none'; return; }
+  document.getElementById('bmidash-tab').style.display = 'block';
+  const hm  = profile.h / 100;
+  const bmi = latest.w / (hm * hm);
+  const tBMI = profile.g === 'female' ? 21.5 : 22.0;
+  const tW   = (tBMI * hm * hm).toFixed(1);
+  const diff = (latest.w - parseFloat(tW)).toFixed(1);
+  const cat  = bmiCat(bmi);
+  const barPct = Math.min(100, Math.max(0, ((bmi-16)/24)*100));
+  document.getElementById('dt-bmi').innerText     = bmi.toFixed(1);
+  document.getElementById('dt-bmi').style.color   = cat.color;
+  document.getElementById('dt-bmicat').innerText  = cat.label;
+  document.getElementById('dt-bmicat').style.color= cat.color;
+  document.getElementById('dt-bmibar').style.width= barPct + '%';
+  document.getElementById('dt-bmibar').style.background = cat.color;
+  document.getElementById('dt-target').innerText  = tBMI.toFixed(1);
+  document.getElementById('dt-tw').innerText      = 'Ideal weight: ' + tW + ' kg';
+  const toGoEl = document.getElementById('dt-togo');
+  const d = parseFloat(diff);
+  if (d > 0.5)       toGoEl.innerHTML = `<span style="color:#FFB74D">${diff} kg to lose</span> to reach ideal BMI`;
+  else if (d < -0.5) toGoEl.innerHTML = `<span style="color:#64B5F6">${Math.abs(diff)} kg to gain</span> to reach ideal range`;
+  else               toGoEl.innerHTML = `<span style="color:#66BB6A">✓ Within target range</span>`;
+  // insight
+  const avgH = parseFloat((weekData.reduce((a,b)=>a+b,0)/7).toFixed(1));
+  const wr   = weeklyRate(profile.ac, avgH);
+  const wks  = d > 0.5 ? Math.ceil(d / wr) : 0;
+  const mRate= (wr*4.33).toFixed(2);
+  let ins = '';
+  if (bmi >= 25)      ins = `Your BMI is <strong style="color:${cat.color}">${bmi.toFixed(1)}</strong> — <strong style="color:${cat.color}">${cat.label}</strong> on the Asian scale. At your current habit score and activity level, a sustainable pace is <strong style="color:var(--gold)">${mRate} kg/month</strong>. Estimated time to target: <strong style="color:var(--gold)">${wks} weeks</strong>.`;
+  else if (bmi < 18.5) ins = `Your BMI of <strong style="color:#64B5F6">${bmi.toFixed(1)}</strong> suggests underweight. Focus on nutrient-dense additions: protein from dal, paneer, eggs; healthy fats from ghee and nuts. The Breakfast recipes have the most relevant options.`;
+  else                ins = `Your BMI of <strong style="color:#66BB6A">${bmi.toFixed(1)}</strong> is in the <strong style="color:#66BB6A">healthy range</strong>. Focus shifts to metabolic maintenance — preserving muscle, keeping glucose stable, and sustaining the habit streak.`;
+  document.getElementById('dt-insight').innerHTML = `<strong>Insight</strong>${ins}`;
+  // projections
+  const now = new Date();
+  const months = d > 0.5 ? [1,2,3,6,12] : [1,3,6];
+  let rows = `<div class="proj-row"><div class="pdot"></div><div class="pdate">Today</div><div class="pdet"><strong>${latest.w} kg</strong> · BMI ${bmi.toFixed(1)}</div></div>`;
+  months.forEach(m => {
+    const pd = new Date(now); pd.setMonth(pd.getMonth()+m);
+    const pl = pd.toLocaleDateString('en-IN',{month:'short',year:'numeric'});
+    let pw = d > 0.5 ? Math.max(parseFloat(tW), latest.w - wr*4.33*m) : Math.min(parseFloat(tW), latest.w + 0.4*m);
+    const pb   = (pw/(hm*hm)).toFixed(1);
+    const pc   = bmiCat(parseFloat(pb));
+    const goal = d > 0.5 && pw <= parseFloat(tW);
+    rows += `<div class="proj-row"><div class="pdot f"></div><div class="pdate">${pl}</div><div class="pdet"><strong>${pw.toFixed(1)} kg</strong> · BMI <span style="color:${pc.color}">${pb}</span>${goal?' <span style="color:#66BB6A">✓ Goal</span>':''}</div></div>`;
+  });
+  document.getElementById('dt-proj').innerHTML = rows;
+  // history
+  const histEl = document.getElementById('dt-hist');
+  if (!hlog.length) { histEl.innerHTML = '<p style="font-size:.8rem;color:var(--muted)">No readings yet.</p>'; return; }
+  histEl.innerHTML = hlog.slice(0,12).map((e,i) => {
+    let arrow='-', aCol='var(--muted)';
+    if (e.w) {
+      const prev = hlog.slice(i+1).find(x=>x.w);
+      if (prev) {
+        const delta=(e.w-prev.w).toFixed(1);
+        if (parseFloat(delta)<0){arrow=`▼ ${Math.abs(delta)} kg`;aCol='#66BB6A';}
+        else if (parseFloat(delta)>0){arrow=`▲ ${delta} kg`;aCol='#EF5350';}
+        else arrow='→ No change';
+      }
+    }
+    return `<div class="trow2"><span style="color:var(--muted)">${e.date}</span><span style="color:var(--text);font-weight:500">${e.w?e.w+' kg':''}${e.w&&e.bp?' · ':''}${e.bp?e.bp+' mmHg':''}</span><span style="color:${aCol};font-size:.75rem">${arrow}</span></div>`;
+  }).join('');
+}
+
+// ── BHAGAVAD GITA MODULE ─────────────────────────────────────
+
+const GITA_QUOTES = [
+  // Chapter 2 — Sankhya Yoga
+  { ch:2, v:47, sanskrit:'कर्मण्येवाधिकारस्ते मा फलेषु कदाचन।\nमा कर्मफलहेतुर्भूर्मा ते सङ्गोऽस्त्वकर्मणि॥', quote:'You have a right to perform your prescribed duties, but you are not entitled to the fruits of your actions. Never consider yourself the cause of results, and never be attached to not doing your duty.', meaning:'This is the most famous verse of the Gita — the foundation of selfless action (Nishkama Karma). Dedicate your best effort to what is in front of you today. The outcome is beyond your control. The action is entirely yours. This teaching is the antidote to anxiety and inaction.', attr:'Chapter 2, Verse 47 · Sankhya Yoga' },
+  { ch:2, v:20, sanskrit:'न जायते म्रियते वा कदाचिन्\nनायं भूत्वा भविता वा न भूयः।\nअजो नित्यः शाश्वतोऽयं पुराणो\nन हन्यते हन्यमाने शरीरे॥', quote:'The soul is never born, nor does it die. It has not come into being, nor will it ever cease to exist. It is unborn, eternal, ever-existing, and primeval. It is not slain when the body is slain.', meaning:'Sri Krishna reassures Arjuna that what is essential in us — the atma — transcends birth and death. This is not abstract philosophy but lived wisdom: when we identify with our deeper self rather than our circumstances, we face difficulty with steadiness and courage.', attr:'Chapter 2, Verse 20 · Sankhya Yoga' },
+  { ch:2, v:14, sanskrit:'मात्रास्पर्शास्तु कौन्तेय शीतोष्णसुखदुःखदाः।\nआगमापायिनोऽनित्यास्तांस्तितिक्षस्व भारत॥', quote:'O son of Kunti, the contact between the senses and sense objects gives rise to fleeting perceptions of happiness and distress. These are non-permanent — they come and go. O descendant of Bharata, learn to tolerate them without being disturbed.', meaning:'Pleasure and pain are temporary visitors. The cold of winter, the heat of summer, the grief of loss, the joy of reunion — all pass. This verse invites us to build an inner stability that weathers every season of life without being swept away.', attr:'Chapter 2, Verse 14 · Sankhya Yoga' },
+  { ch:2, v:62, sanskrit:'ध्यायतो विषयान्पुंसः सङ्गस्तेषूपजायते।\nसङ्गात्सञ्जायते कामः कामात्क्रोधोऽभिजायते॥', quote:'While contemplating the objects of the senses, a person develops attachment for them. From attachment comes desire, and from desire anger arises.', meaning:'This verse maps the psychology of suffering with extraordinary precision. Rumination on what we desire creates attachment; thwarted attachment creates anger; anger destroys wisdom. The practice of Pranayama and the Digital Sunset habit directly interrupt this chain at its earliest stage.', attr:'Chapter 2, Verse 62 · Sankhya Yoga' },
+  // Chapter 3 — Karma Yoga
+  { ch:3, v:8, sanskrit:'नियतं कुरु कर्म त्वं कर्म ज्यायो ह्यकर्मणः।\nशरीरयात्रापि च ते न प्रसिद्ध्येदकर्मणः॥', quote:'Perform your prescribed duties, for action is better than inaction. Even the maintenance of your body will not be possible without action.', meaning:'Action sustains life. Even the simplest morning habits — drinking water, stepping into sunlight, preparing nourishing food — are sacred acts of self-maintenance. The Gita does not call us to renounce the world but to engage it fully, with awareness.', attr:'Chapter 3, Verse 8 · Karma Yoga' },
+  { ch:3, v:16, sanskrit:'एवं प्रवर्तितं चक्रं नानुवर्तयतीह यः।\nअघायुरिन्द्रियारामो मोघं पार्थ स जीवति॥', quote:'O Arjuna, one who does not follow in human life the cycle established thus by the Vedas lives in sin. Living only for the pleasure of the senses, such a person lives in vain.', meaning:'A life built entirely around sensory pleasure — addictive foods, passive entertainment, avoiding all discomfort — is ultimately hollow. The Gita points toward a life of purposeful rhythm: action, rest, nourishment, discipline, service. The Daily Arc is a modern expression of this ancient wheel.', attr:'Chapter 3, Verse 16 · Karma Yoga' },
+  { ch:3, v:42, sanskrit:'इन्द्रियाणि पराण्याहुरिन्द्रियेभ्यः परं मनः।\nमनसस्तु परा बुद्धिर्यो बुद्धेः परतस्तु सः॥', quote:'The senses are superior to dull matter; mind is higher than the senses; intelligence is still higher than the mind; and the soul is even higher than the intelligence.', meaning:'This hierarchy of being tells us where to invest attention. Training the body matters. Managing the mind matters more. Sharpening the intelligence — through reflection, study, honest self-examination — matters most. This is why the Daily Arc includes both physical habits and an evening reflection.', attr:'Chapter 3, Verse 42 · Karma Yoga' },
+  // Chapter 4
+  { ch:4, v:7, sanskrit:'यदा यदा हि धर्मस्य ग्लानिर्भवति भारत।\nअभ्युत्थानमधर्मस्य तदाऽत्मानं सृजाम्यहम्॥', quote:'Whenever there is a decline in righteousness and an increase in unrighteousness, O Arjuna, at that time I manifest myself on earth.', meaning:'The principle of divine restoration: when things decline — in the world, in a body, in a family — there is always the possibility of renewal. Your choice to begin this protocol, at this moment, is a small act of restoration. Each healthy habit is a flame lit against entropy.', attr:'Chapter 4, Verse 7 · Jnana Karma Sanyasa Yoga' },
+  { ch:4, v:38, sanskrit:'न हि ज्ञानेन सदृशं पवित्रमिह विद्यते।\nतत्स्वयं योगसंसिद्धः कालेनात्मनि विन्दति॥', quote:'In this world there is nothing so sublime and pure as transcendental knowledge. Such knowledge is the mature fruit of all mysticism. And one who has become accomplished in the practice of devotional service enjoys this knowledge within himself in due course of time.', meaning:'Knowledge is the highest purifier. Understanding why each habit works — the science of pranayama, the glycaemics of a meal, the rhythm of sleep — transforms compliance into wisdom. This is why every recipe, every habit, every protocol here carries its explanation.', attr:'Chapter 4, Verse 38 · Jnana Karma Sanyasa Yoga' },
+  // Chapter 6 — Dhyana Yoga
+  { ch:6, v:5, sanskrit:'उद्धरेदात्मनात्मानं नात्मानमवसादयेत्।\nआत्मैव ह्यात्मनो बन्धुरात्मैव रिपुरात्मनः॥', quote:'One must deliver himself with the help of his mind, and not degrade himself. The mind is the friend of the conditioned soul, and the mind is the enemy.', meaning:'You are simultaneously your own greatest ally and your own fiercest obstacle. No one else can do the breathing, eat the right food, sleep at the right time, or take the morning walk for you. This verse places total responsibility — and therefore total power — in your hands.', attr:'Chapter 6, Verse 5 · Dhyana Yoga' },
+  { ch:6, v:17, sanskrit:'युक्ताहारविहारस्य युक्तचेष्टस्य कर्मसु।\nयुक्तस्वप्नावबोधस्य योगो भवति दुःखहा॥', quote:'He who is temperate in his habits of eating, sleeping, working, and recreation can mitigate all material pains by practicing the yoga system.', meaning:'This single verse is the Bhagavad Gita\'s prescription for health. Moderation in food. Regularity in sleep. Measured exertion. Balance in recreation. The Gita does not demand extremes — it demands intelligent rhythm. This is precisely what the Daily Arc is designed to create.', attr:'Chapter 6, Verse 17 · Dhyana Yoga' },
+  { ch:6, v:34, sanskrit:'चञ्चलं हि मनः कृष्ण प्रमाथि बलवद्दृढम्।\nतस्याहं निग्रहं मन्ये वायोरिव सुदुश्करम्॥', quote:'The mind is restless, turbulent, obstinate and very strong, O Krishna, and to subdue it, I think, is more difficult than controlling the wind.', meaning:'Even Arjuna, a great warrior, found the mind ungovernable. This is one of the most honest admissions in all of scripture — and it is met not with shame but with a practical method: regular practice (abhyasa) and detachment (vairagya). The Breathe tab exists precisely for this.', attr:'Chapter 6, Verse 34 · Dhyana Yoga' },
+  // Chapter 9
+  { ch:9, v:22, sanskrit:'अनन्याश्चिन्तयन्तो मां ये जनाः पर्युपासते।\nतेषां नित्याभियुक्तानां योगक्षेमं वहाम्यहम्॥', quote:'But those who always worship Me with exclusive devotion, meditating on My transcendental form — to them I carry what they lack, and I preserve what they have.', meaning:'When we align ourselves with our highest values and act accordingly with consistency — not sporadically — we activate a kind of grace. Things begin to support our growth in ways we could not have planned. This is not magic; it is the natural result of sustained intention and action.', attr:'Chapter 9, Verse 22 · Raja Vidya Raja Guhya Yoga' },
+  // Chapter 12 — Bhakti Yoga
+  { ch:12, v:13, sanskrit:'अद्वेष्टा सर्वभूतानां मैत्रः करुण एव च।\nनिर्ममो निरहंकारः समदुःखसुखः क्षमी॥', quote:'One who is not envious but is a kind friend to all living entities, who does not think himself a proprietor, who is free from false ego and equal in both happiness and distress, who is always forgiving...', meaning:'This is a portrait of the ideal person: compassionate, free from envy, equal in success and failure, forgiving of others and oneself. These are not passive qualities — they are active choices made moment by moment. Health practice and character practice are the same practice.', attr:'Chapter 12, Verse 13 · Bhakti Yoga' },
+  // Chapter 13
+  { ch:13, v:28, sanskrit:'समं सर्वेषु भूतेषु तिष्ठन्तं परमेश्वरम्।\nविनश्यत्स्वविनश्यन्तं यः पश्यति स पश्यति॥', quote:'One who sees the Supersoul accompanying the individual soul in all bodies, and who understands that neither the soul nor the Supersoul within the destructible body is ever destroyed, actually sees.', meaning:'To see clearly — to perceive things as they are rather than as our fears and desires project them to be — is the highest faculty. The evening reflection practice, however brief, trains this capacity: the simple act of witnessing our own day with honesty and without harsh judgment.', attr:'Chapter 13, Verse 28 · Kshetra Kshetrajna Vibhaga Yoga' },
+  // Chapter 17 — Shraddha Traya Vibhaga Yoga
+  { ch:17, v:8, sanskrit:'आयुःसत्त्वबलारोग्यसुखप्रीतिविवर्धनाः।\nरस्याः स्निग्धाः स्थिरा हृद्या आहाराः सात्त्विकप्रियाः॥', quote:'Foods in the mode of goodness increase the duration of life, purify one\'s existence, and give strength, health, happiness, and satisfaction. Such foods are juicy, fatty, wholesome, and pleasing to the heart.', meaning:'The Gita identifies sattvic food as life-extending, purifying, strengthening, and deeply satisfying — not merely filling. Fresh vegetables, whole grains, legumes, seasonal fruits, warm preparations with natural fats. The Swasth Kitchen recipes are a direct expression of this ancient nutritional wisdom.', attr:'Chapter 17, Verse 8 · Shraddha Traya Vibhaga Yoga' },
+  { ch:17, v:9, sanskrit:'कट्वम्ललवणात्युष्णतीक्ष्णरूक्षविदाहिनः।\nआहारा राजसस्येष्टा दुःखशोकामयप्रदाः।।', quote:'Foods that are too bitter, too sour, salty, hot, pungent, dry and burning are dear to those in the mode of passion. Such foods cause distress, misery, and disease.', meaning:'Processed foods, excessive spices, overly oily preparations, packaged snacks — the Gita identified rajasic food millennia before modern nutrition science confirmed the connection between inflammatory diets and chronic disease. What we eat shapes not just the body but the quality of our mind and emotions.', attr:'Chapter 17, Verse 9 · Shraddha Traya Vibhaga Yoga' },
+  // Chapter 18 — Moksha Sanyasa Yoga
+  { ch:18, v:66, sanskrit:'सर्वधर्मान्परित्यज्य मामेकं शरणं व्रज।\nअहं त्वां सर्वपापेभ्यो मोक्षयिष्यामि मा शुचः॥', quote:'Abandon all varieties of religion and just surrender unto Me. I shall deliver you from all sinful reactions. Do not fear.', meaning:'The final teaching of the Gita: release the burden of perfectionism. You do not need to be flawless to begin, to continue, or to be worthy. Start where you are. Do what you can. Surrender the obsessive control over outcomes. This is both the deepest spiritual teaching and excellent practical advice for anyone building healthier habits.', attr:'Chapter 18, Verse 66 · Moksha Sanyasa Yoga' },
+  { ch:18, v:78, sanskrit:'यत्र योगेश्वरः कृष्णो यत्र पार्थो धनुर्धरः।\nतत्र श्रीर्विजयो भूतिर्ध्रुवा नीतिर्मतिर्मम॥', quote:'Wherever there is Krishna, the master of all mystics, and wherever there is Arjuna, the supreme archer, there will also certainly be opulence, victory, extraordinary power, and morality.', meaning:'The closing verse of the Gita: where wisdom meets determined action, there lies victory. You are Arjuna — equipped, capable, sometimes doubting. The wisdom you carry is the voice of the Gita itself. The meeting of knowing and doing is where life transforms.', attr:'Chapter 18, Verse 78 · Moksha Sanyasa Yoga' },
+];
+
+const GITA_CHAPTERS = [
+  { num:1, name:'Vishada Yoga', sub:'The Grief of Arjuna', verses:47, desc:'Arjuna surveys the battlefield and is overcome with grief and moral doubt. The stage is set for the entire teaching.' },
+  { num:2, name:'Sankhya Yoga', sub:'The Yoga of Knowledge', verses:72, desc:'Krishna begins the teaching — on the immortality of the soul, the nature of the self, and the path of selfless action.' },
+  { num:3, name:'Karma Yoga', sub:'The Yoga of Action', verses:43, desc:'Dharma, duty, and the right attitude toward work. Action performed without attachment to results purifies the mind.' },
+  { num:4, name:'Jnana Karma Sanyasa Yoga', sub:'Knowledge & Renunciation', verses:42, desc:'On transcendental knowledge, the role of the teacher, and how wisdom destroys all karmic reactions.' },
+  { num:5, name:'Karma Sanyasa Yoga', sub:'Renunciation of Action', verses:29, desc:'The harmony between action and renunciation. True renunciation is internal — not fleeing the world but acting without ego.' },
+  { num:6, name:'Dhyana Yoga', sub:'The Yoga of Meditation', verses:47, desc:'The practical science of meditation, including posture, place, breath, and the step-by-step quieting of the restless mind.' },
+  { num:7, name:'Vijnana Yoga', sub:'Knowledge of the Absolute', verses:30, desc:'Krishna reveals his divine nature and how to see the eternal in all temporary phenomena.' },
+  { num:8, name:'Akshara Brahma Yoga', sub:'Attaining the Supreme', verses:28, desc:'On the imperishable Brahman, what happens at the moment of death, and the path to liberation.' },
+  { num:9, name:'Raja Vidya Yoga', sub:'The Royal Knowledge', verses:34, desc:'The most confidential knowledge — devotion, surrender, and the direct path. Krishna declares he is present in all beings.' },
+  { num:10, name:'Vibhuti Yoga', sub:'The Opulences of God', verses:42, desc:'Krishna reveals his infinite manifestations — in nature, in excellence, in beauty — so Arjuna can learn to see the divine everywhere.' },
+  { num:11, name:'Vishwarupa Darshana', sub:'The Universal Form', verses:55, desc:'The cosmic vision — Arjuna sees the infinite universal form of Krishna. The most awe-inspiring chapter.' },
+  { num:12, name:'Bhakti Yoga', sub:'The Yoga of Devotion', verses:20, desc:'The simplest and most direct path: love, surrender, and devoted service. Krishna describes the qualities of his dearest devotees.' },
+  { num:13, name:'Kshetra Vibhaga Yoga', sub:'Nature, the Enjoyer', verses:35, desc:'The field (body/world) and the knower of the field (consciousness). Understanding this distinction is self-knowledge.' },
+  { num:14, name:'Gunatraya Vibhaga Yoga', sub:'The Three Modes', verses:27, desc:'The three qualities that govern all of manifest existence: tamas (inertia), rajas (passion), sattva (goodness).' },
+  { num:15, name:'Purushottama Yoga', sub:'The Supreme Person', verses:20, desc:'The eternal, indestructible, all-pervading Supreme Person beyond both the conditioned and liberated beings.' },
+  { num:16, name:'Daivasura Vibhaga Yoga', sub:'Divine & Demonic Natures', verses:24, desc:'The qualities leading toward liberation versus bondage — fearlessness, compassion, pride, greed, hypocrisy.' },
+  { num:17, name:'Shraddha Traya Vibhaga Yoga', sub:'Divisions of Faith', verses:28, desc:'Faith, food, sacrifice, austerity — how the three modes shape our most intimate daily choices and practices.' },
+  { num:18, name:'Moksha Sanyasa Yoga', sub:'Liberation Through Renunciation', verses:78, desc:'The culminating chapter: summary of all paths, the highest knowledge, and the Gita\'s final, most beautiful declaration of grace.' },
+];
+
+// Verse content — abbreviated but real (Key verses per chapter)
+const GITA_CHAPTER_VERSES = {
+  1: [
+    { v:1, skt:'धृतराष्ट्र उवाच\nधर्मक्षेत्रे कुरुक्षेत्रे समवेता युयुत्सवः।\nमामकाः पाण्डवाश्चैव किमकुर्वत सञ्जय॥', eng:'Dhritarashtra said: O Sanjaya, after my sons and the sons of Pandu assembled in the place of pilgrimage at Kurukshetra, desiring to fight, what did they do?', meaning:'The opening question. A blind king asks his minister to narrate what unfolds. This very blindness — of the king, of pride, of attachment — is what the Gita addresses throughout.' },
+    { v:28, skt:'अर्जुन उवाच\nदृष्ट्वेमं स्वजनं कृष्ण युयुत्सुं समुपस्थितम्।\nसीदन्ति मम गात्राणि मुखं च परिशुष्यति॥', eng:'Arjuna said: O Krishna, seeing my kinsmen arrayed on the battlefield in a spirit of fighting, my limbs are failing and my mouth is drying up.', meaning:'Arjuna is paralysed by the sight of those he loves on the opposing side. This is the crisis that calls forth the entire teaching of the Gita. His breakdown is a doorway.' },
+    { v:47, skt:'एवमुक्त्वार्जुनः सङ्ख्ये रथोपस्थ उपाविशत्।\nविसृज्य सशरं चापं शोकसंविग्नमानसः॥', eng:'Sanjaya said: Arjuna, having thus spoken on the battlefield, cast aside his bow and arrows and sat down on the chariot, his mind overwhelmed with grief.', meaning:'The chapter ends with Arjuna\'s complete collapse. This is the necessary precondition for all transformation — the moment we admit we do not know how to proceed and become genuinely ready to listen.' },
+  ],
+  2: [
+    { v:11, skt:'श्रीभगवानुवाच\nअशोच्यानन्वशोचस्त्वं प्रज्ञावादांश्च भाषसे।\nगतासूनगतासूंश्च नानुशोचन्ति पण्डिताः॥', eng:'The Supreme Personality of Godhead said: While speaking learned words, you are mourning for what is not worthy of grief. Those who are wise lament neither for the living nor for the dead.', meaning:'Krishna\'s very first teaching: wisdom does not grieve over what is inevitable. Not callousness — but a deeper understanding of the nature of the soul.' },
+    { v:14, skt:'मात्रास्पर्शास्तु कौन्तेय शीतोष्णसुखदुःखदाः।\nआगमापायिनोऽनित्यास्तांस्तितिक्षस्व भारत॥', eng:'O son of Kunti, the contact between the senses and sense objects gives rise to fleeting perceptions of happiness and distress. These come and go and are non-permanent. O Arjuna, learn to tolerate them.', meaning:'All experiences — pleasure and pain — are temporary. To build equanimity is not to suppress feeling but to develop the capacity to witness it without being consumed.' },
+    { v:20, skt:'न जायते म्रियते वा कदाचिन्\nनायं भूत्वा भविता वा न भूयः।\nअजो नित्यः शाश्वतोऽयं पुराणो\nन हन्यते हन्यमाने शरीरे॥', eng:'The soul is never born nor dies at any time. It has not come into being, does not come into being, and will not come into being. It is unborn, eternal, ever-existing, and primeval. It is not slain when the body is slain.', meaning:'The central teaching of the Sankhya chapter. What we essentially are is beyond birth and death. This is the foundation of fearlessness.' },
+    { v:47, skt:'कर्मण्येवाधिकारस्ते मा फलेषु कदाचन।\nमा कर्मफलहेतुर्भूर्मा ते सङ्गोऽस्त्वकर्मणि॥', eng:'You have a right to perform your prescribed duties, but you are not entitled to the fruits of your actions. Never consider yourself the cause of the results, and never be attached to not doing your duty.', meaning:'The most quoted verse in all of scripture. The teaching of detached action. Do your best. Release the rest. This single verse, truly understood and practiced, transforms everything.' },
+    { v:62, skt:'ध्यायतो विषयान्पुंसः सङ्गस्तेषूपजायते।\nसङ्गात्सञ्जायते कामः कामात्क्रोधोऽभिजायते॥', eng:'While contemplating the objects of the senses, a person develops attachment for them. From attachment comes desire, and from desire arises anger.', meaning:'The cascade of suffering. Thought leads to craving, craving to frustration, frustration to rage, rage to delusion. This is the complete psychology of how we harm ourselves.' },
+    { v:70, skt:'आपूर्यमाणमचलप्रतिष्ठं\nसमुद्रमापः प्रविशन्ति यद्वत्।\nतद्वत्कामा यं प्रविशन्ति सर्वे\nस शान्तिमाप्नोति न कामकामी॥', eng:'A person who is not disturbed in mind even amidst the threefold miseries or elated when there is happiness, and who is free from attachment, fear, and anger, is called a sage of steady mind.', meaning:'The ocean receives every river and remains unchanged. The steady mind absorbs every experience — joy, sorrow, success, failure — without being fundamentally altered. This is the goal: not the absence of emotion, but rootedness beneath it.' },
+  ],
+  3: [
+    { v:8, skt:'नियतं कुरु कर्म त्वं कर्म ज्यायो ह्यकर्मणः।\nशरीरयात्रापि च ते न प्रसिद्ध्येदकर्मणः॥', eng:'Perform your prescribed duties, for action is better than inaction. Even the maintenance of your body will not be possible without action.', meaning:'Action sustains life. Even the simplest morning habits — drinking water, stepping into sunlight, preparing nourishing food — are sacred acts of self-maintenance.' },
+    { v:21, skt:'यद्यदाचरति श्रेष्ठस्तत्तदेवेतरो जनः।\nस यत्प्रमाणं कुरुते लोकस्तदनुवर्तते॥', eng:'Whatever action a great man performs, common men follow. And whatever standards he sets by exemplary acts, all the world pursues.', meaning:'Leadership is demonstrated, not declared. Those around us — children, younger family members, friends — are shaped by what we do, not what we say. Every healthy habit you build becomes a model for those who watch you.' },
+    { v:27, skt:'प्रकृतेः क्रियमाणानि गुणैः कर्माणि सर्वशः।\nअहंकारविमूढात्मा कर्ताहमिति मन्यते॥', eng:'The spirit soul bewildered by the influence of false ego thinks himself the doer of activities that are in actuality carried out by the three modes of material nature.', meaning:'Much of what we call "my decisions" are driven by habit, environment, and the modes of nature. Self-knowledge — understanding our patterns — is the first step to genuine freedom of choice.' },
+    { v:35, skt:'श्रेयान्स्वधर्मो विगुणः परधर्माच्चनुष्ठितात्।\nस्वधर्मे निधनं श्रेयः परधर्मो भयावहः॥', eng:'It is far better to discharge one\'s prescribed duties, even though faultily, than another\'s duties perfectly. Destruction in the discharge of one\'s own duty is better than following the path of another, for to follow another\'s path is dangerous.', meaning:'Be authentically yourself. Your own imperfect path, walked honestly, is infinitely more valuable than perfectly imitating someone else\'s journey. This applies to health too — your protocol must fit your actual life.' },
+  ],
+  4: [
+    { v:7, skt:'यदा यदा हि धर्मस्य ग्लानिर्भवति भारत।\nअभ्युत्थानमधर्मस्य तदाऽत्मानं सृजाम्यहम्॥', eng:'Whenever there is a decline in righteousness and an increase in unrighteousness, O Arjuna, at that time I manifest myself on earth.', meaning:'The principle of divine restoration: when things decline — in the world, in a body, in a family — there is always the possibility of renewal. Each healthy habit is a flame lit against entropy.' },
+    { v:18, skt:'कर्मण्यकर्म यः पश्येदकर्मणि च कर्म यः।\nस बुद्धिमान्मनुष्येषु स युक्तः कृत्स्नकर्मकृत्॥', eng:'One who sees inaction in action, and action in inaction, is intelligent among men, and he is in the transcendental position, although engaged in all sorts of activities.', meaning:'The paradox of enlightened action: the wise person remains inwardly still while being outwardly fully active. Outer engagement, inner stillness. This is the synthesis the Gita offers.' },
+    { v:38, skt:'न हि ज्ञानेन सदृशं पवित्रमिह विद्यते।\nतत्स्वयं योगसंसिद्धः कालेनात्मनि विन्दति॥', eng:'In this world there is nothing so sublime and pure as transcendental knowledge. Such knowledge is the mature fruit of all mysticism. And one who has become accomplished in the practice of devotional service enjoys this knowledge within himself in due course of time.', meaning:'Knowledge is the highest purifier. Understanding why each habit works transforms compliance into wisdom.' },
+  ],
+  5: [
+    { v:10, skt:'ब्रह्मण्याधाय कर्माणि सङ्गं त्यक्त्वा करोति यः।\nलिप्यते न स पापेन पद्मपत्रमिवाम्भसा॥', eng:'One who performs his duty without attachment, surrendering the results unto the Supreme Lord, is unaffected by sinful action, as the lotus leaf is untouched by water.', meaning:'The lotus leaf metaphor: fully in the water, never wetted by it. Engage the world completely — work, family, duties — without being consumed by outcomes. The result is lightness.' },
+    { v:18, skt:'विद्याविनयसम्पन्ने ब्राह्मणे गवि हस्तिनि।\nशुनि चैव श्वपाके च पण्डिताः समदर्शिनः॥', eng:'The humble sages, by virtue of true knowledge, see with equal vision a learned and gentle brahmin, a cow, an elephant, a dog, and a dog-eater.', meaning:'The enlightened person sees the same life-force in all beings. This understanding is the foundation of compassion — and compassion is, scientific literature now confirms, one of the strongest predictors of longevity and wellbeing.' },
+  ],
+  6: [
+    { v:5, skt:'उद्धरेदात्मनात्मानं नात्मानमवसादयेत्।\nआत्मैव ह्यात्मनो बन्धुरात्मैव रिपुरात्मनः॥', eng:'One must deliver himself with the help of his mind, and not degrade himself. The mind is the friend of the conditioned soul, and his enemy as well.', meaning:'Responsibility and power are the same. You are your own liberator — and your own obstacle. The path of yoga is the path of befriending your own mind.' },
+    { v:17, skt:'युक्ताहारविहारस्य युक्तचेष्टस्य कर्मसु।\nयुक्तस्वप्नावबोधस्य योगो भवति दुःखहा॥', eng:'He who is regulated in his habits of eating, sleeping, recreation, and work can mitigate all material pains by practicing the yoga system.', meaning:'The Gita\'s complete health prescription in one verse: moderate food, adequate sleep, balanced work and recreation. This is the ancient science of wellbeing.' },
+    { v:34, skt:'चञ्चलं हि मनः कृष्ण प्रमाथि बलवद्दृढम्।\nतस्याहं निग्रहं मन्ये वायोरिव सुदुश्करम्॥', eng:'The mind is restless, turbulent, obstinate and very strong, O Krishna, and to subdue it, I think, is more difficult than controlling the wind.', meaning:'Even Arjuna, a great warrior, found the mind ungovernable. This honesty is the beginning of genuine practice.' },
+    { v:35, skt:'असंशयं महाबाहो मनो दुर्निग्रहं चलम्।\nअभ्यासेन तु कौन्तेय वैराग्येण च गृह्यते॥', eng:'Lord Sri Krishna said: O mighty-armed son of Kunti, it is undoubtedly very difficult to curb the restless mind, but it is possible by suitable practice and by detachment.', meaning:'The answer: abhyasa (repeated practice) and vairagya (non-attachment to outcomes). Not willpower. Not perfection. Consistent practice, and a lightness about results. This is how habits become character.' },
+    { v:47, skt:'योगिनामपि सर्वेषां मद्गतेनान्तरात्मना।\nश्रद्धावान्भजते यो मां स मे युक्ततमो मतः॥', eng:'And of all yogis, the one with great faith who always abides in Me, thinks of Me within himself, and renders transcendental loving service to Me — he is the most intimately united with Me in yoga and is the highest of all.', meaning:'The highest yoga is devotion — wholeheartedly offering one\'s actions. The closing verse of the meditation chapter: among all practices, love offered with full faith is supreme.' },
+  ],
+  9: [
+    { v:22, skt:'अनन्याश्चिन्तयन्तो मां ये जनाः पर्युपासते।\nतेषां नित्याभियुक्तानां योगक्षेमं वहाम्यहम्॥', eng:'But those who always worship Me with exclusive devotion, meditating on My transcendental form — to them I carry what they lack, and I preserve what they have.', meaning:'When we align ourselves with our highest values and act accordingly with consistency, we activate a kind of grace. Things begin to support our growth in ways we could not have planned.' },
+    { v:26, skt:'पत्रं पुष्पं फलं तोयं यो मे भक्त्या प्रयच्छति।\nतदहं भक्त्युपहृतमश्नामि प्रयतात्मनः॥', eng:'If one offers Me with love and devotion a leaf, a flower, a fruit, or water, I will accept it.', meaning:'What matters is the quality of offering — not its grandeur. A simple glass of water taken with intention, a meal prepared with care, a habit followed with sincerity: these small sincere acts are the essence of practice.' },
+    { v:34, skt:'मन्मना भव मद्भक्तो मद्याजी मां नमस्कुरु।\nमामेवैष्यसि युक्त्वैवमात्मानं मत्परायणः॥', eng:'Engage your mind always in thinking of Me, become My devotee, offer obeisances to Me, and worship Me. Being completely absorbed in Me, surely you will come to Me.', meaning:'The final instruction of Chapter 9: orient your entire being toward what is highest. Let your thoughts, actions, and daily rhythm be aligned with your deepest values. This is the path.' },
+  ],
+  12: [
+    { v:13, skt:'अद्वेष्टा सर्वभूतानां मैत्रः करुण एव च।\nनिर्ममो निरहंकारः समदुःखसुखः क्षमी॥', eng:'One who is not envious but is a kind friend to all living entities, who does not think himself a proprietor, who is free from false ego and equal in both happiness and distress, who is always forgiving...', meaning:'This is a portrait of the ideal person: compassionate, free from envy, equal in success and failure, forgiving of others and oneself. Health practice and character practice are the same practice.' },
+    { v:15, skt:'यस्मान्नोद्विजते लोको लोकान्नोद्विजते च यः।\nहर्षामर्षभयोद्वेगैर्मुक्तो यः स च मे प्रियः॥', eng:'He by whom no one is put into difficulty and who is not disturbed by anyone, who is equipoised in happiness and distress, fear and anxiety, is very dear to Me.', meaning:'The person who neither disturbs others nor is disturbed by others — free from reactive outbursts, from anxiety, from unnecessary fear — this is someone who has done the deepest inner work.' },
+  ],
+  14: [
+    { v:6, skt:'तत्र सत्त्वं निर्मलत्वात्प्रकाशकमनामयम्।\nसुखसङ्गेन बध्नाति ज्ञानसङ्गेन चानघ॥', eng:'O sinless one, the mode of goodness, being purer than the others, is illuminating, and it frees one from all sinful reactions. Those situated in that mode become conditioned by a sense of happiness and knowledge.', meaning:'Sattva (goodness) is the quality of clarity, health, and illumination. Sattvic food, sattvic routine, sattvic company — these elevate the quality of our experience. The Daily Arc is a sattvic protocol.' },
+    { v:17, skt:'सत्त्वात्सञ्जायते ज्ञानं रजसो लोभ एव च।\nप्रमादमोहौ तमसो भवतोऽज्ञानमेव च॥', eng:'From the mode of goodness, real knowledge develops; from the mode of passion, greed develops; and from the mode of ignorance develop foolishness, madness and illusion.', meaning:'The modes shape our perception, not just our actions. A sattvic mind sees clearly; a rajasic mind craves; a tamasic mind is confused. What we eat, how we sleep, how we breathe — all of these shift which mode predominates.' },
+  ],
+  17: [
+    { v:8, skt:'आयुःसत्त्वबलारोग्यसुखप्रीतिविवर्धनाः।\nरस्याः स्निग्धाः स्थिरा हृद्या आहाराः सात्त्विकप्रियाः॥', eng:'Foods in the mode of goodness increase the duration of life, purify one\'s existence, and give strength, health, happiness, and satisfaction. Such foods are juicy, fatty, wholesome, and pleasing to the heart.', meaning:'The Gita\'s precise nutritional guidance: sattvic foods are life-extending, purifying, strength-giving, joy-producing. Every Swasth recipe is an expression of this ancient wisdom.' },
+    { v:9, skt:'कट्वम्ललवणात्युष्णतीक्ष्णरूक्षविदाहिनः।\nआहारा राजसस्येष्टा दुःखशोकामयप्रदाः॥', eng:'Foods that are too bitter, too sour, salty, hot, pungent, dry and burning are dear to those in the mode of passion. Such foods cause distress, misery, and disease.', meaning:'Rajasic food creates an agitated, dissatisfied mind and ultimately a diseased body. The Gita understood what modern nutrition science is still catching up to.' },
+    { v:14, skt:'देवद्विजगुरुप्राज्ञपूजनं शौचमार्जवम्।\nब्रह्मचर्यमहिंसा च शारीरं तप उच्यते॥', eng:'Austerity of the body consists in worship of the Supreme Lord, the brahmins, the spiritual master, and superiors like the father and mother, and in cleanliness, simplicity, celibacy, and nonviolence.', meaning:'Physical austerity is not deprivation — it is refinement. Cleanliness of body and environment, simplicity of routine, and non-harming as a way of life. These are the austerities that build genuine strength.' },
+    { v:16, skt:'मनःप्रसादः सौम्यत्वं मौनमात्मविनिग्रहः।\nभावसंशुद्धिरित्येतत्तपो मानसमुच्यते॥', eng:'Serenity of mind, gentleness, equanimity, self-control, and purity of thought — these are called the austerities of the mind.', meaning:'Mental discipline: calmness, gentleness, equanimity, self-restraint, inner purity. These are their own practice — as real as physical exercise and infinitely more sustaining.' },
+  ],
+  18: [
+    { v:66, skt:'सर्वधर्मान्परित्यज्य मामेकं शरणं व्रज।\nअहं त्वां सर्वपापेभ्यो मोक्षयिष्यामि मा शुचः॥', eng:'Abandon all varieties of religion and just surrender unto Me. I shall deliver you from all sinful reactions. Do not fear.', meaning:'The Gita\'s final, most intimate teaching. Surrender the obsessive burden of doing everything perfectly. You are held. Begin again tomorrow without the weight of yesterday.' },
+    { v:78, skt:'यत्र योगेश्वरः कृष्णो यत्र पार्थो धनुर्धरः।\nतत्र श्रीर्विजयो भूतिर्ध्रुवा नीतिर्मतिर्मम॥', eng:'Wherever there is Krishna, the master of all mystics, and wherever there is Arjuna, the supreme archer, there will also certainly be opulence, victory, extraordinary power, and morality. That is my opinion.', meaning:'The Gita closes as it began — on a battlefield. But now Arjuna is transformed. Wisdom plus courageous action equals victory. This is the Gita\'s final promise.' },
+  ],
+};
+
+let gitaIndex = null;
+let gitaBookmarks = JSON.parse(localStorage.getItem('sw-gita-bookmarks') || '[]');
+
+function gitaInit() {
+  // Set today's quote based on day of year
+  const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(),0,0)) / 86400000);
+  gitaIndex = dayOfYear % GITA_QUOTES.length;
+  gitaRenderQuote();
+  gitaRenderChapters();
+  gitaRenderSaved();
+}
+
+function gitaRenderQuote() {
+  const q = GITA_QUOTES[gitaIndex];
+  document.getElementById('gita-chapter-tag').innerText = q.attr;
+  document.getElementById('gita-sanskrit').innerText = q.sanskrit;
+  document.getElementById('gita-quote').innerText = '"' + q.quote + '"';
+  document.getElementById('gita-meaning').innerText = q.meaning;
+  document.getElementById('gita-attr').innerText = q.attr;
+  const today = new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  document.getElementById('gita-date-ring').innerText = today + '  ·  Shloka ' + (gitaIndex+1) + ' of ' + GITA_QUOTES.length;
+  // Update bookmark button
+  const btn = document.getElementById('gita-bookmark-btn');
+  if (btn) {
+    const saved = gitaBookmarks.includes(gitaIndex);
+    btn.innerText = saved ? '✓ Saved' : '🔖 Save Shloka';
+    btn.style.borderColor = saved ? 'var(--gold)' : '';
+    btn.style.color = saved ? 'var(--gold)' : '';
+  }
+}
+
+function gitaToggleBookmark() {
+  const idx = gitaBookmarks.indexOf(gitaIndex);
+  if (idx >= 0) {
+    gitaBookmarks.splice(idx, 1);
+    showCheer('save');
+  } else {
+    gitaBookmarks.push(gitaIndex);
+    showCheer('save');
+  }
+  localStorage.setItem('sw-gita-bookmarks', JSON.stringify(gitaBookmarks));
+  gitaRenderQuote();
+  gitaRenderSaved();
+}
+
+function gitaRenderSaved() {
+  const sec = document.getElementById('gita-saved-section');
+  const list = document.getElementById('gita-saved-list');
+  if (!gitaBookmarks.length) { sec.style.display = 'none'; return; }
+  sec.style.display = 'block';
+  list.innerHTML = gitaBookmarks.map(i => {
+    const q = GITA_QUOTES[i];
+    return `<div class="gita-verse" style="cursor:pointer" onclick="gitaIndex=${i};gitaRenderQuote();window.scrollTo(0,0)">
+      <div class="gita-verse-num">${q.attr} <button onclick="event.stopPropagation();gitaBookmarks.splice(gitaBookmarks.indexOf(${i}),1);localStorage.setItem('sw-gita-bookmarks',JSON.stringify(gitaBookmarks));gitaRenderSaved();gitaRenderQuote();" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:.75rem;margin-left:8px">✕ Remove</button></div>
+      <div class="gita-verse-eng">${q.quote.substring(0,120)}…</div>
+    </div>`;
+  }).join('');
+}
+
+function gitaNextQuote() {
+  gitaIndex = (gitaIndex + 1) % GITA_QUOTES.length;
+  gitaRenderQuote();
+}
+function gitaPrevQuote() {
+  gitaIndex = (gitaIndex - 1 + GITA_QUOTES.length) % GITA_QUOTES.length;
+  gitaRenderQuote();
+}
+function gitaRandomQuote() {
+  gitaIndex = Math.floor(Math.random() * GITA_QUOTES.length);
+  gitaRenderQuote();
+}
+
+function gitaRenderChapters() {
+  document.getElementById('gita-chapters-grid').innerHTML = GITA_CHAPTERS.map(ch =>
+    `<div class="gita-ch-card" onclick="gitaOpenChapter(${ch.num})">
+      <div class="gita-ch-num">${ch.num}</div>
+      <div class="gita-ch-name">${ch.name}</div>
+      <div class="gita-ch-sub">${ch.sub}</div>
+    </div>`
+  ).join('');
+}
+
+function gitaOpenChapter(num) {
+  const ch = GITA_CHAPTERS.find(c => c.num === num);
+  document.getElementById('gita-chapters-view').style.display = 'none';
+  document.getElementById('gita-daily-card').style.display = 'none';
+  const reader = document.getElementById('gita-reader');
+  reader.classList.add('on');
+  document.getElementById('gita-reader-title').innerText = 'Chapter ' + num + ' — ' + ch.name;
+  document.getElementById('gita-reader-sub').innerText = ch.sub + '  ·  ' + ch.verses + ' Verses';
+  
+  const verses = GITA_CHAPTER_VERSES[num];
+  let html = `<div class="card" style="cursor:default;margin-bottom:24px"><p class="cbody">${ch.desc}</p><p class="cbody" style="margin-top:12px;font-size:.8rem;color:var(--muted)">Showing selected key verses. The complete chapter has ${ch.verses} shlokas.</p></div>`;
+  
+  if (verses && verses.length) {
+    html += verses.map(v => `
+      <div class="gita-verse">
+        <div class="gita-verse-num">Verse ${v.v}</div>
+        <div class="gita-verse-skt">${v.skt}</div>
+        <div class="gita-verse-eng">${v.eng}</div>
+        <div class="gita-verse-meaning">${v.meaning}</div>
+      </div>
+    `).join('');
+  } else {
+    html += `<div class="card" style="cursor:default;text-align:center;padding:40px">
+      <div style="font-size:2rem;margin-bottom:12px">🕉</div>
+      <div class="ctitle" style="margin-bottom:12px">Chapter ${num} — ${ch.name}</div>
+      <p class="cbody">${ch.desc}</p>
+      <p class="cbody" style="margin-top:16px;font-size:.8rem;color:var(--muted)">Full verse-by-verse commentary coming soon. For now, explore the Daily Shloka above for key teachings from this chapter.</p>
+    </div>`;
+  }
+  
+  document.getElementById('gita-reader-verses').innerHTML = html;
+  window.scrollTo(0,0);
+}
+
+function gitaCloseReader() {
+  document.getElementById('gita-reader').classList.remove('on');
+  document.getElementById('gita-chapters-view').style.display = 'block';
+  document.getElementById('gita-daily-card').style.display = 'block';
+}
+
+// ── END GITA MODULE ───────────────────────────────────────────
+
 // -- INIT ---------------------------------------------------
 window.onload = () => {
   fetchSunrise();
@@ -2081,65 +2655,13 @@ window.onload = () => {
 };
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<footer style="text-align:center;padding:48px 24px 32px;border-top:1px solid var(--gb);margin-top:60px;">
+  <div style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--gold);margin-bottom:8px;">Swasth OS</div>
+  <div style="font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted)">The Longevity Protocol · Built with care</div>
+  <div style="width:40px;height:1px;background:var(--gold-b);margin:16px auto"></div>
+  <div style="font-size:.72rem;color:var(--muted);line-height:1.8;max-width:400px;margin:0 auto">
+    All data is stored locally on your device.<br>No data is shared without your explicit consent.
+  </div>
+</footer>
 </body>
 </html>
-<!-- ════ TAB: BMI ════ -->
-<div id="BMITab" class="tab">
-  <h2 class="stitle">BMI Intelligence</h2>
-
-</div>
-
-<!-- ════ TAB: HEALTH TREND ════ -->
-<div id="HealthTrend" class="tab">
-  <h2 class="stitle">Health Trend</h2>
-  <div class="card" style="cursor:default">
-    <div class="ch"><h3 class="ctitle">Weight Over Time</h3><span class="tag">Last 30 days</span></div>
-    <canvas id="weight-chart" height="200"></canvas>
-    <div style="margin-top:16px" id="weight-trend-summary"></div>
-  </div>
-  <div class="card" style="cursor:default;margin-top:0">
-    <div class="ch"><h3 class="ctitle">Blood Pressure Log</h3><span class="tag">Systolic / Diastolic</span></div>
-    <canvas id="bp-chart" height="160"></canvas>
-    <div id="bp-trend-summary" style="margin-top:12px;font-size:.82rem;color:var(--soft)"></div>
-  </div>
-  <div class="card" style="cursor:default;margin-top:0">
-    <div class="ch"><h3 class="ctitle">Workout History</h3><span class="tag">Distance · Pace · Calories</span></div>
-    <div id="workout-history-list"></div>
-  </div>
-</div>
-
-<!-- ════ TAB: HABIT TREND ════ -->
-<div id="HabitTrend" class="tab">
-  <h2 class="stitle">Habit Trend</h2>
-  <div class="card" style="cursor:default">
-    <div class="ch"><h3 class="ctitle">28-Day Habit Heatmap</h3><span class="tag">4 weeks</span></div>
-    <div id="habit-heatmap"></div>
-    <div id="habit-heatmap-legend" style="display:flex;gap:8px;align-items:center;margin-top:14px;font-size:.75rem;color:var(--muted)">
-      <span>Less</span>
-      <div style="width:14px;height:14px;border-radius:3px;background:rgba(255,255,255,.06);border:1px solid var(--gb)"></div>
-      <div style="width:14px;height:14px;border-radius:3px;background:rgba(201,168,76,.25)"></div>
-      <div style="width:14px;height:14px;border-radius:3px;background:rgba(201,168,76,.55)"></div>
-      <div style="width:14px;height:14px;border-radius:3px;background:var(--gold)"></div>
-      <span>More</span>
-    </div>
-  </div>
-  <div class="card" style="cursor:default;margin-top:0">
-    <div class="ch"><h3 class="ctitle">Per-Habit Completion Rate</h3><span class="tag">All time</span></div>
-    <div id="habit-bars"></div>
-  </div>
-  <div class="card" style="cursor:default;margin-top:0">
-    <div class="ch"><h3 class="ctitle">Download Your Progress</h3><span class="tag">Export</span></div>
-    <p class="cbody" style="margin-bottom:18px;font-size:.82rem">Download a full summary of your habits, health logs, and BMI progress as a CSV file.</p>
-    <div style="display:flex;gap:12px;flex-wrap:wrap">
-      <button class="abtn" onclick="downloadCSV('habits')">
-        &#11015; Habit Log CSV
-      </button>
-      <button class="abtn" onclick="downloadCSV('health')">
-        &#11015; Health Log CSV
-      </button>
-      <button class="abtn" onclick="downloadCSV('workouts')">
-        &#11015; Workout Log CSV
-      </button>
-    </div>
-  </div>
-</div>
